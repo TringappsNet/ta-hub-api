@@ -6,9 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.DTO.JobRequirementDTO;
+import tahub.sdapitahub.DTO.TAUserDTO;
 import tahub.sdapitahub.Entity.JobRequirement;
+import tahub.sdapitahub.Entity.TAUser;
 import tahub.sdapitahub.Repository.JobRequirementRepository;
 import tahub.sdapitahub.Service.JobRequirementService;
+import tahub.sdapitahub.Service.UserService;
+
 import javax.validation.ValidationException;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +24,8 @@ public class JobRequirementController {
     private JobRequirementRepository jobRequirementRepository;
     @Autowired
     private JobRequirementService jobRequirementService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/hello")
     public String sayHelloWorld() {
@@ -51,5 +57,11 @@ public class JobRequirementController {
         } catch (ServiceException ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<TAUser> register(@RequestBody TAUserDTO userDTO) {
+        TAUser registeredUser = userService.registerUser(userDTO);
+        return ResponseEntity.ok(registeredUser);
     }
 }
