@@ -1,4 +1,7 @@
 package tahub.sdapitahub.Repository;
 
-public class ClientRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import tahub.sdapitahub.Entity.Client;
+
+public interface ClientRepository extends JpaRepository<Client, Long> {
 }
