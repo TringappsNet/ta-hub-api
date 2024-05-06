@@ -1,16 +1,21 @@
-package tahub.sdapitahub.DTO;
+package tahub.sdapitahub.Entity;
 
-public class RoleDTO {
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "roles")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "role_id")
     private Long roleId;
+
+    @Column(name = "role")
     private String role;
 
-    // Constructor
-    public RoleDTO(Long roleId, String role) {
-        this.roleId = roleId;
-        this.role = role;
-    }
+    // Constructors, getters, and setters
 
-    // Getters and setters
+
     public Long getRoleId() {
         return roleId;
     }
