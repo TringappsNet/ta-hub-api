@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.Entity.TAUser;
+import tahub.sdapitahub.Entity.TaUser;
 import tahub.sdapitahub.Service.UserService;
 
 import java.util.List;
@@ -17,14 +17,14 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/")
-    public ResponseEntity<List<TAUser>> getAllUsers() {
-        List<TAUser> users = userService.getAllUsers();
+    public ResponseEntity<List<TaUser>> getAllUsers() {
+        List<TaUser> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("user/{id}")
-    public ResponseEntity<TAUser> getUserById(@PathVariable("id") Long id) {
-        TAUser user = userService.getUserById(id);
+    public ResponseEntity<TaUser> getUserById(@PathVariable("id") Long id) {
+        TaUser user = userService.getUserById(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
@@ -33,14 +33,14 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<TAUser> createUser(@RequestBody TAUser user) {
-        TAUser createdUser = userService.createUser(user);
+    public ResponseEntity<TaUser> createUser(@RequestBody TaUser user) {
+        TaUser createdUser = userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @PutMapping("user/{id}")
-    public ResponseEntity<TAUser> updateUser(@PathVariable("id") Long id, @RequestBody TAUser user) {
-        TAUser updatedUser = userService.updateUser(id, user);
+    public ResponseEntity<TaUser> updateUser(@PathVariable("id") Long id, @RequestBody TaUser user) {
+        TaUser updatedUser = userService.updateUser(id, user);
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {

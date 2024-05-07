@@ -1,6 +1,7 @@
 package tahub.sdapitahub.DTO;
 
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 
 public class JobRequirementDTO {

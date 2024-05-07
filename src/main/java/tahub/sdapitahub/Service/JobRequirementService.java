@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import tahub.sdapitahub.DTO.JobRequirementDTO;
 import tahub.sdapitahub.Entity.JobRequirement;
 import tahub.sdapitahub.Repository.JobRequirementRepository;
+
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class JobRequirementService {
         jobRequirement.setClientSpocContact(jobRequirementDTO.getClientSpocContact());
         jobRequirement.setAccountManager(jobRequirementDTO.getAccountManager());
         jobRequirement.setAccountManagerEmail(jobRequirementDTO.getAccountManagerEmail());
-        jobRequirement.setJobTitle(jobRequirementDTO.getJobTitle());
         jobRequirement.setNoOfOpenings(jobRequirementDTO.getNoOfOpenings());
+        jobRequirement.setJobTitle(jobRequirementDTO.getJobTitle());
         jobRequirement.setRoleType(jobRequirementDTO.getRoleType());
         jobRequirement.setModeOfWork(jobRequirementDTO.getModeOfWork());
         jobRequirement.setWorkLocation(jobRequirementDTO.getWorkLocation());
@@ -34,6 +36,7 @@ public class JobRequirementService {
         jobRequirement.setYearsOfExperienceRequired(jobRequirementDTO.getYearsOfExperienceRequired());
         jobRequirement.setPrimarySkillSet(jobRequirementDTO.getPrimarySkillSet());
         jobRequirement.setSecondarySkillSet(jobRequirementDTO.getSecondarySkillSet());
+        jobRequirement.setCreatedAt(LocalDateTime.now());
         return jobRequirementRepository.save(jobRequirement);
     }
 

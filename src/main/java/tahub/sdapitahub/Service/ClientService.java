@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.Entity.Client;
 import tahub.sdapitahub.Repository.ClientRepository;
-
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
+
 
 @Service
 public class ClientService {
@@ -23,6 +24,7 @@ public class ClientService {
     }
 
     public Client createClient(Client client) {
+        client.setCreatedAt(LocalDateTime.now());
         return clientRepository.save(client);
     }
 
@@ -30,7 +32,6 @@ public class ClientService {
         client.setClientId(id);
         return clientRepository.save(client);
     }
-
     public void deleteClient(Long id) {
         clientRepository.deleteById(id);
     }

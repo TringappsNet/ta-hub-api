@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.DTO.JobRequirementDTO;
 import tahub.sdapitahub.DTO.TAUserDTO;
 import tahub.sdapitahub.Entity.JobRequirement;
-import tahub.sdapitahub.Entity.TAUser;
+import tahub.sdapitahub.Entity.TaUser;
 import tahub.sdapitahub.Repository.JobRequirementRepository;
 import tahub.sdapitahub.Service.JobRequirementService;
 import tahub.sdapitahub.Service.AuthService;
@@ -60,8 +60,8 @@ public class JobRequirementController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<TAUser> register(@RequestBody TAUserDTO userDTO) {
-        TAUser registeredUser = authService.registerUser(userDTO);
+    public ResponseEntity<TaUser> register(@RequestBody TAUserDTO userDTO) {
+        TaUser registeredUser = authService.registerUser(userDTO);
         return ResponseEntity.ok(registeredUser);
     }
 }

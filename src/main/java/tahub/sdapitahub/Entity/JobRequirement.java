@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "job_requirements")
@@ -71,6 +72,9 @@ public class JobRequirement {
 
     @Column(name = "secondary_skill_set")
     private String secondarySkillSet;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     // Getters and setters
     public LocalDate getRequirementStartDate() {
@@ -225,6 +229,13 @@ public class JobRequirement {
         this.secondarySkillSet = secondarySkillSet;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
 
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tahub.sdapitahub.Entity.Candidate;
 import tahub.sdapitahub.Repository.CandidateRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class CandidateService {
     }
 
     public Candidate createCandidate(Candidate candidate) {
+        candidate.setCreatedDate(LocalDateTime.now());
         return candidateRepository.save(candidate);
     }
 

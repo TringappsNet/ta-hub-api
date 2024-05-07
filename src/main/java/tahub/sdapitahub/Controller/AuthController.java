@@ -6,8 +6,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.DTO.TAUserDTO;
-import tahub.sdapitahub.Entity.TAUser;
-import tahub.sdapitahub.Repository.TAUserRepository;
+import tahub.sdapitahub.Entity.TaUser;
+import tahub.sdapitahub.Repository.TaUserRepository;
 import tahub.sdapitahub.Service.AuthService;
 
 @RestController
@@ -15,20 +15,20 @@ import tahub.sdapitahub.Service.AuthService;
 public class AuthController {
 
     @Autowired
-    private TAUserRepository taUserRepository;
+    private TaUserRepository taUserRepository;
     @Autowired
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<TAUser> register(@RequestBody TAUserDTO userDTO) {
-        TAUser registeredUser = authService.registerUser(userDTO);
+    public ResponseEntity<TaUser> register(@RequestBody TAUserDTO userDTO) {
+        TaUser registeredUser = authService.registerUser(userDTO);
         return ResponseEntity.ok(registeredUser);
     }
 
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody TAUserDTO userDTO) {
-        TAUser user = authService.findUserByEmail(userDTO.getEmail());
+        TaUser user = authService.findUserByEmail(userDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
 
@@ -44,7 +44,7 @@ public class AuthController {
 
     @PostMapping("/reset-new-password")
     public ResponseEntity<Object> resetPassword(@RequestBody TAUserDTO userDTO) {
-        TAUser user = authService.findUserByEmail(userDTO.getEmail());
+        TaUser user = authService.findUserByEmail(userDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -71,7 +71,7 @@ public class AuthController {
 
     @PostMapping("/reset-password")
     public ResponseEntity<Object> resetPassword(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
-        TAUser user = authService.findUserByResetToken(token);
+        TaUser user = authService.findUserByResetToken(token);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }

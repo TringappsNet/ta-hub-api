@@ -6,11 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-public class TAUser {
+public class TaUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -40,12 +41,6 @@ public class TAUser {
     @Column(name = "salt")
     private String salt;
 
-    @Column(name = "invite_token")
-    private String inviteToken;
-
-    @Column(name = "invite_time")
-    private LocalDate inviteTime;
-
     @Column(name = "is_active")
     private boolean isActive;
 
@@ -53,15 +48,18 @@ public class TAUser {
     private String currentSessionId;
 
     @Column(name = "last_login_time")
-    private LocalDate lastLoginTime;
+    private LocalDateTime lastLoginTime;
 
     @Column(name = "created_at")
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     // Getters and setters
+    public Long getUserId() {
+        return userId;
+    }
 
-    public void setUserID(Long userId) {
-        this.userId = userId;
+    public void setUserId(Long userId) {
+        this.userId = this.userId;
     }
 
     public String getFirstName() {
@@ -112,11 +110,11 @@ public class TAUser {
         this.resetToken = resetToken;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -145,11 +143,11 @@ public class TAUser {
         this.currentSessionId = currentSessionId;
     }
 
-    public LocalDate getLastLoginTime() {
+    public LocalDateTime getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(LocalDate lastLoginTime) {
+    public void setLastLoginTime(LocalDateTime lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 }
