@@ -4,9 +4,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TAUserDTO {
+    @NotNull
+    private long userId;
+
     @NotNull
     private String firstName;
 
@@ -30,31 +33,33 @@ public class TAUserDTO {
     private String resetToken;
 
     @NotNull
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
     private String password;
 
     @NotNull
-    private String salt;
-
-    private String inviteToken;
-
-    private LocalDate inviteTime;
-
-    @NotNull
     private boolean isActive;
 
     private String currentSessionId;
 
-    private LocalDate lastLoginTime;
+    private LocalDateTime lastLoginTime;
 
     private String oldPassword;
 
     private String newPassword;
 
     // Getters and setters
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -103,11 +108,11 @@ public class TAUserDTO {
         this.resetToken = resetToken;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -135,11 +140,11 @@ public class TAUserDTO {
         this.currentSessionId = currentSessionId;
     }
 
-    public LocalDate getLastLoginTime() {
+    public LocalDateTime getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(LocalDate lastLoginTime) {
+    public void setLastLoginTime(LocalDateTime lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 

@@ -2,9 +2,10 @@ package tahub.sdapitahub.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.Entity.TAUser;
-import tahub.sdapitahub.Repository.TAUserRepository;
+import tahub.sdapitahub.Entity.TaUser;
+import tahub.sdapitahub.Repository.TaUserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,25 +13,26 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private TAUserRepository userRepository;
+    private TaUserRepository userRepository;
 
-    public List<TAUser> getAllUsers() {
+    public List<TaUser> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public TAUser getUserById(Long id) {
-        Optional<TAUser> userOptional = userRepository.findById(id);
+    public TaUser getUserById(Long id) {
+        Optional<TaUser> userOptional = userRepository.findById(id);
         return userOptional.orElse(null);
     }
 
-    public TAUser createUser(TAUser user) {
+    public TaUser createUser(TaUser user) {
+        user.setCreatedDate(LocalDateTime.now());
         return userRepository.save(user);
     }
 
-    public TAUser updateUser(Long id, TAUser user) {
-        Optional<TAUser> existingUserOptional = userRepository.findById(id);
+    public TaUser updateUser(Long id, TaUser user) {
+        Optional<TaUser> existingUserOptional = userRepository.findById(id);
         if (existingUserOptional.isPresent()) {
-            user.setUserID(id);
+            user.setUserId(id);
             return userRepository.save(user);
         } else {
             return null;

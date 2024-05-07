@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.DTO.TAUserDTO;
-import tahub.sdapitahub.Entity.TAUser;
-import tahub.sdapitahub.Repository.TAUserRepository;
-import java.time.LocalDate;
+import tahub.sdapitahub.Entity.TaUser;
+import tahub.sdapitahub.Repository.TaUserRepository;
+import java.time.LocalDateTime;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import javax.crypto.Cipher;
@@ -22,7 +22,7 @@ import java.util.Random;
 public class AuthService {
 
     @Autowired
-    private TAUserRepository userRepository;
+    private TaUserRepository userRepository;
     @Autowired
     private JavaMailSender mailSender;
 
@@ -43,10 +43,10 @@ public class AuthService {
     }    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int LENGTH = 10;
 
-    public TAUser registerUser(TAUserDTO TAUserDTO) {
+    public TaUser registerUser(TAUserDTO TAUserDTO) {
         String hashedPassword = passwordEncoder.encode(TAUserDTO.getPassword());
 
-        TAUser user = new TAUser();
+        TaUser user = new TaUser();
         user.setFirstName(TAUserDTO.getFirstName());
         user.setLastName(TAUserDTO.getLastName());
         user.setUsername(TAUserDTO.getUsername());
@@ -54,7 +54,7 @@ public class AuthService {
         user.setPhone(TAUserDTO.getPhone());
         user.setPassword(hashedPassword);
         user.setIsActive(TAUserDTO.getIsActive());
-        user.setCreatedDate(LocalDate.now());
+        user.setCreatedDate(LocalDateTime.now());
 
         return userRepository.save(user);
     }
@@ -67,7 +67,7 @@ public class AuthService {
         return passwordEncoder.encode(password);
     }
 
-    public TAUser findUserByEmail(String email) {
+    public TaUser findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -75,13 +75,13 @@ public class AuthService {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public TAUser saveUser(TAUser user) {
+    public TaUser saveUser(TaUser user) {
         return userRepository.save(user);
     }
 
 
     public void forgetPassword(String email) {
-        TAUser user = userRepository.findByEmail(email);
+        TaUser user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -134,18 +134,18 @@ public class AuthService {
         }
     }
 
-    public boolean isTokenValid(TAUser user, String token) {
+    public boolean isTokenValid(TaUser user, String token) {
         String decryptedToken = decryptToken(user.getResetToken());
         return decryptedToken.equals(token);
     }
 
-    public TAUser resetPassword(TAUser user, String newPassword) {
+    public TaUser resetPassword(TaUser user, String newPassword) {
         user.setPassword(encodePassword(newPassword));
         user.setResetToken(null);
         return saveUser(user);
     }
 
-    public TAUser findUserByResetToken(String resetToken) {
+    public TaUser findUserByResetToken(String resetToken) {
         return userRepository.findByResetToken(resetToken);
     }
 
