@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDate;
 
 public class TAUserDTO {
     @NotNull
@@ -31,7 +30,7 @@ public class TAUserDTO {
     private String resetToken;
 
     @NotNull
-    private LocalDate registrationDate;
+    private LocalDate createdDate;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
@@ -104,12 +103,12 @@ public class TAUserDTO {
         this.resetToken = resetToken;
     }
 
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getPassword() {
@@ -120,12 +119,12 @@ public class TAUserDTO {
         this.password = password;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(boolean active) {
-        isActive = active;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public String getCurrentSessionId() {

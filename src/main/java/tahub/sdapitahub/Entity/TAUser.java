@@ -13,7 +13,8 @@ import java.time.LocalDate;
 public class TAUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "first_name")
     private String firstName;
@@ -32,9 +33,6 @@ public class TAUser {
 
     @Column(name = "reset_token")
     private String resetToken;
-
-    @Column(name = "registration_date")
-    private LocalDate registrationDate;
 
     @Column(name = "password_hash")
     private String password;
@@ -57,7 +55,14 @@ public class TAUser {
     @Column(name = "last_login_time")
     private LocalDate lastLoginTime;
 
+    @Column(name = "created_at")
+    private LocalDate createdDate;
+
     // Getters and setters
+
+    public void setUserID(Long userId) {
+        this.userId = userId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -107,12 +112,12 @@ public class TAUser {
         this.resetToken = resetToken;
     }
 
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getPassword() {
@@ -124,12 +129,12 @@ public class TAUser {
     }
 
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(boolean active) {
-        isActive = active;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public String getCurrentSessionId() {

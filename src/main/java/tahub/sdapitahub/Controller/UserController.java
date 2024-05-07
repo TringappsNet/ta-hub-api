@@ -1,82 +1,56 @@
 package tahub.sdapitahub.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.DTO.TAUserDTO;
 import tahub.sdapitahub.Entity.TAUser;
-import tahub.sdapitahub.Repository.TAUserRepository;
 import tahub.sdapitahub.Service.UserService;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private TAUserRepository taUserRepository;
-    @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<TAUser> register(@RequestBody TAUserDTO userDTO) {
-        TAUser registeredUser = userService.registerUser(userDTO);
-        return ResponseEntity.ok(registeredUser);
+    @GetMapping("/")
+    public ResponseEntity<List<TAUser>> getAllUsers() {
+        List<TAUser> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody TAUserDTO userDTO) {
-        TAUser user = userService.findUserByEmail(userDTO.getEmail());
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-
+    @GetMapping("user/{id}")
+    public ResponseEntity<TAUser> getUserById(@PathVariable("id") Long id) {
+        TAUser user = userService.getUserById(id);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        boolean passwordMatches = userService.checkPasswordMatch(userDTO.getPassword(), user.getPassword());
-        if (!passwordMatches) {
-            throw new BadCredentialsException("Invalid password");
-        }
-
-        return ResponseEntity.status(200).body(user.getEmail());
     }
 
-    @PostMapping("/reset-new-password")
-    public ResponseEntity<Object> resetPassword(@RequestBody TAUserDTO userDTO) {
-        TAUser user = userService.findUserByEmail(userDTO.getEmail());
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        boolean oldPasswordMatches = userService.checkPasswordMatch(userDTO.getOldPassword(), user.getPassword());
-        if (!oldPasswordMatches) {
-            throw new BadCredentialsException("Invalid old password");
-        }
-
-        user.setPassword(userService.encodePassword(userDTO.getNewPassword()));
-        userService.saveUser(user);
-
-        return ResponseEntity.status(200).body("Password reset successfully");
+    @PostMapping("/user")
+    public ResponseEntity<TAUser> createUser(@RequestBody TAUser user) {
+        TAUser createdUser = userService.createUser(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-
-
-    @PostMapping("/forgot-password")
-    public ResponseEntity<Object> forgotPassword(@RequestBody TAUserDTO userDTO) {
-        String email = userDTO.getEmail();
-        userService.forgetPassword(email);
-        return ResponseEntity.status(200).body("Password reset link sent to email");
+    @PutMapping("user/{id}")
+    public ResponseEntity<TAUser> updateUser(@PathVariable("id") Long id, @RequestBody TAUser user) {
+        TAUser updatedUser = userService.updateUser(id, user);
+        if (updatedUser != null) {
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<Object> resetPassword(@RequestParam("token") String token,
-                                                @RequestBody TAUserDTO userDTO) {
-        String newPassword = userDTO.getPassword();
-        userService.resetPassword(token, newPassword);
-        return ResponseEntity.status(200).body("Password reset successfully");
+    @DeleteMapping("user/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-
-
-

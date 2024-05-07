@@ -11,7 +11,7 @@ import tahub.sdapitahub.Entity.JobRequirement;
 import tahub.sdapitahub.Entity.TAUser;
 import tahub.sdapitahub.Repository.JobRequirementRepository;
 import tahub.sdapitahub.Service.JobRequirementService;
-import tahub.sdapitahub.Service.UserService;
+import tahub.sdapitahub.Service.AuthService;
 
 import javax.validation.ValidationException;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public class JobRequirementController {
     @Autowired
     private JobRequirementService jobRequirementService;
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @GetMapping("/hello")
     public String sayHelloWorld() {
@@ -61,7 +61,7 @@ public class JobRequirementController {
 
     @PostMapping("/register")
     public ResponseEntity<TAUser> register(@RequestBody TAUserDTO userDTO) {
-        TAUser registeredUser = userService.registerUser(userDTO);
+        TAUser registeredUser = authService.registerUser(userDTO);
         return ResponseEntity.ok(registeredUser);
     }
 }
