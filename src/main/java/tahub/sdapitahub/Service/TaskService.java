@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import tahub.sdapitahub.Entity.Task;
 import tahub.sdapitahub.Repository.TaskRepository;
 import tahub.sdapitahub.DTO.TaskDTO;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,18 +17,23 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> createTasks(List<TaskDTO> taskDTOs) {
+    public List<Task> createTasks(List<TaskDTO> taskDTOs, int noOfOpenings) {
         List<Task> tasks = new ArrayList<>();
         for (TaskDTO taskDTO : taskDTOs) {
-            Task task = new Task();
-            task.setJobTitle(taskDTO.getJobTitle());
-            task.setRoleType(taskDTO.getRoleType());
-            task.setModeOfWork(taskDTO.getModeOfWork());
-            task.setWorkLocation(taskDTO.getWorkLocation());
-            tasks.add(taskRepository.save(task));
+            for (int i = 0; i < noOfOpenings; i++) {
+                Task task = new Task();
+                task.setJobTitle(taskDTO.getJobTitle());
+                task.setRoleType(taskDTO.getRoleType());
+                task.setModeOfWork(taskDTO.getModeOfWork());
+                task.setWorkLocation(taskDTO.getWorkLocation());
+                task.setCreatedAt(LocalDateTime.now());
+                tasks.add(taskRepository.save(task));
+            }
+
         }
         return tasks;
     }
+
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }

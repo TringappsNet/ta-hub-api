@@ -2,6 +2,8 @@ package tahub.sdapitahub.Entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tasks")
 
@@ -23,6 +25,12 @@ public class Task {
     @Column(name = "work_location")
     private String workLocation;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "last_updated")
+    private LocalDateTime lastUpdated;
+
     // Getters and Setters
 
     public String getJobTitle() {
@@ -32,6 +40,7 @@ public class Task {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
+
 
     public Long getTaskId() {
         return taskId;
@@ -64,4 +73,22 @@ public class Task {
     public void setWorkLocation(String workLocation) {
         this.workLocation = workLocation;
     }
+
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
 }

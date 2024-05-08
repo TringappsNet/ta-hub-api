@@ -35,20 +35,8 @@ public class JobRequirement {
     @Column(name = "account_manager_email")
     private String accountManagerEmail;
 
-    @Column(name = "job_title")
-    private String jobTitle;
-
-    @Column(name = "no_of_openings")
-    private String noOfOpenings;
-
-    @Column(name = "role_type")
-    private String roleType;
-
-    @Column(name = "mode_of_work")
-    private String modeOfWork;
-
-    @Column(name = "work_location")
-    private String workLocation;
+    @Column(name = "total_no_of_openings")
+    private String totalNoOfOpenings;
 
     @Column(name = "salary_budget")
     private double salaryBudget;
@@ -136,44 +124,12 @@ public class JobRequirement {
     }
 
 
-    public String getJobTitle() {
-        return jobTitle;
+    public String getTotalNoOfOpenings() {
+        return totalNoOfOpenings;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getNoOfOpenings() {
-        return noOfOpenings;
-    }
-
-    public void setNoOfOpenings(String noOfOpenings) {
-        this.noOfOpenings = noOfOpenings;
-    }
-
-    public String getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
-    }
-
-    public String getModeOfWork() {
-        return modeOfWork;
-    }
-
-    public void setModeOfWork(String modeOfWork) {
-        this.modeOfWork = modeOfWork;
-    }
-
-    public String getWorkLocation() {
-        return workLocation;
-    }
-
-    public void setWorkLocation(String workLocation) {
-        this.workLocation = workLocation;
+    public void setTotalNoOfOpenings(String totalNoOfOpenings) {
+        this.totalNoOfOpenings = totalNoOfOpenings;
     }
 
     public double getSalaryBudget() {

@@ -33,8 +33,10 @@ public class JobRequirementService {
     }
 
     public void createTasksPositions(JobRequirementDTO jobRequirementDTO) {
-        List<TaskDTO> taskDTOs = jobRequirementDTO.getPositions();
-        taskService.createTasks(taskDTOs);
+        jobRequirementDTO.getPositions().forEach(taskDTO -> {
+            int noOfOpenings = taskDTO.getNoOfOpenings();
+            taskService.createTasks(Collections.singletonList(taskDTO), noOfOpenings);
+        });
     }
 
 
@@ -46,11 +48,7 @@ public class JobRequirementService {
         jobRequirement.setClientSpocContact(jobRequirementDTO.getClientSpocContact());
         jobRequirement.setAccountManager(jobRequirementDTO.getAccountManager());
         jobRequirement.setAccountManagerEmail(jobRequirementDTO.getAccountManagerEmail());
-        jobRequirement.setJobTitle(jobRequirementDTO.getJobTitle());
-        jobRequirement.setNoOfOpenings(jobRequirementDTO.getNoOfOpenings());
-        jobRequirement.setRoleType(jobRequirementDTO.getRoleType());
-        jobRequirement.setModeOfWork(jobRequirementDTO.getModeOfWork());
-        jobRequirement.setWorkLocation(jobRequirementDTO.getWorkLocation());
+        jobRequirement.setTotalNoOfOpenings(jobRequirementDTO.getTotalNoOfOpenings());
         jobRequirement.setSalaryBudget(jobRequirementDTO.getSalaryBudget());
         jobRequirement.setModeOfInterviews(jobRequirementDTO.getModeOfInterviews());
         jobRequirement.setTentativeStartDate(jobRequirementDTO.getTentativeStartDate());
