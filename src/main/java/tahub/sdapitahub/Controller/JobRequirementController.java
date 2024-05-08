@@ -14,6 +14,7 @@ import tahub.sdapitahub.Service.JobRequirementService;
 import tahub.sdapitahub.Service.AuthService;
 
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,16 +34,23 @@ public class JobRequirementController {
     }
 
     @PostMapping("/requirement")
-    public ResponseEntity<?> createJobRequirement(@RequestBody JobRequirementDTO jobRequirementDTO) {
+    public ResponseEntity<?> createJobRequirements(@RequestBody List<JobRequirementDTO> jobRequirementDTOList) {
         try {
-            JobRequirement createdRequirement = jobRequirementService.createJobRequirement(jobRequirementDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdRequirement);
+            List<JobRequirement> createdRequirements = new ArrayList<>();
+            for (JobRequirementDTO jobRequirementDTO : jobRequirementDTOList) {
+                JobRequirement createdRequirement = jobRequirementService.createJobRequirement(jobRequirementDTO);
+                jobRequirementService.createTasksPositions(jobRequirementDTO);
+                createdRequirements.add(createdRequirement);
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdRequirements);
         } catch (ValidationException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (ServiceException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while creating job requirement.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while creating job requirements.");
         }
     }
+
+
 
     @GetMapping("/requirement")
     public ResponseEntity<List<JobRequirement>> getAllJobRequirements() {

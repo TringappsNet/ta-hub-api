@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 public class JobRequirement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "job_id")
+    private long jobId;
 
     @Column(name = "requirement_start_date")
     private LocalDate requirementStartDate;
@@ -38,7 +39,7 @@ public class JobRequirement {
     private String jobTitle;
 
     @Column(name = "no_of_openings")
-    private int noOfOpenings;
+    private String noOfOpenings;
 
     @Column(name = "role_type")
     private String roleType;
@@ -77,6 +78,15 @@ public class JobRequirement {
     private LocalDateTime createdAt;
 
     // Getters and setters
+
+    public long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
+    }
+
     public LocalDate getRequirementStartDate() {
         return requirementStartDate;
     }
@@ -134,11 +144,11 @@ public class JobRequirement {
         this.jobTitle = jobTitle;
     }
 
-    public int getNoOfOpenings() {
+    public String getNoOfOpenings() {
         return noOfOpenings;
     }
 
-    public void setNoOfOpenings(int noOfOpenings) {
+    public void setNoOfOpenings(String noOfOpenings) {
         this.noOfOpenings = noOfOpenings;
     }
 

@@ -1,4 +1,7 @@
 package tahub.sdapitahub.Repository;
 
-public class TaskRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import tahub.sdapitahub.Entity.Task;
+
+public interface TaskRepository extends JpaRepository<Task, Long> {
 }

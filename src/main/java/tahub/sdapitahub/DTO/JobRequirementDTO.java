@@ -1,8 +1,8 @@
 package tahub.sdapitahub.DTO;
 
 import javax.validation.constraints.NotNull;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.util.List;
 
 public class JobRequirementDTO {
     @NotNull
@@ -20,7 +20,9 @@ public class JobRequirementDTO {
     @NotNull
     private String jobTitle;
     @NotNull
-    private int noOfOpenings;
+    private String noOfOpenings;
+    @NotNull
+    private List<TaskDTO> positions;
     @NotNull
     private String roleType;
     @NotNull
@@ -100,12 +102,19 @@ public class JobRequirementDTO {
         this.jobTitle = jobTitle;
     }
 
-    public int getNoOfOpenings() {
+    public String getNoOfOpenings() {
         return noOfOpenings;
     }
 
-    public void setNoOfOpenings(int noOfOpenings) {
+    public void setNoOfOpenings(String noOfOpenings) {
         this.noOfOpenings = noOfOpenings;
+    }
+
+    public List<TaskDTO> getPositions() {
+        return positions;
+    }
+    public void setPositions(List<TaskDTO> positions) {
+        this.positions = positions;
     }
 
     public String getRoleType() {
