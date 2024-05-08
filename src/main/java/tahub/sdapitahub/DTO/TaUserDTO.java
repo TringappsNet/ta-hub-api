@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-public class TAUserDTO {
+public class TaUserDTO {
     @NotNull
     private long userId;
 

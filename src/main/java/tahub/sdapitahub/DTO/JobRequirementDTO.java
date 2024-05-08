@@ -18,17 +18,9 @@ public class JobRequirementDTO {
     @NotNull
     private String accountManagerEmail;
     @NotNull
-    private String jobTitle;
-    @NotNull
-    private String noOfOpenings;
+    private String totalNoOfOpenings;
     @NotNull
     private List<TaskDTO> positions;
-    @NotNull
-    private String roleType;
-    @NotNull
-    private String modeOfWork;
-    @NotNull
-    private String workLocation;
     @NotNull
     private double salaryBudget;
     @NotNull
@@ -94,20 +86,12 @@ public class JobRequirementDTO {
         this.accountManagerEmail = accountManagerEmail;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
+    public String getTotalNoOfOpenings() {
+        return totalNoOfOpenings;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getNoOfOpenings() {
-        return noOfOpenings;
-    }
-
-    public void setNoOfOpenings(String noOfOpenings) {
-        this.noOfOpenings = noOfOpenings;
+    public void setTotalNoOfOpenings(String totalNoOfOpenings) {
+        this.totalNoOfOpenings = totalNoOfOpenings;
     }
 
     public List<TaskDTO> getPositions() {
@@ -115,30 +99,6 @@ public class JobRequirementDTO {
     }
     public void setPositions(List<TaskDTO> positions) {
         this.positions = positions;
-    }
-
-    public String getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
-    }
-
-    public String getModeOfWork() {
-        return modeOfWork;
-    }
-
-    public void setModeOfWork(String modeOfWork) {
-        this.modeOfWork = modeOfWork;
-    }
-
-    public String getWorkLocation() {
-        return workLocation;
-    }
-
-    public void setWorkLocation(String workLocation) {
-        this.workLocation = workLocation;
     }
 
     public double getSalaryBudget() {

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.DTO.TAUserDTO;
+import tahub.sdapitahub.DTO.TaUserDTO;
 import tahub.sdapitahub.Entity.TaUser;
 import tahub.sdapitahub.Repository.TaUserRepository;
 import java.time.LocalDateTime;
@@ -43,7 +43,7 @@ public class AuthService {
     }    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int LENGTH = 10;
 
-    public TaUser registerUser(TAUserDTO TAUserDTO) {
+    public TaUser registerUser(TaUserDTO TAUserDTO) {
         String hashedPassword = passwordEncoder.encode(TAUserDTO.getPassword());
 
         TaUser user = new TaUser();

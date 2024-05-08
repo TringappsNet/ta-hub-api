@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.DTO.TAUserDTO;
+import tahub.sdapitahub.DTO.TaUserDTO;
 import tahub.sdapitahub.Entity.TaUser;
 import tahub.sdapitahub.Repository.TaUserRepository;
 import tahub.sdapitahub.Service.AuthService;
@@ -20,14 +20,14 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<TaUser> register(@RequestBody TAUserDTO userDTO) {
+    public ResponseEntity<TaUser> register(@RequestBody TaUserDTO userDTO) {
         TaUser registeredUser = authService.registerUser(userDTO);
         return ResponseEntity.ok(registeredUser);
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody TAUserDTO userDTO) {
+    public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO) {
         TaUser user = authService.findUserByEmail(userDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
@@ -43,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/reset-new-password")
-    public ResponseEntity<Object> resetPassword(@RequestBody TAUserDTO userDTO) {
+    public ResponseEntity<Object> resetPassword(@RequestBody TaUserDTO userDTO) {
         TaUser user = authService.findUserByEmail(userDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
@@ -63,7 +63,7 @@ public class AuthController {
 
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<Object> forgotPassword(@RequestBody TAUserDTO userDTO) {
+    public ResponseEntity<Object> forgotPassword(@RequestBody TaUserDTO userDTO) {
         String email = userDTO.getEmail();
         authService.forgetPassword(email);
         return ResponseEntity.status(200).body("Password reset link sent to email");
