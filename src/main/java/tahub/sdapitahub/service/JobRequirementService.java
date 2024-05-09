@@ -1,0 +1,62 @@
+package tahub.sdapitahub.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tahub.sdapitahub.dto.JobRequirementDTO;
+import tahub.sdapitahub.entity.JobRequirement;
+import tahub.sdapitahub.repository.JobRequirementRepository;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+
+@Service
+public class JobRequirementService {
+    @Autowired
+    private JobRequirementRepository jobRequirementRepository;
+
+    @Autowired
+    private TaskService taskService;
+
+    public JobRequirement createJobRequirement(JobRequirementDTO jobRequirementDTO) {
+        JobRequirement jobRequirement = convertToEntity(jobRequirementDTO);
+        jobRequirement.setCreatedAt(LocalDateTime.now());
+        return jobRequirementRepository.save(jobRequirement);
+    }
+
+    public List<JobRequirement> getAllJobRequirements() {
+        List<JobRequirement> jobRequirement = jobRequirementRepository.findAll();
+        if (jobRequirement.isEmpty()) {
+            return Collections.singletonList(new JobRequirement(/* default values */));
+        }
+        return jobRequirement;
+    }
+
+    public void createTasksPositions(JobRequirementDTO jobRequirementDTO) {
+        jobRequirementDTO.getPositions().forEach(taskDTO -> {
+            int noOfOpenings = taskDTO.getNoOfOpenings();
+            taskService.createTasks(Collections.singletonList(taskDTO), noOfOpenings);
+        });
+    }
+
+
+    private JobRequirement convertToEntity(JobRequirementDTO jobRequirementDTO) {
+        JobRequirement jobRequirement = new JobRequirement();
+        jobRequirement.setRequirementStartDate(jobRequirementDTO.getRequirementStartDate());
+        jobRequirement.setClientName(jobRequirementDTO.getClientName());
+        jobRequirement.setClientSpocName(jobRequirementDTO.getClientSpocName());
+        jobRequirement.setClientSpocContact(jobRequirementDTO.getClientSpocContact());
+        jobRequirement.setAccountManager(jobRequirementDTO.getAccountManager());
+        jobRequirement.setAccountManagerEmail(jobRequirementDTO.getAccountManagerEmail());
+        jobRequirement.setTotalNoOfOpenings(jobRequirementDTO.getTotalNoOfOpenings());
+        jobRequirement.setSalaryBudget(jobRequirementDTO.getSalaryBudget());
+        jobRequirement.setModeOfInterviews(jobRequirementDTO.getModeOfInterviews());
+        jobRequirement.setTentativeStartDate(jobRequirementDTO.getTentativeStartDate());
+        jobRequirement.setTentativeDuration(jobRequirementDTO.getTentativeDuration());
+        jobRequirement.setApprovedBy(jobRequirementDTO.getApprovedBy());
+        jobRequirement.setYearsOfExperienceRequired(jobRequirementDTO.getYearsOfExperienceRequired());
+        jobRequirement.setPrimarySkillSet(jobRequirementDTO.getPrimarySkillSet());
+        jobRequirement.setSecondarySkillSet(jobRequirementDTO.getSecondarySkillSet());
+        return jobRequirement;
+    }
+
+}
