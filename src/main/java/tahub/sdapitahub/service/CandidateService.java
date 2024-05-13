@@ -25,12 +25,14 @@ public class CandidateService {
 
     public Candidate createCandidate(Candidate candidate) {
         candidate.setCreatedDate(LocalDateTime.now());
+        candidate.setLastUpdated(LocalDateTime.now());
         return candidateRepository.save(candidate);
     }
 
     public Candidate updateCandidate(Long id, Candidate candidate) {
         candidate.setCandidateId(id);
-        return candidateRepository.save(candidate);
+        candidate.setLastUpdated(LocalDateTime.now());
+        return candidateRepository.update(candidate);
     }
 
     public void deleteCandidate(Long id) {

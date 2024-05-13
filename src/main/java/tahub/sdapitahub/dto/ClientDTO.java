@@ -10,7 +10,7 @@ public class ClientDTO {
     private String clientLocation;
 //    private byte[] clientLogo;
     private LocalDateTime createdAt;
-
+    private LocalDateTime lastUpdated;
     // Getters and setters
 
     public long getClientId() {
@@ -25,34 +25,16 @@ public class ClientDTO {
         return clientName;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-
     public String getClientSpocName() {
         return clientSpocName;
-    }
-
-    public void setClientSpocName(String clientSpocName) {
-        this.clientSpocName = clientSpocName;
     }
 
     public String getClientSpocContact() {
         return clientSpocContact;
     }
 
-    public void setClientSpocContact(String clientSpocContact) {
-        this.clientSpocContact = clientSpocContact;
-    }
-
-
     public String getCientLocation() {
         return clientLocation;
-    }
-
-    public void setCientLocation(String clientLocation) {
-        this.clientLocation = clientLocation;
     }
 
 //    public byte[] getClientLogo() {
@@ -63,13 +45,11 @@ public class ClientDTO {
 //        this.clientLogo = clientLogo;
 //    }
 
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
     }
-
 }

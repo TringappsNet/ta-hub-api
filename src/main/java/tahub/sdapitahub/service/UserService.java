@@ -25,11 +25,13 @@ public class UserService {
 
     public TaUser createUser(TaUser user) {
         user.setCreatedAt(LocalDateTime.now());
+        user.setLastUpdated(LocalDateTime.now());
         return userRepository.save(user);
     }
 
     public TaUser updateUser(Long id, TaUser user) {
         user.setUserId(id);
+        user.setLastUpdated(LocalDateTime.now());
         return userRepository.update(user);
     }
 

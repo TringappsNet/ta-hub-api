@@ -20,6 +20,8 @@ public class CandidateDTO {
     private String recruiter;
     private String recruitedSource;
     private LocalDateTime createdDate;
+    private LocalDateTime lastUpdated;
+
 
     // Getters and setters for all fields
     public Long getCandidateId() {
@@ -156,5 +158,9 @@ public class CandidateDTO {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
     }
 }

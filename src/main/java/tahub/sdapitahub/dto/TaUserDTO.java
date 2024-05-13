@@ -11,6 +11,9 @@ public class TaUserDTO {
     private long userId;
 
     @NotNull
+    private long roleId;
+
+    @NotNull
     private String firstName;
 
     @NotNull
@@ -32,7 +35,6 @@ public class TaUserDTO {
 
     private String resetToken;
 
-    @NotNull
     private LocalDateTime createdAt;
 
     @NotBlank(message = "Password is required")
@@ -50,102 +52,59 @@ public class TaUserDTO {
 
     private String newPassword;
 
+    private LocalDateTime lastUpdated;
     // Getters and setters
 
     public long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public long getRoleId() {
+        return roleId;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPhone() {
         return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getResetToken() {
         return resetToken;
     }
 
-    public void setResetToken(String resetToken) {
-        this.resetToken = resetToken;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public boolean getIsActive() {
         return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
     }
 
     public String getCurrentSessionId() {
         return currentSessionId;
     }
 
-    public void setCurrentSessionId(String currentSessionId) {
-        this.currentSessionId = currentSessionId;
-    }
-
     public LocalDateTime getLastLoginTime() {
         return lastLoginTime;
-    }
-
-    public void setLastLoginTime(LocalDateTime lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
     }
 
     public String getOldPassword() {
@@ -156,4 +115,7 @@ public class TaUserDTO {
         return newPassword;
     }
 
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
 }
