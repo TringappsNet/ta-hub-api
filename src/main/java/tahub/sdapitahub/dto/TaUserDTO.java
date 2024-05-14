@@ -10,7 +10,6 @@ public class TaUserDTO {
     @NotNull
     private long userId;
 
-    @NotNull
     private long roleId;
 
     @NotNull
