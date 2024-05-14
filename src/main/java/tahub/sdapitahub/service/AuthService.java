@@ -43,11 +43,15 @@ public class AuthService {
     }    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int LENGTH = 10;
 
-    public TaUser registerUser(TaUser user) {
-        user.setCreatedAt(LocalDateTime.now());
-        user.setLastUpdated(LocalDateTime.now());
-        return userRepository.save(user);
+    public TaUser registerUser(TaUser taUser) {
+        String hashedPassword = passwordEncoder.encode(taUser.getPassword());
+        taUser.setPassword(hashedPassword);
+        taUser.setCreatedAt(LocalDateTime.now());
+        taUser.setLastUpdated(LocalDateTime.now());
+        return userRepository.save(taUser);
     }
+
+
     public BCryptPasswordEncoder getPasswordEncoder() {
         return passwordEncoder;
     }
