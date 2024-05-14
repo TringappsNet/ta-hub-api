@@ -17,6 +17,7 @@ import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -39,8 +40,8 @@ public class JobRequirementController {
             List<JobRequirement> createdRequirements = new ArrayList<>();
             for (JobRequirementDTO jobRequirementDTO : jobRequirementDTOList) {
                 JobRequirement createdRequirement = jobRequirementService.createJobRequirement(jobRequirementDTO);
-                jobRequirementService.createTasksPositions(jobRequirementDTO);
                 createdRequirements.add(createdRequirement);
+                jobRequirementService.createTasksPositions(jobRequirementDTO);
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(createdRequirements);
         } catch (ValidationException ex) {
@@ -64,6 +65,16 @@ public class JobRequirementController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
         } catch (ServiceException ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
+    }
+
+    @GetMapping("/requirement/{id}")
+    public ResponseEntity<?> getJobRequirementById(@PathVariable Long id) {
+        Optional<JobRequirement> jobRequirement = jobRequirementService.getJobRequirementById(id);
+        if (jobRequirement.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(jobRequirement.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job requirement not found with ID: " + id);
         }
     }
 

@@ -23,16 +23,15 @@ public class RoleService {
     }
 
     public Optional<Role> getRoleById(Long id) {
-        return roleRepository.findById(id);
+        return Optional.ofNullable(roleRepository.findById(id));
     }
-
     public Role createRole(Role role) {
         return roleRepository.save(role);
     }
 
     public Role updateRole(Long id, Role role) {
         role.setRoleId(id);
-        return roleRepository.save(role);
+        return roleRepository.update(role);
     }
 
     public void deleteRole(Long id) {

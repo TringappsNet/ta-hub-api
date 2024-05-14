@@ -1,65 +1,55 @@
 package tahub.sdapitahub.entity;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "candidate_details")
+@JsonDeserialize(builder = Candidate.Builder.class)
 public class Candidate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "candidate_id")
     private Long candidateId;
-
-    @Column(name = "candidate_name")
     private String candidateName;
-
-    @Column(name = "candidate_email")
     private String candidateEmail;
-
-    @Column(name = "candidate_contact")
     private String candidateContact;
-
-    @Column(name = "technology")
     private String technology;
-
-    @Column(name = "total_experience")
     private String totalExperience;
-
-    @Column(name = "current_ctc")
     private String currentCtc;
-
-    @Column(name = "expected_ctc")
     private String expectedCtc;
-
-    @Column(name = "notice_period")
     private String noticePeriod;
-
-    @Column(name = "mode_of_work")
     private String modeOfWork;
-
-    @Column(name = "current_location")
     private String currentLocation;
-
-    @Column(name = "candidate_status")
     private String candidateStatus;
-
-    @Column(name = "comments")
     private String comments;
-
-    @Column(name = "remarks")
     private String remarks;
-
-    @Column(name = "recruiter")
     private String recruiter;
-
-    @Column(name = "recruited_source")
     private String recruitedSource;
-
-    @Column(name = "created_date")
     private LocalDateTime createdDate;
+    private LocalDateTime lastUpdated;
 
-    // Getters and setters
+    private Candidate(Builder builder) {
+        this.candidateId = builder.candidateId;
+        this.candidateName = builder.candidateName;
+        this.candidateEmail = builder.candidateEmail;
+        this.candidateContact = builder.candidateContact;
+        this.technology = builder.technology;
+        this.totalExperience = builder.totalExperience;
+        this.currentCtc = builder.currentCtc;
+        this.expectedCtc = builder.expectedCtc;
+        this.noticePeriod = builder.noticePeriod;
+        this.modeOfWork = builder.modeOfWork;
+        this.currentLocation = builder.currentLocation;
+        this.candidateStatus = builder.candidateStatus;
+        this.comments = builder.comments;
+        this.remarks = builder.remarks;
+        this.recruiter = builder.recruiter;
+        this.recruitedSource = builder.recruitedSource;
+        this.createdDate = builder.createdDate;
+        this.lastUpdated = builder.lastUpdated;
+
+    }
+
+    // Getters for all fields
+
 
     public Long getCandidateId() {
         return candidateId;
@@ -195,4 +185,130 @@ public class Candidate {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
-    }}
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class Builder {
+        private Long candidateId;
+        private String candidateName;
+        private String candidateEmail;
+        private String candidateContact;
+        private String technology;
+        private String totalExperience;
+        private String currentCtc;
+        private String expectedCtc;
+        private String noticePeriod;
+        private String modeOfWork;
+        private String currentLocation;
+        private String candidateStatus;
+        private String comments;
+        private String remarks;
+        private String recruiter;
+        private String recruitedSource;
+        private LocalDateTime createdDate;
+        private LocalDateTime lastUpdated;
+
+
+        public Builder candidateId(Long candidateId) {
+            this.candidateId = candidateId;
+            return this;
+        }
+
+        public Builder candidateName(String candidateName) {
+            this.candidateName = candidateName;
+            return this;
+        }
+
+        public Builder candidateEmail(String candidateEmail) {
+            this.candidateEmail = candidateEmail;
+            return this;
+        }
+
+        public Builder candidateContact(String candidateContact) {
+            this.candidateContact = candidateContact;
+            return this;
+        }
+
+        public Builder technology(String technology) {
+            this.technology = technology;
+            return this;
+        }
+
+        public Builder totalExperience(String totalExperience) {
+            this.totalExperience = totalExperience;
+            return this;
+        }
+
+        public Builder currentCtc(String currentCtc) {
+            this.currentCtc = currentCtc;
+            return this;
+        }
+
+        public Builder expectedCtc(String expectedCtc) {
+            this.expectedCtc = expectedCtc;
+            return this;
+        }
+
+        public Builder noticePeriod(String noticePeriod) {
+            this.noticePeriod = noticePeriod;
+            return this;
+        }
+
+        public Builder modeOfWork(String modeOfWork) {
+            this.modeOfWork = modeOfWork;
+            return this;
+        }
+
+        public Builder currentLocation(String currentLocation) {
+            this.currentLocation = currentLocation;
+            return this;
+        }
+
+        public Builder candidateStatus(String candidateStatus) {
+            this.candidateStatus = candidateStatus;
+            return this;
+        }
+
+        public Builder comments(String comments) {
+            this.comments = comments;
+            return this;
+        }
+
+        public Builder remarks(String remarks) {
+            this.remarks = remarks;
+            return this;
+        }
+
+        public Builder recruiter(String recruiter) {
+            this.recruiter = recruiter;
+            return this;
+        }
+
+        public Builder recruitedSource(String recruitedSource) {
+            this.recruitedSource = recruitedSource;
+            return this;
+        }
+
+        public Builder createdDate(LocalDateTime createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
+
+        public Builder lastUpdated(LocalDateTime lastUpdated) {
+            this.lastUpdated = lastUpdated;
+            return this;
+        }
+
+        public Candidate build() {
+            return new Candidate(this);
+        }
+    }
+}

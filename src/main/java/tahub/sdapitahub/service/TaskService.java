@@ -2,9 +2,11 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.TaskRepository;
 import tahub.sdapitahub.dto.TaskDTO;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,22 +19,25 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> createTasks(List<TaskDTO> taskDTOs, int noOfOpenings) {
+    public List<Task> createTasksForJobRequirement(JobRequirement jobRequirement, List<TaskDTO> taskDTOs, int noOfOpenings) {
         List<Task> tasks = new ArrayList<>();
         for (TaskDTO taskDTO : taskDTOs) {
             for (int i = 0; i < noOfOpenings; i++) {
-                Task task = new Task();
-                task.setJobTitle(taskDTO.getJobTitle());
-                task.setRoleType(taskDTO.getRoleType());
-                task.setModeOfWork(taskDTO.getModeOfWork());
-                task.setWorkLocation(taskDTO.getWorkLocation());
-                task.setCreatedAt(LocalDateTime.now());
+                Task task = new Task.Builder()
+                        .jobId(jobRequirement.getJobId())
+                        .jobTitle(taskDTO.getJobTitle())
+                        .roleType(taskDTO.getRoleType())
+                        .modeOfWork(taskDTO.getModeOfWork())
+                        .workLocation(taskDTO.getWorkLocation())
+                        .createdAt(LocalDateTime.now())
+                        .lastUpdated(LocalDateTime.now())
+                        .build();
                 tasks.add(taskRepository.save(task));
             }
-
         }
         return tasks;
     }
+
 
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
@@ -43,11 +48,14 @@ public class TaskService {
     }
 
     public Task createTask(TaskDTO taskDTO) {
-        Task task = new Task();
-        task.setJobTitle(taskDTO.getJobTitle());
-        task.setRoleType(taskDTO.getRoleType());
-        task.setModeOfWork(taskDTO.getModeOfWork());
-        task.setWorkLocation(taskDTO.getWorkLocation());
+        Task task = new Task.Builder()
+                .jobTitle(taskDTO.getJobTitle())
+                .roleType(taskDTO.getRoleType())
+                .modeOfWork(taskDTO.getModeOfWork())
+                .workLocation(taskDTO.getWorkLocation())
+                .createdAt(LocalDateTime.now())
+                .lastUpdated(LocalDateTime.now())
+                .build();
         return taskRepository.save(task);
     }
 
@@ -59,7 +67,9 @@ public class TaskService {
             task.setRoleType(taskDTO.getRoleType());
             task.setModeOfWork(taskDTO.getModeOfWork());
             task.setWorkLocation(taskDTO.getWorkLocation());
-            return taskRepository.save(task);
+            task.setLastUpdated(LocalDateTime.now());
+
+            return taskRepository.update(task);
         } else {
             return null;
         }

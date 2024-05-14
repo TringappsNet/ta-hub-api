@@ -1,43 +1,38 @@
 package tahub.sdapitahub.entity;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "client_details")
+@JsonDeserialize(builder = Client.Builder.class)
 public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "clientId")
     private Long clientId;
-
-    @Column(name = "client_name")
     private String clientName;
-
-    @Column(name = "client_spoc_name")
     private String clientSpocName;
-
-    @Column(name = "client_spoc_contact")
     private String clientSpocContact;
-
-    @Column(name = "client_location")
     private String clientLocation;
-
-//    @Lob
-//    @Column(name = "client_logo")
-//    private byte[] clientLogo;
-
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
+    private LocalDateTime lastUpdated;
 
-    // Getters and setters
+    private Client(Builder builder) {
+        this.clientId = builder.clientId;
+        this.clientName = builder.clientName;
+        this.clientSpocName = builder.clientSpocName;
+        this.clientSpocContact = builder.clientSpocContact;
+        this.clientLocation = builder.clientLocation;
+        this.createdAt = builder.createdAt;
+        this.lastUpdated = builder.lastUpdated;
 
-    public long getClientId() {
+    }
+
+    // Getters and Setters
+
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 
@@ -48,7 +43,6 @@ public class Client {
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
-
 
     public String getClientSpocName() {
         return clientSpocName;
@@ -66,7 +60,6 @@ public class Client {
         this.clientSpocContact = clientSpocContact;
     }
 
-
     public String getClientLocation() {
         return clientLocation;
     }
@@ -74,15 +67,6 @@ public class Client {
     public void setClientLocation(String clientLocation) {
         this.clientLocation = clientLocation;
     }
-
-//    public byte[] getClientLogo() {
-//        return clientLogo;
-//    }
-//
-//    public void setClientLogo(byte[] clientLogo) {
-//        this.clientLogo = clientLogo;
-//    }
-
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -92,4 +76,61 @@ public class Client {
         this.createdAt = createdAt;
     }
 
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class Builder {
+        private Long clientId;
+        private String clientName;
+        private String clientSpocName;
+        private String clientSpocContact;
+        private String clientLocation;
+        private LocalDateTime createdAt;
+        private LocalDateTime lastUpdated;
+
+        public Builder clientId(Long clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        public Builder clientName(String clientName) {
+            this.clientName = clientName;
+            return this;
+        }
+
+        public Builder clientSpocName(String clientSpocName) {
+            this.clientSpocName = clientSpocName;
+            return this;
+        }
+
+        public Builder clientSpocContact(String clientSpocContact) {
+            this.clientSpocContact = clientSpocContact;
+            return this;
+        }
+
+        public Builder clientLocation(String clientLocation) {
+            this.clientLocation = clientLocation;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder lastUpdated(LocalDateTime lastUpdated) {
+            this.lastUpdated = lastUpdated;
+            return this;
+        }
+        public Client build() {
+            return new Client(this);
+        }
+    }
 }

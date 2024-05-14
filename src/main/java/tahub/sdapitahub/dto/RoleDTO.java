@@ -15,15 +15,8 @@ public class RoleDTO {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
     public String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

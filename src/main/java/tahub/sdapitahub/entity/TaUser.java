@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @JsonDeserialize(builder = TaUser.Builder.class)
 public class TaUser {
     private Long userId;
+    private long roleId;
     private String firstName;
     private String lastName;
     private String username;
@@ -18,9 +19,11 @@ public class TaUser {
     private String currentSessionId;
     private LocalDateTime lastLoginTime;
     private LocalDateTime createdAt;
+    private LocalDateTime lastUpdated;
 
     private TaUser(Builder builder) {
         this.userId = builder.userId;
+        this.roleId = builder.roleId;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.username = builder.username;
@@ -32,9 +35,11 @@ public class TaUser {
         this.currentSessionId = builder.currentSessionId;
         this.lastLoginTime = builder.lastLoginTime;
         this.createdAt = builder.createdAt;
+        this.lastUpdated = builder.lastUpdated;
+
     }
 
-    // Getters for all fields
+    // Getters and Setters
 
 
     public Long getUserId() {
@@ -43,6 +48,14 @@ public class TaUser {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 
     public String getFirstName() {
@@ -133,9 +146,18 @@ public class TaUser {
         this.createdAt = createdAt;
     }
 
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private Long userId;
+        private int roleId;
         private String firstName;
         private String lastName;
         private String username;
@@ -147,11 +169,18 @@ public class TaUser {
         private String currentSessionId;
         private LocalDateTime lastLoginTime;
         private LocalDateTime createdAt;
+        private LocalDateTime lastUpdated;
 
         public Builder userId(Long userId) {
             this.userId = userId;
             return this;
         }
+
+        public Builder roleId(int roleId) {
+            this.roleId = roleId;
+            return this;
+        }
+
 
         public Builder firstName(String firstName) {
             this.firstName = firstName;
@@ -205,6 +234,10 @@ public class TaUser {
 
         public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
+            return this;
+        }
+        public Builder lastUpdated(LocalDateTime lastUpdated) {
+            this.createdAt = lastUpdated;
             return this;
         }
 

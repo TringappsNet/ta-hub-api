@@ -1,71 +1,56 @@
 package tahub.sdapitahub.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "job_requirements")
+@JsonDeserialize(builder = JobRequirement.Builder.class)
 public class JobRequirement {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "job_id")
     private long jobId;
-
-    @Column(name = "requirement_start_date")
+    private long clientId;
     private LocalDate requirementStartDate;
-
-    @Column(name = "client_name")
     private String clientName;
-
-    @Column(name = "client_spoc_name")
     private String clientSpocName;
-
-    @Column(name = "client_spoc_contact")
     private String clientSpocContact;
-
-    @Column(name = "account_manager")
     private String accountManager;
-
-    @Column(name = "account_manager_email")
     private String accountManagerEmail;
-
-    @Column(name = "total_no_of_openings")
     private String totalNoOfOpenings;
-
-    @Column(name = "salary_budget")
-    private double salaryBudget;
-
-    @Column(name = "mode_of_interviews")
+    private float salaryBudget;
     private String modeOfInterviews;
-
-    @Column(name = "tentative_start_date")
     private LocalDate tentativeStartDate;
-
-    @Column(name = "tentative_duration")
     private String tentativeDuration;
-
-    @Column(name = "approved_by")
     private String approvedBy;
-
-    @Column(name = "years_of_experience_required")
     private int yearsOfExperienceRequired;
-
-    @Column(name = "primary_skill_set")
     private String primarySkillSet;
-
-    @Column(name = "secondary_skill_set")
     private String secondarySkillSet;
-
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
+    private LocalDateTime lastUpdated;
 
-    // Getters and setters
+    private JobRequirement(Builder builder) {
+        this.jobId = builder.jobId;
+        this.clientId = builder.clientId;
+        this.requirementStartDate = builder.requirementStartDate;
+        this.clientName = builder.clientName;
+        this.clientSpocName = builder.clientSpocName;
+        this.clientSpocContact = builder.clientSpocContact;
+        this.accountManager = builder.accountManager;
+        this.accountManagerEmail = builder.accountManagerEmail;
+        this.totalNoOfOpenings = builder.totalNoOfOpenings;
+        this.salaryBudget = builder.salaryBudget;
+        this.modeOfInterviews = builder.modeOfInterviews;
+        this.tentativeStartDate = builder.tentativeStartDate;
+        this.tentativeDuration = builder.tentativeDuration;
+        this.approvedBy = builder.approvedBy;
+        this.yearsOfExperienceRequired = builder.yearsOfExperienceRequired;
+        this.primarySkillSet = builder.primarySkillSet;
+        this.secondarySkillSet = builder.secondarySkillSet;
+        this.createdAt = builder.createdAt;
+        this.lastUpdated = builder.lastUpdated;
+    }
+
+    // Getters and Setters
 
     public long getJobId() {
         return jobId;
@@ -73,6 +58,14 @@ public class JobRequirement {
 
     public void setJobId(long jobId) {
         this.jobId = jobId;
+    }
+
+    public long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 
     public LocalDate getRequirementStartDate() {
@@ -123,7 +116,6 @@ public class JobRequirement {
         this.accountManagerEmail = accountManagerEmail;
     }
 
-
     public String getTotalNoOfOpenings() {
         return totalNoOfOpenings;
     }
@@ -132,11 +124,11 @@ public class JobRequirement {
         this.totalNoOfOpenings = totalNoOfOpenings;
     }
 
-    public double getSalaryBudget() {
+    public float getSalaryBudget() {
         return salaryBudget;
     }
 
-    public void setSalaryBudget(double salaryBudget) {
+    public void setSalaryBudget(float salaryBudget) {
         this.salaryBudget = salaryBudget;
     }
 
@@ -160,7 +152,8 @@ public class JobRequirement {
         return tentativeDuration;
     }
 
-    public void setTentativeDuration(String tentativeDuration) {this.tentativeDuration = tentativeDuration;
+    public void setTentativeDuration(String tentativeDuration) {
+        this.tentativeDuration = tentativeDuration;
     }
 
     public String getApprovedBy() {
@@ -203,5 +196,133 @@ public class JobRequirement {
         this.createdAt = createdAt;
     }
 
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
 
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class Builder {
+        private long jobId;
+        private long clientId;
+        private LocalDate requirementStartDate;
+        private String clientName;
+        private String clientSpocName;
+        private String clientSpocContact;
+        private String accountManager;
+        private String accountManagerEmail;
+        private String totalNoOfOpenings;
+        private float salaryBudget;
+        private String modeOfInterviews;
+        private LocalDate tentativeStartDate;
+        private String tentativeDuration;
+        private String approvedBy;
+        private int yearsOfExperienceRequired;
+        private String primarySkillSet;
+        private String secondarySkillSet;
+        private LocalDateTime createdAt;
+        private LocalDateTime lastUpdated;
+
+        public Builder jobId(long jobId) {
+            this.jobId = jobId;
+            return this;
+        }
+
+        public Builder clientId(long clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        public Builder requirementStartDate(LocalDate requirementStartDate) {
+            this.requirementStartDate = requirementStartDate;
+            return this;
+        }
+
+        public Builder clientName(String clientName) {
+            this.clientName = clientName;
+            return this;
+        }
+
+        public Builder clientSpocName(String clientSpocName) {
+            this.clientSpocName = clientSpocName;
+            return this;
+        }
+
+        public Builder clientSpocContact(String clientSpocContact) {
+            this.clientSpocContact = clientSpocContact;
+            return this;
+        }
+
+        public Builder accountManager(String accountManager) {
+            this.accountManager = accountManager;
+            return this;
+        }
+
+        public Builder accountManagerEmail(String accountManagerEmail) {
+            this.accountManagerEmail = accountManagerEmail;
+            return this;
+        }
+
+        public Builder totalNoOfOpenings(String totalNoOfOpenings) {
+            this.totalNoOfOpenings = totalNoOfOpenings;
+            return this;
+        }
+
+        public Builder salaryBudget(float salaryBudget) {
+            this.salaryBudget = salaryBudget;
+            return this;
+        }
+
+        public Builder modeOfInterviews(String modeOfInterviews) {
+            this.modeOfInterviews = modeOfInterviews;
+            return this;
+        }
+
+        public Builder tentativeStartDate(LocalDate tentativeStartDate) {
+            this.tentativeStartDate = tentativeStartDate;
+            return this;
+        }
+
+        public Builder tentativeDuration(String tentativeDuration) {
+            this.tentativeDuration = tentativeDuration;
+            return this;
+        }
+
+        public Builder approvedBy(String approvedBy) {
+            this.approvedBy = approvedBy;
+            return this;
+        }
+
+        public Builder yearsOfExperienceRequired(int yearsOfExperienceRequired) {
+            this.yearsOfExperienceRequired = yearsOfExperienceRequired;
+            return this;
+        }
+
+        public Builder primarySkillSet(String primarySkillSet) {
+            this.primarySkillSet = primarySkillSet;
+            return this;
+        }
+
+        public Builder secondarySkillSet(String secondarySkillSet) {
+            this.secondarySkillSet = secondarySkillSet;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder lastUpdated(LocalDateTime lastUpdated) {
+            this.lastUpdated = lastUpdated;
+            return this;
+        }
+
+        public JobRequirement build() {
+            return new JobRequirement(this);
+        }
+    }
 }

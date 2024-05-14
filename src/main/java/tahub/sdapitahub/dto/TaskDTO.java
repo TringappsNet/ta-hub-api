@@ -4,6 +4,11 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class TaskDTO {
+
+    @NotNull
+    private long task_id;
+    @NotNull
+    private long job_id;
     @NotNull
     private String jobTitle;
     @NotNull
@@ -13,7 +18,17 @@ public class TaskDTO {
     @NotNull
     private String modeOfWork;
     @NotNull
-    private String workLocation;
+    private String clientBudget;
+    @NotNull
+    private String assignedBudget;
+    @NotNull
+    private String primaryAssignee;
+    @NotNull
+    private String secondaryAssignee;
+    @NotNull
+    private boolean backlogs;
+    @NotNull
+    private String description;
     @NotNull
     private LocalDateTime createdAt;
     @NotNull
@@ -21,44 +36,32 @@ public class TaskDTO {
 
     //Getters and Setters
 
-    public String getJobTitle() {
-        return jobTitle;
+    public long getTask_id() {
+        return task_id;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
+    public long getJob_id() {
+        return job_id;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
     }
 
     public int getNoOfOpenings() {
         return noOfOpenings;
     }
 
-    public void setNoOfOpenings(int noOfOpenings) {
-        this.noOfOpenings = noOfOpenings;
-    }
-
     public String getRoleType() {
         return roleType;
-    }
-
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
     }
 
     public String getModeOfWork() {
         return modeOfWork;
     }
 
-    public void setModeOfWork(String modeOfWork) {
-        this.modeOfWork = modeOfWork;
-    }
-
     public String getWorkLocation() {
-        return workLocation;
-    }
-
-    public void setWorkLocation(String workLocation) {
-        this.workLocation = workLocation;
+        return description;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -77,4 +80,19 @@ public class TaskDTO {
         this.lastUpdated = lastUpdated;
     }
 
+    public String getPrimaryAssignee() {
+        return primaryAssignee;
+    }
+
+    public String getSecondaryAssignee() {
+        return secondaryAssignee;
+    }
+
+    public boolean isBacklogs() {
+        return backlogs;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
