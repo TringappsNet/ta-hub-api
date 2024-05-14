@@ -43,21 +43,11 @@ public class AuthService {
     }    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int LENGTH = 10;
 
-    public TaUser registerUser(TaUserDTO taUserDTO) {
-        TaUser user = new TaUser.Builder()
-                .firstName(taUserDTO.getFirstName())
-                .lastName(taUserDTO.getLastName())
-                .username(taUserDTO.getUsername())
-                .email(taUserDTO.getEmail())
-                .phone(taUserDTO.getPhone())
-                .password(taUserDTO.getPassword())
-                .isActive(taUserDTO.getIsActive())
-                .createdAt(LocalDateTime.now())
-                .build();
-
+    public TaUser registerUser(TaUser user) {
+        user.setCreatedAt(LocalDateTime.now());
+        user.setLastUpdated(LocalDateTime.now());
         return userRepository.save(user);
     }
-
     public BCryptPasswordEncoder getPasswordEncoder() {
         return passwordEncoder;
     }
