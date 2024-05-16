@@ -43,6 +43,10 @@ public class TaUserDTO {
     @NotNull
     private boolean isActive;
 
+    private String gAccessToken;
+
+    private String gRefreshToken;
+
     private String currentSessionId;
 
     private LocalDateTime lastLoginTime;
@@ -96,6 +100,14 @@ public class TaUserDTO {
 
     public boolean getIsActive() {
         return isActive;
+    }
+
+    public String getgAccessToken() {
+        return gAccessToken;
+    }
+
+    public String getgRefreshToken() {
+        return gRefreshToken;
     }
 
     public String getCurrentSessionId() {

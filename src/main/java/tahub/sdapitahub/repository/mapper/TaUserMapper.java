@@ -21,6 +21,8 @@ public class TaUserMapper implements RowMapper<TaUser> {
                 .resetToken(rs.getString("reset_token"))
                 .password(rs.getString("password_hash"))
                 .isActive(rs.getBoolean("is_active"))
+                .gAccessToken(rs.getString("g_access_token"))
+                .gRefreshToken(rs.getString("g_refresh_token"))
                 .currentSessionId(rs.getString("current_session_id"))
                 .lastLoginTime(getLocalDateTimeOrNull( rs,"last_login_time"))
                 .createdAt(rs.getObject("created_at",LocalDateTime.class))

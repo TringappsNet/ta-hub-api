@@ -2,6 +2,8 @@ package tahub.sdapitahub.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import java.security.PrivateKey;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(builder = TaUser.Builder.class)
@@ -16,12 +18,14 @@ public class TaUser {
     private String resetToken;
     private String password;
     private boolean isActive;
+    private String gAccessToken;
+    private String gRefreshToken;
     private String currentSessionId;
     private LocalDateTime lastLoginTime;
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdated;
 
-    private TaUser(Builder builder) {
+    public TaUser(Builder builder) {
         this.userId = builder.userId;
         this.roleId = builder.roleId;
         this.firstName = builder.firstName;
@@ -32,6 +36,8 @@ public class TaUser {
         this.resetToken = builder.resetToken;
         this.password = builder.password;
         this.isActive = builder.isActive;
+        this.gAccessToken = builder.gAccessToken;
+        this.gRefreshToken = builder.gRefreshToken;
         this.currentSessionId = builder.currentSessionId;
         this.lastLoginTime = builder.lastLoginTime;
         this.createdAt = builder.createdAt;
@@ -122,6 +128,22 @@ public class TaUser {
         isActive = active;
     }
 
+    public String getgAccessToken() {
+        return gAccessToken;
+    }
+
+    public void setgAccessToken(String gAccessToken) {
+        this.gAccessToken = gAccessToken;
+    }
+
+    public String getgRefreshToken() {
+        return gRefreshToken;
+    }
+
+    public void setgRefreshToken(String gRefreshToken) {
+        this.gRefreshToken = gRefreshToken;
+    }
+
     public String getCurrentSessionId() {
         return currentSessionId;
     }
@@ -166,6 +188,8 @@ public class TaUser {
         private String resetToken;
         private String password;
         private boolean isActive;
+        private String gAccessToken;
+        private String gRefreshToken;
         private String currentSessionId;
         private LocalDateTime lastLoginTime;
         private LocalDateTime createdAt;
@@ -219,6 +243,15 @@ public class TaUser {
 
         public Builder isActive(boolean isActive) {
             this.isActive = isActive;
+            return this;
+        }
+
+        public Builder gAccessToken(String gAccessToken) {
+            this.gAccessToken = gAccessToken;
+            return this;
+        }
+        public Builder gRefreshToken(String gRefreshToken) {
+            this.gRefreshToken = gRefreshToken;
             return this;
         }
 
