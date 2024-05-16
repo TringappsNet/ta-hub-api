@@ -27,7 +27,7 @@ public class TaUserRepository {
 
     public TaUser save(TaUser user) {
         jdbcTemplate.update(UserQuery.SAVE.getQuery(),user.getRoleId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), user.getPhone(),
-                user.getResetToken(), user.getPassword(), user.getIsActive(), user.getCurrentSessionId(), user.getLastLoginTime(), user.getCreatedAt(), user.getLastUpdated());
+                user.getResetToken(), user.getPassword(), user.getIsActive(), user.getgAccessToken(), user.getgRefreshToken(), user.getCurrentSessionId(), user.getLastLoginTime(), user.getCreatedAt(), user.getLastUpdated());
         return user;
     }
 
@@ -76,6 +76,16 @@ public class TaUserRepository {
         if (user.getIsActive()) {
             queryBuilder.append("is_active = ?, ");
             queryParams.add(user.getIsActive());
+            fieldsUpdated = true;
+        }
+        if (user.getgAccessToken() != null) {
+            queryBuilder.append("g_access_token = ?, ");
+            queryParams.add(user.getgAccessToken());
+            fieldsUpdated = true;
+        }
+        if (user.getgRefreshToken() != null) {
+            queryBuilder.append("g_refresh_token = ?, ");
+            queryParams.add(user.getgRefreshToken());
             fieldsUpdated = true;
         }
         if (user.getCurrentSessionId() != null) {

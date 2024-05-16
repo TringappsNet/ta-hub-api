@@ -28,10 +28,11 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/signin")
+                        .loginPage("/welcome")
                         .usernameParameter("email")
                         .defaultSuccessUrl("/", true)
                         .permitAll()
+                        .disable()
                 );
 
         return http.build();

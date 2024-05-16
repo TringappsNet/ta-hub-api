@@ -1,5 +1,7 @@
 package tahub.sdapitahub.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,6 +11,9 @@ import tahub.sdapitahub.dto.TaUserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,11 +32,10 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO) {
+    public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO, HttpServletRequest request) {
         TaUser user = authService.findUserByEmail(userDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
-
         }
 
         boolean passwordMatches = authService.checkPasswordMatch(userDTO.getPassword(), user.getPassword());
@@ -39,8 +43,21 @@ public class AuthController {
             throw new BadCredentialsException("Invalid password");
         }
 
-        return ResponseEntity.status(200).body(user.getEmail());
+        // Create session
+        HttpSession session = request.getSession(true);
+        session.setAttribute("loggedInUser", user);
+        session.setMaxInactiveInterval(24 * 60 * 60);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("user", user);
+        responseData.put("sessionId", session.getId());
+        responseData.put("sessionCreationTime", session.getCreationTime());
+        responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
+        responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
+
+        return ResponseEntity.status(200).body(responseData);
     }
+
 
     @PostMapping("/reset-new-password")
     public ResponseEntity<Object> resetPassword(@RequestBody TaUserDTO userDTO) {
