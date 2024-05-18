@@ -2,7 +2,6 @@ package tahub.sdapitahub.config;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow.Builder;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -30,29 +29,46 @@ public class GoogleSignInConfig {
 
     private static final String APPLICATION_NAME = "Ta_Hub";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final List<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/userinfo.email");
+    public static final List<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/userinfo.email");
     private static final String CLIENT_SECRET_FILE = "/credentials.json";
     private static final String DATA_STORE_DIR = "datastore/";
+    private GoogleClientSecrets clientSecrets;
 
     @Autowired
     private TaUserRepository taUserRepository;
 
-    public void saveUserDetails(GoogleSignInResponseDto responseDto) {
-        TaUser.Builder builder = new TaUser.Builder();
-        TaUser user = builder
-                .email(responseDto.getEmail())
-                .roleId(1)
-                .isActive(true)
-                .createdAt(LocalDateTime.now())
-                .lastUpdated(LocalDateTime.now())
-                .build();
-        
-        TaUser savedUser = taUserRepository.save(user);
-        savedUser.setgAccessToken(responseDto.getAccessToken());
-        savedUser.setgRefreshToken(responseDto.getRefreshToken());
-        savedUser.setLastUpdated(LocalDateTime.now());
-        taUserRepository.save(savedUser);
+    @Autowired
+    public GoogleSignInConfig() throws IOException {
+        this.clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(getClass().getResourceAsStream(CLIENT_SECRET_FILE)));
     }
+
+    public void saveUserDetails(GoogleSignInResponseDto responseDto) {
+        TaUser existingUser = taUserRepository.findByEmail(responseDto.getEmail());
+        if (existingUser != null) {
+            existingUser.setgAccessToken(responseDto.getAccessToken());
+            existingUser.setLastUpdated(LocalDateTime.now());
+            taUserRepository.update(existingUser);
+        } else {
+            TaUser.Builder builder = new TaUser.Builder();
+            TaUser user = builder
+                    .email(responseDto.getEmail())
+                    .username(responseDto.getUsername())
+                    .roleId(1)
+                    .isActive(true)
+                    .createdAt(LocalDateTime.now())
+                    .lastUpdated(LocalDateTime.now())
+                    .build();
+
+            // Set access token, refresh token, and last updated time
+            user.setgAccessToken(responseDto.getAccessToken());
+            user.setgRefreshToken(responseDto.getRefreshToken());
+            user.setLastUpdated(LocalDateTime.now());
+            taUserRepository.save(user);
+        }
+    }
+
+
+
     @Bean
     public AuthorizationCodeFlow authorizationCodeFlow() throws IOException, GeneralSecurityException {
         HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -66,9 +82,14 @@ public class GoogleSignInConfig {
         return flowBuilder.build();
     }
 
-    @Bean
-    public LocalServerReceiver localServerReceiver() {
-        return new LocalServerReceiver.Builder().setPort(8888).build();
+    public String getClientId() {
+        return clientSecrets.getDetails().getClientId();
     }
 
+
+    public String getRedirectUri() {
+        return clientSecrets.getDetails().getRedirectUris().get(0);
+    }
 }
+
+
