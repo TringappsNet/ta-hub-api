@@ -101,6 +101,30 @@ public class AuthController {
 
         return ResponseEntity.status(200).body("Password reset successfully");
     }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.removeAttribute("accessToken");
+            session.removeAttribute("refreshToken");
+
+            TaUser user = (TaUser) session.getAttribute("loggedInUser");
+            if (user != null) {
+                // Clear tokens from database
+                user.setgAccessToken(null);
+                user.setgRefreshToken(null);
+                taUserRepository.update(user);
+                session.removeAttribute("loggedInUser");
+            }
+            // Invalidate session
+            session.invalidate();
+        }
+
+        return ResponseEntity.status(200).body("Logged out successfully");
+    }
+
 }
 
 

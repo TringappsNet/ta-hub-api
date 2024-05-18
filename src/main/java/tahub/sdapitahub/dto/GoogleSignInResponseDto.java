@@ -18,6 +18,9 @@ public class GoogleSignInResponseDto {
     @JsonProperty("expires_in")
     private Long expiresIn;
 
+    @JsonProperty("username")
+    private String username;
+
     @JsonProperty("token_type")
     private String tokenType;
 
@@ -57,6 +60,14 @@ public class GoogleSignInResponseDto {
 
     public void setExpiresIn(Long expiresIn) {
         this.expiresIn = expiresIn;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getTokenType() {
