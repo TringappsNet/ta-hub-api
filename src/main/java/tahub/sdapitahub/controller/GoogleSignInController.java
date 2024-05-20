@@ -3,11 +3,13 @@
         import com.fasterxml.jackson.databind.ObjectMapper;
         import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
         import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
+        import io.swagger.v3.oas.annotations.tags.Tag;
         import jakarta.servlet.http.HttpServletRequest;
         import jakarta.servlet.http.HttpServletResponse;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.GetMapping;
+        import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RequestParam;
         import org.springframework.web.bind.annotation.RestController;
         import tahub.sdapitahub.dto.GoogleSignInResponseDto;
@@ -20,6 +22,9 @@
         import java.security.GeneralSecurityException;
 
         @RestController
+        @Tag(name = "Google Sign-in", description = "Operations related to google")
+
+        @RequestMapping("/api")
         public class GoogleSignInController {
 
             @Autowired
