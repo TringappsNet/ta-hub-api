@@ -16,6 +16,7 @@ public class Task {
     private String clientBudget;
     private String assignedBudget;
     private String primaryAssignee;
+    private String taskStatus;
     private String secondaryAssignee;
     private boolean backlogs;
     private String description;
@@ -34,6 +35,7 @@ public class Task {
         this.assignedBudget = builder.assignedBudget;
         this.primaryAssignee = builder.primaryAssignee;
         this.secondaryAssignee = builder.secondaryAssignee;
+        this.taskStatus = builder.taskStatus;
         this.backlogs = builder.backlogs;
         this.description = builder.description;
         this.createdAt = builder.createdAt;
@@ -123,6 +125,14 @@ public class Task {
         this.secondaryAssignee = secondaryAssignee;
     }
 
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
     public boolean isBacklogs() {
         return backlogs;
     }
@@ -168,6 +178,7 @@ public class Task {
         private String assignedBudget;
         private String primaryAssignee;
         private String secondaryAssignee;
+        private String taskStatus;
         private boolean backlogs;
         private String description;
         private LocalDateTime createdAt;
@@ -220,6 +231,12 @@ public class Task {
 
         public Builder secondaryAssignee(String secondaryAssignee) {
             this.secondaryAssignee = secondaryAssignee;
+            return this;
+        }
+
+
+        public Builder taskStatus(String taskStatus) {
+            this.taskStatus = taskStatus;
             return this;
         }
 

@@ -1,5 +1,6 @@
 package tahub.sdapitahub.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Tag(name = "Authentication", description = "Operations related to Authentication")
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -29,7 +31,6 @@ public class AuthController {
         TaUser registeredUser = authService.registerUser(user);
         return ResponseEntity.ok(registeredUser);
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO, HttpServletRequest request) {

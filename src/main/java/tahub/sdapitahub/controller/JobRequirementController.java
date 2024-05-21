@@ -6,12 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.JobRequirementDTO;
-import tahub.sdapitahub.dto.TaUserDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.service.JobRequirementService;
 import tahub.sdapitahub.service.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 import javax.validation.ValidationException;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "Job Requirement", description = "Operations related to job requirements")
 @RequestMapping("/api")
 public class JobRequirementController {
     @Autowired
@@ -28,11 +30,6 @@ public class JobRequirementController {
     private JobRequirementService jobRequirementService;
     @Autowired
     private AuthService authService;
-
-    @GetMapping("/hello")
-    public String sayHelloWorld() {
-        return "Hello World!";
-    }
 
     @PostMapping("/requirement")
     public ResponseEntity<?> createJobRequirements(@RequestBody List<JobRequirementDTO> jobRequirementDTOList) {
@@ -53,7 +50,7 @@ public class JobRequirementController {
 
 
 
-    @GetMapping("/requirement")
+    @GetMapping("/requirements")
     public ResponseEntity<List<JobRequirement>> getAllJobRequirements() {
         try {
             List<JobRequirement> jobRequirements = jobRequirementService.getAllJobRequirements();
@@ -78,9 +75,5 @@ public class JobRequirementController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<TaUser> register(@RequestBody TaUser user) {
-        TaUser registeredUser = authService.registerUser(user);
-        return ResponseEntity.ok(registeredUser);
-    }
+
 }

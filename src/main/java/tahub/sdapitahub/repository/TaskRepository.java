@@ -42,6 +42,7 @@ public class TaskRepository {
                 task.getAssignedBudget(),
                 task.getPrimaryAssignee(),
                 task.getSecondaryAssignee(),
+                task.getTaskStatus(),
                 task.isBacklogs(),
                 task.getDescription(),
                 task.getCreatedAt(),
@@ -88,6 +89,11 @@ public class TaskRepository {
         if (task.getSecondaryAssignee() != null) {
             queryBuilder.append("secondary_assignee = ?, ");
             queryParams.add(task.getSecondaryAssignee());
+            fieldsUpdated = true;
+        }
+        if (task.getTaskStatus() != null) {
+            queryBuilder.append("task_status = ?, ");
+            queryParams.add(task.getTaskStatus());
             fieldsUpdated = true;
         }
         if (task.isBacklogs()) {

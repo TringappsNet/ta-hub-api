@@ -26,6 +26,8 @@ public class TaskDTO {
     @NotNull
     private String secondaryAssignee;
     @NotNull
+    private String task_status;
+    @NotNull
     private boolean backlogs;
     @NotNull
     private String description;
@@ -86,6 +88,14 @@ public class TaskDTO {
 
     public String getSecondaryAssignee() {
         return secondaryAssignee;
+    }
+
+    public String getTask_status() {
+        return task_status;
+    }
+
+    public void setTask_status(String task_status) {
+        this.task_status = task_status;
     }
 
     public boolean isBacklogs() {
