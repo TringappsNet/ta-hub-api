@@ -43,14 +43,14 @@ public class TaskCandidateController {
     }
 
     @PostMapping("/task-candidate")
-    public ResponseEntity<TaskCandidate> createTaskCandidate(@RequestBody TaskCandidateDTO taskCandidateDTO) {
-        TaskCandidate createdTaskCandidate = taskCandidateService.createTaskCandidate(taskCandidateDTO);
+    public ResponseEntity<TaskCandidate> createTaskCandidate(@RequestBody TaskCandidate taskCandidate) {
+        TaskCandidate createdTaskCandidate = taskCandidateService.createTaskCandidate(taskCandidate);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTaskCandidate);
     }
 
     @PutMapping("/task-candidate/{id}")
-    public ResponseEntity<TaskCandidate> updateTaskCandidate(@PathVariable Long id, @RequestBody TaskCandidateDTO taskCandidateDTO) {
-        TaskCandidate updatedTaskCandidate = taskCandidateService.updateTaskCandidate(id, taskCandidateDTO);
+    public ResponseEntity<TaskCandidate> updateTaskCandidate(@PathVariable Long id, @RequestBody TaskCandidate taskCandidate) {
+        TaskCandidate updatedTaskCandidate = taskCandidateService.updateTaskCandidate(id, taskCandidate);
         if (updatedTaskCandidate != null) {
             return ResponseEntity.ok(updatedTaskCandidate);
         } else {

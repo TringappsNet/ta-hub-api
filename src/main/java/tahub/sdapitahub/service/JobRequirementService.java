@@ -49,7 +49,6 @@ public class JobRequirementService {
                 taskService.createTasksForJobRequirement(jobRequirement, taskDTOs, noOfOpenings);
             }
         } else {
-            // Handle case when no job requirements are found for the specified client
         }
     }
 
