@@ -1,11 +1,11 @@
 package tahub.sdapitahub.repository.query;
 
     public enum RoleQuery {
-        FIND_ALL("SELECT * FROM roles"),
-        FIND_BY_ID("SELECT * FROM roles WHERE role_id = ?"),
-        SAVE("INSERT INTO roles (role) " +
+        FIND_ALL("SELECT * FROM ta_roles"),
+        FIND_BY_ID("SELECT * FROM ta_roles WHERE role_id = ?"),
+        SAVE("INSERT INTO ta_roles (role) " +
                 "VALUES (?)"),
-        DELETE_BY_ID("DELETE FROM roles WHERE role_id = ?");
+        DELETE_BY_ID("DELETE FROM ta_roles WHERE role_id = ?");
 
         private final String query;
 

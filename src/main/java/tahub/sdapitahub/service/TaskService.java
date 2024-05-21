@@ -67,6 +67,7 @@ public class TaskService {
             task.setRoleType(taskDTO.getRoleType());
             task.setModeOfWork(taskDTO.getModeOfWork());
             task.setWorkLocation(taskDTO.getWorkLocation());
+            task.setTaskStatus(taskDTO.getTaskStatus());
             task.setLastUpdated(LocalDateTime.now());
 
             return taskRepository.update(task);

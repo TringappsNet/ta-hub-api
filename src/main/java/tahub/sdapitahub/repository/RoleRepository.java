@@ -36,7 +36,7 @@ import java.util.List;
         }
 
         public Role update(Role role) {
-            StringBuilder queryBuilder = new StringBuilder("UPDATE roles SET ");
+            StringBuilder queryBuilder = new StringBuilder("UPDATE ta_roles SET ");
             List<Object> queryParams = new ArrayList<>();
 
             // Initialize a flag to track if any fields are updated

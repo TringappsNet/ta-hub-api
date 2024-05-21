@@ -34,7 +34,7 @@ public class CandidateRepository {
     }
 
     public Candidate update(Candidate candidate) {
-        StringBuilder queryBuilder = new StringBuilder("UPDATE candidate_details SET ");
+        StringBuilder queryBuilder = new StringBuilder("UPDATE ta_candidate_details SET ");
         List<Object> queryParams = new ArrayList<>();
 
         // Initialize a flag to track if any fields are updated

@@ -40,7 +40,7 @@ public class ClientRepository {
     }
 
     public Client update(Client client) {
-        StringBuilder queryBuilder = new StringBuilder("UPDATE client_details SET ");
+        StringBuilder queryBuilder = new StringBuilder("UPDATE ta_client_details SET ");
         List<Object> queryParams = new ArrayList<>();
 
         // Initialize a flag to track if any fields are updated
