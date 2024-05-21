@@ -50,7 +50,7 @@ public class TaskCandidateRepository {
     }
 
     public TaskCandidate update(TaskCandidate taskCandidate) {
-        StringBuilder queryBuilder = new StringBuilder("UPDATE task_candidates SET ");
+        StringBuilder queryBuilder = new StringBuilder("UPDATE ta_task_candidates SET ");
         List<Object> queryParams = new ArrayList<>();
 
         // Initialize a flag to track if any fields are updated

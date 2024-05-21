@@ -32,7 +32,7 @@ public class TaUserRepository {
     }
 
     public TaUser update(TaUser user) {
-        StringBuilder queryBuilder = new StringBuilder("UPDATE users SET ");
+        StringBuilder queryBuilder = new StringBuilder("UPDATE ta_users SET ");
         List<Object> queryParams = new ArrayList<>();
 
         // Initialize a flag to track if any fields are updated
