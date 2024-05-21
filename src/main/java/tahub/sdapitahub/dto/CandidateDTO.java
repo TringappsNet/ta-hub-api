@@ -1,25 +1,44 @@
 package tahub.sdapitahub.dto;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class CandidateDTO {
+    @NotNull
     private Long candidateId;
+    @NotNull
     private String candidateName;
+    @NotNull
     private String candidateEmail;
+    @NotNull
     private String candidateContact;
+    @NotNull
     private String technology;
+    @NotNull
     private String totalExperience;
+    @NotNull
     private String currentCtc;
+    @NotNull
     private String expectedCtc;
+    @NotNull
     private String noticePeriod;
+    @NotNull
     private String modeOfWork;
+    @NotNull
     private String currentLocation;
+    @NotNull
     private String candidateStatus;
+    @NotNull
     private String comments;
+    @NotNull
     private String remarks;
+    @NotNull
     private String recruiter;
+    @NotNull
     private String recruitedSource;
+    @NotNull
     private LocalDateTime createdDate;
+    @NotNull
     private LocalDateTime lastUpdated;
 
 

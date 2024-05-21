@@ -9,15 +9,12 @@ import java.time.LocalDateTime;
 public class TaUserDTO {
     @NotNull
     private long userId;
-
+    @NotNull
     private long roleId;
-
     @NotNull
     private String firstName;
-
     @NotNull
     private String lastName;
-
     @NotNull(message = "Username is required")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     private String username;
@@ -31,9 +28,9 @@ public class TaUserDTO {
     @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
     @Pattern(regexp = "^[0-9 ()+-]*$", message = "Invalid phone number format")
     private String phone;
-
+    @NotNull
     private String resetToken;
-
+    @NotNull
     private LocalDateTime createdAt;
 
     @NotBlank(message = "Password is required")
@@ -42,19 +39,19 @@ public class TaUserDTO {
 
     @NotNull
     private boolean isActive;
-
+    @NotNull
     private String gAccessToken;
-
+    @NotNull
     private String gRefreshToken;
-
+    @NotNull
     private String currentSessionId;
-
+    @NotNull
     private LocalDateTime lastLoginTime;
-
+    @NotNull
     private String oldPassword;
-
+    @NotNull
     private String newPassword;
-
+    @NotNull
     private LocalDateTime lastUpdated;
     // Getters and setters
 
