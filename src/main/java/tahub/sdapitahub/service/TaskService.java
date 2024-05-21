@@ -59,22 +59,27 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public Task updateTask(Long id, TaskDTO taskDTO) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        if (optionalTask.isPresent()) {
-            Task task = optionalTask.get();
-            task.setJobTitle(taskDTO.getJobTitle());
-            task.setRoleType(taskDTO.getRoleType());
-            task.setModeOfWork(taskDTO.getModeOfWork());
-            task.setWorkLocation(taskDTO.getWorkLocation());
-            task.setTaskStatus(taskDTO.getTaskStatus());
-            task.setLastUpdated(LocalDateTime.now());
-
-            return taskRepository.update(task);
-        } else {
-            return null;
-        }
+    public Task updateTask(Long id, Task task) {
+        task.setTaskId(id);
+        task.setLastUpdated(LocalDateTime.now());
+        return taskRepository.update(task);
     }
+//    public Task updateTask(Long id, TaskDTO taskDTO) {
+//        Optional<Task> optionalTask = taskRepository.findById(id);
+//        if (optionalTask.isPresent()) {
+//            Task task = optionalTask.get();
+//            task.setJobTitle(taskDTO.getJobTitle());
+//            task.setRoleType(taskDTO.getRoleType());
+//            task.setModeOfWork(taskDTO.getModeOfWork());
+//            task.setWorkLocation(taskDTO.getWorkLocation());
+//            task.setTaskStatus(taskDTO.getTaskStatus());
+//            task.setLastUpdated(LocalDateTime.now());
+//
+//            return taskRepository.update(task);
+//        } else {
+//            return null;
+//        }
+//    }
 
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
