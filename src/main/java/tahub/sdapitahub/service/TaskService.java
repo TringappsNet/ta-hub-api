@@ -3,6 +3,7 @@ package tahub.sdapitahub.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.entity.JobRequirement;
+import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.TaskRepository;
 import tahub.sdapitahub.dto.TaskDTO;
@@ -47,15 +48,9 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public Task createTask(TaskDTO taskDTO) {
-        Task task = new Task.Builder()
-                .jobTitle(taskDTO.getJobTitle())
-                .roleType(taskDTO.getRoleType())
-                .modeOfWork(taskDTO.getModeOfWork())
-                .workLocation(taskDTO.getWorkLocation())
-                .createdAt(LocalDateTime.now())
-                .lastUpdated(LocalDateTime.now())
-                .build();
+    public Task createTask(Task task) {
+        task.setCreatedAt(LocalDateTime.now());
+        task.setLastUpdated(LocalDateTime.now());
         return taskRepository.save(task);
     }
 
@@ -64,22 +59,6 @@ public class TaskService {
         task.setLastUpdated(LocalDateTime.now());
         return taskRepository.update(task);
     }
-//    public Task updateTask(Long id, TaskDTO taskDTO) {
-//        Optional<Task> optionalTask = taskRepository.findById(id);
-//        if (optionalTask.isPresent()) {
-//            Task task = optionalTask.get();
-//            task.setJobTitle(taskDTO.getJobTitle());
-//            task.setRoleType(taskDTO.getRoleType());
-//            task.setModeOfWork(taskDTO.getModeOfWork());
-//            task.setWorkLocation(taskDTO.getWorkLocation());
-//            task.setTaskStatus(taskDTO.getTaskStatus());
-//            task.setLastUpdated(LocalDateTime.now());
-//
-//            return taskRepository.update(task);
-//        } else {
-//            return null;
-//        }
-//    }
 
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);

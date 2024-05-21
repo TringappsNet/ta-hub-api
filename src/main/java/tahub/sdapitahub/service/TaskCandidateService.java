@@ -2,6 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.dto.TaskCandidateDTO;
 import tahub.sdapitahub.repository.TaskCandidateRepository;
@@ -28,31 +29,18 @@ public class TaskCandidateService {
         return taskCandidateRepository.findById(id);
     }
 
-    public TaskCandidate createTaskCandidate(TaskCandidateDTO taskCandidateDTO) {
-        TaskCandidate taskCandidate = new TaskCandidate.Builder()
-                .taskId(taskCandidateDTO.getTaskId())
-                .candidateId(taskCandidateDTO.getCandidateId())
-                .taskCandidateStatus(taskCandidateDTO.getTaskCandidateStatus())
-                .taskCandidateComments(taskCandidateDTO.getTaskCandidateComments())
-                .createdAt(LocalDateTime.now())
-                .lastUpdated(LocalDateTime.now())
-                .build();
+    public TaskCandidate createTaskCandidate(TaskCandidate taskCandidate) {
+        taskCandidate.setCreatedAt(LocalDateTime.now());
+        taskCandidate.setLastUpdated(LocalDateTime.now());
         return taskCandidateRepository.save(taskCandidate);
     }
 
-    public TaskCandidate updateTaskCandidate(Long id, TaskCandidateDTO taskCandidateDTO) {
-        Optional<TaskCandidate> optionalTaskCandidate = taskCandidateRepository.findById(id);
-        if (optionalTaskCandidate.isPresent()) {
-            TaskCandidate taskCandidate = optionalTaskCandidate.get();
-            taskCandidate.setTaskCandidateStatus(taskCandidateDTO.getTaskCandidateStatus());
-            taskCandidate.setTaskCandidateComments(taskCandidateDTO.getTaskCandidateComments());
-            taskCandidate.setLastUpdated(LocalDateTime.now());
-
-            return taskCandidateRepository.update(taskCandidate);
-        } else {
-            return null;
-        }
+    public TaskCandidate updateTaskCandidate(Long id, TaskCandidate taskCandidate) {
+        taskCandidate.setTaskId(id);
+        taskCandidate.setLastUpdated(LocalDateTime.now());
+        return taskCandidateRepository.update(taskCandidate);
     }
+
 
     public void deleteTaskCandidate(Long id) {
         taskCandidateRepository.deleteById(id);
