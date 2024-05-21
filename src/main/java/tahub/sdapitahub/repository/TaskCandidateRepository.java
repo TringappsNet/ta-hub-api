@@ -25,6 +25,10 @@ public class TaskCandidateRepository {
         return jdbcTemplate.query(TaskCandidateQuery.FIND_ALL.getQuery(), new TaskCandidateMapper());
     }
 
+    public List<TaskCandidate> findCandidatesByTaskId(Long id) {
+        return jdbcTemplate.query(TaskCandidateQuery.FIND_BY_TASK_ID.getQuery(),new Object[]{id}, new TaskCandidateMapper());
+    }
+
     public Optional<TaskCandidate> findById(Long id) {
         return jdbcTemplate.query(TaskCandidateQuery.FIND_BY_ID.getQuery(), new Object[]{id}, new TaskCandidateMapper())
                 .stream().findFirst();

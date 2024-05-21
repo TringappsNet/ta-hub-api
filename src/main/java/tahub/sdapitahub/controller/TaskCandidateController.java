@@ -32,6 +32,16 @@ public class TaskCandidateController {
         return taskCandidate.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/task/{taskId}/candidates")
+    public ResponseEntity<List<TaskCandidate>> getCandidatesByTaskId(@PathVariable Long taskId) {
+        List<TaskCandidate> candidates = taskCandidateService.getCandidatesByTaskId(taskId);
+        if (candidates.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(candidates);
+        }
+    }
+
     @PostMapping("/task-candidate")
     public ResponseEntity<TaskCandidate> createTaskCandidate(@RequestBody TaskCandidateDTO taskCandidateDTO) {
         TaskCandidate createdTaskCandidate = taskCandidateService.createTaskCandidate(taskCandidateDTO);

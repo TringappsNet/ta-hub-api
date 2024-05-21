@@ -20,6 +20,10 @@ public class TaskCandidateService {
         return taskCandidateRepository.findAll();
     }
 
+    public List<TaskCandidate> getCandidatesByTaskId(Long taskId) {
+        return taskCandidateRepository.findCandidatesByTaskId(taskId);
+    }
+
     public Optional<TaskCandidate> getTaskCandidateById(Long id) {
         return taskCandidateRepository.findById(id);
     }

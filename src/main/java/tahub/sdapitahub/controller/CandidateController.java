@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Tag(name = "Candidates", description = "Operations related to job requirements")
+@Tag(name = "Candidates", description = "Operations related to Candidates")
 @RequestMapping("/api/candidates")
 public class CandidateController {
 
