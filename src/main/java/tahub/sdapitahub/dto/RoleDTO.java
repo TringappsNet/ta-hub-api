@@ -1,7 +1,11 @@
 package tahub.sdapitahub.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class RoleDTO {
+    @NotNull
     private Long roleId;
+    @NotNull
     private String role;
 
     // Constructor

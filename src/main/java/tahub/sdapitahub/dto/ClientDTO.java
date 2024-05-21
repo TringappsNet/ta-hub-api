@@ -1,15 +1,24 @@
 package tahub.sdapitahub.dto;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class ClientDTO {
+    @NotNull
     private long clientId;
+    @NotNull
     private String clientName;
+    @NotNull
     private String clientSpocName;
+    @NotNull
     private String clientSpocContact;
+    @NotNull
     private String clientLocation;
+//    @NotNull
 //    private byte[] clientLogo;
+    @NotNull
     private LocalDateTime createdAt;
+    @NotNull
     private LocalDateTime lastUpdated;
     // Getters and setters
 
