@@ -5,24 +5,26 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.time.LocalDateTime;
 
-@JsonDeserialize(builder = TaskCandidate.Builder.class)
-public class TaskCandidate {
-    private Long taskCandidatesId;
+@JsonDeserialize(builder = TaskCandidateHistory.Builder.class)
+public class TaskCandidateHistory {
+    private Long statusId;
     private Long taskId;
     private Long candidateId;
     private String taskCandidateStatus;
     private String taskCandidateComments;
+    private String taskStatus;
     private Long modifiedBy;
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdated;
 
     // Private constructor to enforce builder usage
-    private TaskCandidate(Builder builder) {
-        this.taskCandidatesId = builder.taskCandidatesId;
+    private TaskCandidateHistory(Builder builder) {
+        this.statusId = builder.taskCandidatesId;
         this.taskId = builder.taskId;
         this.candidateId = builder.candidateId;
         this.taskCandidateStatus = builder.taskCandidateStatus;
         this.taskCandidateComments = builder.taskCandidateComments;
+        this.taskStatus = builder.taskStatus;
         this.modifiedBy = builder.modifiedBy;
         this.createdAt = builder.createdAt;
         this.lastUpdated = builder.lastUpdated;
@@ -30,12 +32,12 @@ public class TaskCandidate {
 
     // Getters and Setters
 
-    public Long getTaskCandidatesId() {
-        return taskCandidatesId;
+    public Long getStatusId() {
+        return statusId;
     }
 
-    public void setTaskCandidatesId(Long taskCandidatesId) {
-        this.taskCandidatesId = taskCandidatesId;
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 
     public Long getTaskId() {
@@ -70,6 +72,14 @@ public class TaskCandidate {
         this.taskCandidateComments = taskCandidateComments;
     }
 
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
     public Long getModifiedBy() {
         return modifiedBy;
     }
@@ -94,6 +104,11 @@ public class TaskCandidate {
         this.lastUpdated = lastUpdated;
     }
 
+    // Static method to get the builder instance
+    public static Builder builder() {
+        return new Builder();
+    }
+
     // Builder class
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
@@ -102,6 +117,7 @@ public class TaskCandidate {
         private Long candidateId;
         private String taskCandidateStatus;
         private String taskCandidateComments;
+        private String taskStatus;
         private Long modifiedBy;
         private LocalDateTime createdAt;
         private LocalDateTime lastUpdated;
@@ -131,6 +147,11 @@ public class TaskCandidate {
             return this;
         }
 
+        public Builder taskStatus(String taskStatus) {
+            this.taskStatus = taskStatus;
+            return this;
+        }
+
         public Builder modifiedBy(Long modifiedBy) {
             this.modifiedBy = modifiedBy;
             return this;
@@ -146,8 +167,8 @@ public class TaskCandidate {
             return this;
         }
 
-        public TaskCandidate build() {
-            return new TaskCandidate(this);
+        public TaskCandidateHistory build() {
+            return new TaskCandidateHistory(this);
         }
     }
 }

@@ -27,7 +27,7 @@ public class TaskCandidateDTO {
     }
 
     public void setTaskCandidatesId(Long taskCandidatesId) {
-        this.taskCandidatesId = taskCandidatesId;
+        this.taskCandidatesId = this.taskCandidatesId;
     }
 
     public Long getTaskId() {

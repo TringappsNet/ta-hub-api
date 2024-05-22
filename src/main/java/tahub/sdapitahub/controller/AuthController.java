@@ -13,6 +13,7 @@ import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,10 @@ public class AuthController {
         session.setAttribute("loggedInUser", user);
         session.setMaxInactiveInterval(24 * 60 * 60);
 
+        // Update user's current session ID
+        user.setCurrentSessionId(session.getId());
+        taUserRepository.update(user);
+
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("user", user);
         responseData.put("sessionId", session.getId());
@@ -61,7 +66,11 @@ public class AuthController {
 
 
     @PostMapping("/reset-new-password")
-    public ResponseEntity<Object> resetPassword(@RequestBody TaUserDTO userDTO) {
+
+    public ResponseEntity<Object> resetPassword(
+            @RequestBody TaUserDTO userDTO,
+            @RequestHeader("Session-Id") String sessionId,
+            @RequestHeader("Email") String email) {
         TaUser user = authService.findUserByEmail(userDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
@@ -116,6 +125,8 @@ public class AuthController {
                 // Clear tokens from database
                 user.setgAccessToken(null);
                 user.setgRefreshToken(null);
+                user.setLastLoginTime(LocalDateTime.now());
+                user.setCurrentSessionId(null);
                 taUserRepository.update(user);
                 session.removeAttribute("loggedInUser");
             }

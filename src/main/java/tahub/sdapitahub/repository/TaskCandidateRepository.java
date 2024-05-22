@@ -40,6 +40,7 @@ public class TaskCandidateRepository {
                 taskCandidate.getCandidateId(),
                 taskCandidate.getTaskCandidateStatus(),
                 taskCandidate.getTaskCandidateComments(),
+                taskCandidate.getModifiedBy(),
                 taskCandidate.getCreatedAt(),
                 taskCandidate.getLastUpdated());
         return taskCandidate;
@@ -56,23 +57,36 @@ public class TaskCandidateRepository {
         // Initialize a flag to track if any fields are updated
         boolean fieldsUpdated = false;
 
+        if (taskCandidate.getTaskId() != null) {
+            queryBuilder.append("task_id = ?, ");
+            queryParams.add(taskCandidate.getTaskId());
+            fieldsUpdated = true;
+        }
+        if (taskCandidate.getCandidateId() != null) {
+            queryBuilder.append("candidate_id = ?, ");
+            queryParams.add(taskCandidate.getCandidateId());
+            fieldsUpdated = true;
+        }
         if (taskCandidate.getTaskCandidateStatus() != null) {
             queryBuilder.append("task_candidate_status = ?, ");
             queryParams.add(taskCandidate.getTaskCandidateStatus());
             fieldsUpdated = true;
         }
-        if (taskCandidate.getTaskCandidateComments() != null) {
-            queryBuilder.append("task_candidate_comments = ?, ");
-            queryParams.add(taskCandidate.getTaskCandidateComments());
+        if (taskCandidate.getModifiedBy() != null) {
+            queryBuilder.append("modified_by = ?, ");
+            queryParams.add(taskCandidate.getModifiedBy());
             fieldsUpdated = true;
         }
-
+        if (taskCandidate.getCreatedAt() != null) {
+            queryBuilder.append("created_at = ?, ");
+            queryParams.add(taskCandidate.getCreatedAt());
+            fieldsUpdated = true;
+        }
         if (taskCandidate.getLastUpdated() != null) {
             queryBuilder.append("last_updated = ?, ");
             queryParams.add(taskCandidate.getLastUpdated());
             fieldsUpdated = true;
         }
-
         if (fieldsUpdated) {
             queryBuilder.setLength(queryBuilder.length() - 2);
             queryBuilder.append(" WHERE task_candidates_id = ?");
@@ -81,6 +95,6 @@ public class TaskCandidateRepository {
             jdbcTemplate.update(queryBuilder.toString(), queryParams.toArray());
         }
 
-        return taskCandidate;
+            return taskCandidate;
+        }
     }
-}
