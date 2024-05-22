@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.entity.TaskCandidate;
-import tahub.sdapitahub.dto.TaskCandidateDTO;
+import tahub.sdapitahub.entity.TaskCandidateHistory;
 import tahub.sdapitahub.repository.TaskCandidateRepository;
 
 import java.time.LocalDateTime;
@@ -16,6 +16,12 @@ public class TaskCandidateService {
 
     @Autowired
     private TaskCandidateRepository taskCandidateRepository;
+
+    @Autowired
+    private TaskCandidateHistoryService taskCandidateHistoryService;
+
+    @Autowired
+    private TaskService taskService;
 
     public List<TaskCandidate> getAllTaskCandidates() {
         return taskCandidateRepository.findAll();
@@ -32,17 +38,42 @@ public class TaskCandidateService {
     public TaskCandidate createTaskCandidate(TaskCandidate taskCandidate) {
         taskCandidate.setCreatedAt(LocalDateTime.now());
         taskCandidate.setLastUpdated(LocalDateTime.now());
-        return taskCandidateRepository.save(taskCandidate);
+        TaskCandidate savedTaskCandidate = taskCandidateRepository.save(taskCandidate);
+
+        saveTaskCandidateStatusHistory(savedTaskCandidate);
+
+        return savedTaskCandidate;
     }
 
     public TaskCandidate updateTaskCandidate(Long id, TaskCandidate taskCandidate) {
-        taskCandidate.setTaskId(id);
+        taskCandidate.setTaskCandidatesId(id);
         taskCandidate.setLastUpdated(LocalDateTime.now());
-        return taskCandidateRepository.update(taskCandidate);
-    }
+        TaskCandidate updatedTaskCandidate = taskCandidateRepository.update(taskCandidate);
 
+        saveTaskCandidateStatusHistory(updatedTaskCandidate);
+
+        return updatedTaskCandidate;
+    }
 
     public void deleteTaskCandidate(Long id) {
         taskCandidateRepository.deleteById(id);
+    }
+
+    private void saveTaskCandidateStatusHistory(TaskCandidate taskCandidate) {
+        Optional<Task> taskOptional = taskService.getTaskById(taskCandidate.getTaskId());
+        if (taskOptional.isPresent()) {
+            Task task = taskOptional.get();
+            TaskCandidateHistory history = TaskCandidateHistory.builder()
+                    .taskId(taskCandidate.getTaskId())
+                    .candidateId(taskCandidate.getCandidateId())
+                    .taskCandidateStatus(taskCandidate.getTaskCandidateStatus())
+                    .taskCandidateComments(taskCandidate.getTaskCandidateComments())
+                    .taskStatus(task.getTaskStatus())
+                    .modifiedBy(taskCandidate.getModifiedBy())
+                    .createdAt(LocalDateTime.now())
+                    .lastUpdated(LocalDateTime.now())
+                    .build();
+            taskCandidateHistoryService.createTaskCandidate(history);
+        }
     }
 }
