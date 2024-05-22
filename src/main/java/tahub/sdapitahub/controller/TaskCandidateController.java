@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.TaskCandidateDTO;
 import tahub.sdapitahub.entity.TaskCandidate;
+import tahub.sdapitahub.entity.TaskCandidateHistory;
+import tahub.sdapitahub.service.TaskCandidateHistoryService;
 import tahub.sdapitahub.service.TaskCandidateService;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class TaskCandidateController {
 
     @Autowired
     private TaskCandidateService taskCandidateService;
+
+    @Autowired
+    private TaskCandidateHistoryService taskCandidateHistoryService;
 
     @GetMapping("/")
     public ResponseEntity<List<TaskCandidate>> getAllTaskCandidates() {
@@ -33,12 +37,24 @@ public class TaskCandidateController {
     }
 
     @GetMapping("/task/{taskId}/candidates")
-    public ResponseEntity<List<TaskCandidate>> getCandidatesByTaskId(@PathVariable Long taskId) {
+    public ResponseEntity<List<TaskCandidate>> getCommentsByTaskIdAndCandidateId(@PathVariable Long taskId) {
         List<TaskCandidate> candidates = taskCandidateService.getCandidatesByTaskId(taskId);
         if (candidates.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(candidates);
+        }
+    }
+
+    @GetMapping("/task/{taskId}/{candidateId}/comments")
+    public ResponseEntity<List<TaskCandidateHistory>> getCommentsByTaskIdAndCandidateId(
+            @PathVariable Long taskId,
+            @PathVariable Long candidateId) {
+        List<TaskCandidateHistory> comments = taskCandidateHistoryService.getCandidateComments(taskId, candidateId);
+        if (comments.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(comments);
         }
     }
 

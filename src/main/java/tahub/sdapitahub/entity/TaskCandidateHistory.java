@@ -19,7 +19,7 @@ public class TaskCandidateHistory {
 
     // Private constructor to enforce builder usage
     private TaskCandidateHistory(Builder builder) {
-        this.statusId = builder.taskCandidatesId;
+        this.statusId = builder.statusId;
         this.taskId = builder.taskId;
         this.candidateId = builder.candidateId;
         this.taskCandidateStatus = builder.taskCandidateStatus;
@@ -112,7 +112,7 @@ public class TaskCandidateHistory {
     // Builder class
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
-        private Long taskCandidatesId;
+        private Long statusId;
         private Long taskId;
         private Long candidateId;
         private String taskCandidateStatus;
@@ -122,8 +122,8 @@ public class TaskCandidateHistory {
         private LocalDateTime createdAt;
         private LocalDateTime lastUpdated;
 
-        public Builder taskCandidatesId(Long taskCandidatesId) {
-            this.taskCandidatesId = taskCandidatesId;
+        public Builder statusId(Long statusId) {
+            this.statusId = statusId;
             return this;
         }
 
