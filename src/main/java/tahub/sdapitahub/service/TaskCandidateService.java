@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
+import tahub.sdapitahub.repository.TaskCandidateHistoryRepository;
 import tahub.sdapitahub.repository.TaskCandidateRepository;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,9 @@ public class TaskCandidateService {
 
     @Autowired
     private TaskCandidateRepository taskCandidateRepository;
+
+    @Autowired
+    private TaskCandidateHistoryRepository taskCandidateHistoryRepository;
 
     @Autowired
     private TaskCandidateHistoryService taskCandidateHistoryService;
@@ -73,7 +77,7 @@ public class TaskCandidateService {
                     .createdAt(LocalDateTime.now())
                     .lastUpdated(LocalDateTime.now())
                     .build();
-            taskCandidateHistoryService.createTaskCandidate(history);
+            taskCandidateHistoryService.createTaskCandidateHistory(history);
         }
     }
 }

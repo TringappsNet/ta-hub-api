@@ -1,16 +1,16 @@
-package tahub.sdapitahub.repository.mapper;
+package tahub.sdapitahub.repository.mapper.TaskCandidates;
 
 import org.springframework.jdbc.core.RowMapper;
-import tahub.sdapitahub.entity.TaskCandidateHistory;
+import tahub.sdapitahub.entity.TaskCandidate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-public class TaskCandidateHistoryMapper implements RowMapper<TaskCandidateHistory> {
+public class TaskCandidateMapper implements RowMapper<TaskCandidate> {
     @Override
-    public TaskCandidateHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new TaskCandidateHistory.Builder()
+    public TaskCandidate mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new TaskCandidate.Builder()
                 .taskCandidatesId(rs.getLong("task_candidates_id"))
                 .taskId(rs.getLong("task_id"))
                 .candidateId(rs.getLong("candidate_id"))

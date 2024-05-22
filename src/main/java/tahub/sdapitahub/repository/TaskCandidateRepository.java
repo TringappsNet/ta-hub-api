@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import tahub.sdapitahub.entity.TaskCandidate;
-import tahub.sdapitahub.repository.mapper.TaskCandidateMapper;
+import tahub.sdapitahub.repository.mapper.TaskCandidates.TaskCandidateMapper;
 import tahub.sdapitahub.repository.query.TaskCandidateQuery;
 
 import java.util.ArrayList;

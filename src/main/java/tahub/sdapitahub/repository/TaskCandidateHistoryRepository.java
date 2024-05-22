@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
-import tahub.sdapitahub.repository.mapper.TaskCandidateHistoryMapper;
+import tahub.sdapitahub.repository.mapper.TaskCandidates.TaskCandidateHistoryMapper;
+import tahub.sdapitahub.repository.mapper.TaskCandidates.TaskCandidatesComments;
 import tahub.sdapitahub.repository.query.TaskCandidateHistoryQuery;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class TaskCandidateHistoryRepository {
         return jdbcTemplate.query(TaskCandidateHistoryQuery.FIND_ALL.getQuery(), new TaskCandidateHistoryMapper());
     }
 
+    public List<TaskCandidateHistory> findCommentsByTaskAndCandidate(Long taskId, Long candidateId) {
+        return jdbcTemplate.query(TaskCandidateHistoryQuery.FIND_COMMENTS.getQuery(),new Object[]{taskId, candidateId}, new TaskCandidatesComments());
+    }
 
     public Optional<TaskCandidateHistory> findById(Long id) {
         return jdbcTemplate.query(TaskCandidateHistoryQuery.FIND_BY_ID.getQuery(), new Object[]{id}, new TaskCandidateHistoryMapper())
