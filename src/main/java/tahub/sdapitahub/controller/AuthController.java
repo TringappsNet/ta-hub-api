@@ -52,6 +52,7 @@ public class AuthController {
 
         // Update user's current session ID
         user.setCurrentSessionId(session.getId());
+        user.setLastLoginTime(LocalDateTime.now());
         taUserRepository.update(user);
 
         Map<String, Object> responseData = new HashMap<>();
@@ -125,7 +126,6 @@ public class AuthController {
                 // Clear tokens from database
                 user.setgAccessToken(null);
                 user.setgRefreshToken(null);
-                user.setLastLoginTime(LocalDateTime.now());
                 user.setCurrentSessionId(null);
                 taUserRepository.update(user);
                 session.removeAttribute("loggedInUser");

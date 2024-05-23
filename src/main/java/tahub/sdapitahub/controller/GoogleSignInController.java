@@ -14,7 +14,6 @@
         import org.springframework.web.bind.annotation.RestController;
         import tahub.sdapitahub.dto.GoogleSignInResponseDto;
         import tahub.sdapitahub.config.GoogleSignInConfig;
-        import java.security.Principal;
         import tahub.sdapitahub.repository.TaUserRepository;
         import tahub.sdapitahub.service.GoogleSignInService;
 
@@ -44,17 +43,19 @@
 
 
             @GetMapping("/google-sign-in")
-            public void signIn(HttpServletResponse response, HttpServletRequest request) throws IOException {
+            public ResponseEntity<String> signIn(HttpServletRequest request) throws IOException {
                 String accessToken = (String) request.getSession().getAttribute("accessToken");
                 if (accessToken == null || !googleSignInService.isValidAccessToken(accessToken)) {
                     AuthorizationCodeRequestUrl authorizationUrl = authorizationCodeFlow.newAuthorizationUrl()
                             .setRedirectUri(googleSignInConfig.getRedirectUri())
                             .setScopes(GoogleSignInConfig.SCOPES);
-                    response.sendRedirect(authorizationUrl.build());
+                    String generatedUrl = authorizationUrl.build();
+                    return ResponseEntity.ok(generatedUrl);
                 } else {
-                    response.sendRedirect("/welcome");
+                    return ResponseEntity.ok("/welcome");
                 }
             }
+
 
             @GetMapping("/google-sign-in/callback")
             public ResponseEntity<String> callback(@RequestParam("code") String code, HttpServletRequest request) throws IOException, GeneralSecurityException {
