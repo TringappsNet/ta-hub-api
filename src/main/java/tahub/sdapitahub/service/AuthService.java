@@ -45,6 +45,7 @@ public class AuthService {
     public TaUser registerUser(TaUser taUser) {
         String hashedPassword = passwordEncoder.encode(taUser.getPassword());
         taUser.setPassword(hashedPassword);
+        taUser.setIsActive(true);
         taUser.setCreatedAt(LocalDateTime.now());
         taUser.setLastUpdated(LocalDateTime.now());
         return userRepository.save(taUser);
