@@ -52,7 +52,7 @@
                     String generatedUrl = authorizationUrl.build();
                     return ResponseEntity.ok(generatedUrl);
                 } else {
-                    return ResponseEntity.ok("/welcome");
+                    return ResponseEntity.ok("http://localhost:5173/navbar");
                 }
             }
 
