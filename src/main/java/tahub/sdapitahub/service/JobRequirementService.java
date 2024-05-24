@@ -1,11 +1,17 @@
 package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.Utils.MailUtil;
+import tahub.sdapitahub.Utils.TokenUtil;
 import tahub.sdapitahub.dto.JobRequirementDTO;
 import tahub.sdapitahub.dto.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
+import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.JobRequirementRepository;
+import tahub.sdapitahub.repository.TaUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +25,27 @@ public class JobRequirementService {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private TaUserRepository taUserRepository;
+
+
+
+    public void JobApproval(String email) {
+        TaUser user = taUserRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        String token = TokenUtil.generateRandomString();
+        String encryptedToken = TokenUtil.encryptToken(token);
+        user.setResetToken(encryptedToken);
+        taUserRepository.update(user);
+
+        String subject = "Job Approval Request";
+        String text = "To Approve, please visit the following link: " +
+                "http://localhost:3000/forget-password?token=" + encryptedToken;
+        MailUtil.sendMail(user.getEmail(), subject, text);
+    }
     public JobRequirement createJobRequirement(JobRequirementDTO jobRequirementDTO) {
         JobRequirement jobRequirement = convertToEntity(jobRequirementDTO);
         jobRequirement.setCreatedAt(LocalDateTime.now());

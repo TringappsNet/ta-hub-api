@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.JobRequirementDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.TaUser;
-import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.service.JobRequirementService;
 import tahub.sdapitahub.service.AuthService;
@@ -91,6 +90,14 @@ public class JobRequirementController {
     public ResponseEntity<Void> deleteJobRequirement(@PathVariable Long id) {
         jobRequirementService.deleteJobRequirement(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PostMapping("/job-approval")
+    public ResponseEntity<Object> jobApproval(@RequestBody TaUser taUser) {
+        String email = taUser.getEmail();
+        jobRequirementService.JobApproval(email);
+        return ResponseEntity.status(200).body("Job approval request sent!");
     }
 
 
