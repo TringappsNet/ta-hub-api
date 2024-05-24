@@ -1,4 +1,4 @@
-package tahub.sdapitahub.repository.mapper;
+package tahub.sdapitahub.repository.mapper.Client;
 
 import org.springframework.jdbc.core.RowMapper;
 import tahub.sdapitahub.entity.Client;
@@ -18,6 +18,7 @@ public class ClientMapper implements RowMapper<Client> {
                 .clientLocation(rs.getString("client_location"))
                 .createdAt(rs.getObject("created_at", LocalDateTime.class))
                 .lastUpdated(rs.getObject("last_updated", LocalDateTime.class))
+
                 .build();
         return client;
     }

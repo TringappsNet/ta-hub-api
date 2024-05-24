@@ -15,6 +15,9 @@ public class Client {
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdated;
 
+    private String jobTitle;
+
+
     private Client(Builder builder) {
         this.clientId = builder.clientId;
         this.clientName = builder.clientName;
@@ -23,6 +26,8 @@ public class Client {
         this.clientLocation = builder.clientLocation;
         this.createdAt = builder.createdAt;
         this.lastUpdated = builder.lastUpdated;
+
+        this.jobTitle = builder.jobTitle;
 
     }
 
@@ -85,6 +90,16 @@ public class Client {
         this.lastUpdated = lastUpdated;
     }
 
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private Long clientId;
@@ -94,6 +109,8 @@ public class Client {
         private String clientLocation;
         private LocalDateTime createdAt;
         private LocalDateTime lastUpdated;
+
+        private String jobTitle;
 
         public Builder clientId(Long clientId) {
             this.clientId = clientId;
@@ -129,6 +146,13 @@ public class Client {
             this.lastUpdated = lastUpdated;
             return this;
         }
+
+
+        public Builder jobTitle(String jobTitle) {
+            this.jobTitle = jobTitle;
+            return this;
+        }
+
         public Client build() {
             return new Client(this);
         }

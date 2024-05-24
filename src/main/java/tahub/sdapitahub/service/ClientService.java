@@ -23,6 +23,12 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
+
+    public List<Client> getClientViewAll() {
+        return clientRepository.ClientViewAll();
+    }
+
+
     public Optional<Client> getClientById(Long id) {
         return Optional.ofNullable(clientRepository.findById(id));
     }
