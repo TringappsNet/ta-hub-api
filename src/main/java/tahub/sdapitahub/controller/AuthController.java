@@ -88,14 +88,13 @@ public class AuthController {
         return ResponseEntity.status(200).body("Password reset successfully");
     }
 
-
-
     @PostMapping("/forgot-password")
     public ResponseEntity<Object> forgotPassword(@RequestBody TaUserDTO userDTO) {
         String email = userDTO.getEmail();
         authService.forgetPassword(email);
         return ResponseEntity.status(200).body("Password reset link sent to email");
     }
+
 
     @PostMapping("/reset-password")
     public ResponseEntity<Object> resetPassword(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
