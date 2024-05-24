@@ -25,6 +25,12 @@ public class ClientController {
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
+    @GetMapping("/clientPositions")
+    public ResponseEntity<List<Client>> getClientViewAll() {
+        List<Client> clients = clientService.getClientViewAll();
+        return new ResponseEntity<>(clients, HttpStatus.OK);
+    }
+
     @GetMapping("client/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable("id") Long id) {
         Optional<Client> clientOptional = clientService.getClientById(id);

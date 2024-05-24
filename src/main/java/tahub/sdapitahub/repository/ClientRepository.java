@@ -1,7 +1,8 @@
 package tahub.sdapitahub.repository;
 
 import tahub.sdapitahub.entity.Client;
-import tahub.sdapitahub.repository.mapper.ClientMapper;
+import tahub.sdapitahub.repository.mapper.Client.ClientMapper;
+import tahub.sdapitahub.repository.mapper.Client.ClientViewMapper;
 import tahub.sdapitahub.repository.query.ClientQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,6 +23,10 @@ public class ClientRepository {
 
     public List<Client> findAll() {
         return jdbcTemplate.query(ClientQuery.FIND_ALL.getQuery(), new ClientMapper());
+    }
+
+    public List<Client> ClientViewAll() {
+        return jdbcTemplate.query(ClientQuery.CLIENT_VIEW.getQuery(), new ClientViewMapper());
     }
 
     public Client findById(Long id) {
@@ -86,4 +91,7 @@ public class ClientRepository {
     public void deleteById(Long id) {
         jdbcTemplate.update(ClientQuery.DELETE_BY_ID.getQuery(), id);
     }
+
+
+
 }
