@@ -25,6 +25,12 @@ public class CandidateController {
         return new ResponseEntity<>(candidates, HttpStatus.OK);
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<List<Candidate>> getAllCandidatesStatus() {
+        List<Candidate> candidates = candidateService.candidatesViewAll();
+        return new ResponseEntity<>(candidates, HttpStatus.OK);
+    }
+
     @GetMapping("/candidate/{id}")
     public ResponseEntity<Candidate> getCandidateById(@PathVariable("id") Long id) {
         Optional<Candidate> candidateOptional = candidateService.getCandidateById(id);

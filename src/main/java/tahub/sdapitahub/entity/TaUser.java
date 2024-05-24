@@ -301,7 +301,7 @@ public class TaUser {
             return this;
         }
         public Builder lastUpdated(LocalDateTime lastUpdated) {
-            this.createdAt = lastUpdated;
+            this.lastUpdated = lastUpdated;
             return this;
         }
 

@@ -7,7 +7,10 @@ public enum CandidateQuery {
             "current_ctc, expected_ctc, notice_period, mode_of_work, current_location, candidate_status, comments, " +
             "remarks, recruiter, recruited_source, created_date, last_updated) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
-    DELETE_BY_ID("DELETE FROM ta_candidate_details WHERE candidate_id = ?");
+    DELETE_BY_ID("DELETE FROM ta_candidate_details WHERE candidate_id = ?"),
+
+    CANDIDATE_STATUS("SELECT * FROM ta_candidate_status_view");
+
 
     private final String query;
 

@@ -26,6 +26,10 @@ public class Candidate {
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdated;
 
+
+    private String clientName;
+    private String taskCandidateStatus;
+
     private Candidate(Builder builder) {
         this.candidateId = builder.candidateId;
         this.candidateName = builder.candidateName;
@@ -46,10 +50,11 @@ public class Candidate {
         this.createdDate = builder.createdDate;
         this.lastUpdated = builder.lastUpdated;
 
+        this.clientName = builder.clientName;
+        this.taskCandidateStatus = builder.taskCandidateStatus;
     }
 
     // Getters for all fields
-
 
     public Long getCandidateId() {
         return candidateId;
@@ -195,6 +200,22 @@ public class Candidate {
         this.lastUpdated = lastUpdated;
     }
 
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public String getTaskCandidateStatus() {
+        return taskCandidateStatus;
+    }
+
+    public void setTaskCandidateStatus(String taskCandidateStatus) {
+        this.taskCandidateStatus = taskCandidateStatus;
+    }
+
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private Long candidateId;
@@ -215,6 +236,10 @@ public class Candidate {
         private String recruitedSource;
         private LocalDateTime createdDate;
         private LocalDateTime lastUpdated;
+
+        private String clientName;
+        private String taskCandidateStatus;
+
 
 
         public Builder candidateId(Long candidateId) {
@@ -304,6 +329,16 @@ public class Candidate {
 
         public Builder lastUpdated(LocalDateTime lastUpdated) {
             this.lastUpdated = lastUpdated;
+            return this;
+        }
+
+        public Builder clientName(String clientName) {
+            this.clientName = clientName;
+            return this;
+        }
+
+        public Builder taskCandidateStatus(String taskCandidateStatus) {
+            this.taskCandidateStatus = this.taskCandidateStatus;
             return this;
         }
 
