@@ -3,7 +3,6 @@ package tahub.sdapitahub.entity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import java.security.PrivateKey;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(builder = TaUser.Builder.class)
@@ -19,7 +18,9 @@ public class TaUser {
     private String password;
     private boolean isActive;
     private String gAccessToken;
-    private String gRefreshToken;
+    private Long gTokenExpiresIn;
+    private String gIdToken;
+    private LocalDateTime gAccessTokenCreatedAt;
     private String currentSessionId;
     private LocalDateTime lastLoginTime;
     private LocalDateTime createdAt;
@@ -37,7 +38,9 @@ public class TaUser {
         this.password = builder.password;
         this.isActive = builder.isActive;
         this.gAccessToken = builder.gAccessToken;
-        this.gRefreshToken = builder.gRefreshToken;
+        this.gAccessTokenCreatedAt = builder.gAccessTokenCreatedAt;
+        this.gIdToken = builder.gIdToken;
+        this.gTokenExpiresIn = builder.gTokenExpiresIn;
         this.currentSessionId = builder.currentSessionId;
         this.lastLoginTime = builder.lastLoginTime;
         this.createdAt = builder.createdAt;
@@ -136,12 +139,28 @@ public class TaUser {
         this.gAccessToken = gAccessToken;
     }
 
-    public String getgRefreshToken() {
-        return gRefreshToken;
+    public String getgIdToken() {
+        return gIdToken;
     }
 
-    public void setgRefreshToken(String gRefreshToken) {
-        this.gRefreshToken = gRefreshToken;
+    public void setgIdToken(String gIdToken) {
+        this.gIdToken = gIdToken;
+    }
+
+    public LocalDateTime getgAccessTokenCreatedAt() {
+        return gAccessTokenCreatedAt;
+    }
+
+    public void setgAccessTokenCreatedAt(LocalDateTime gAccessTokenCreatedAt) {
+        this.gAccessTokenCreatedAt = gAccessTokenCreatedAt;
+    }
+
+    public Long getgTokenExpiresIn() {
+        return gTokenExpiresIn;
+    }
+
+    public void setgTokenExpiresIn(Long gTokenExpiresIn) {
+        this.gTokenExpiresIn = gTokenExpiresIn;
     }
 
     public String getCurrentSessionId() {
@@ -189,7 +208,9 @@ public class TaUser {
         private String password;
         private boolean isActive;
         private String gAccessToken;
-        private String gRefreshToken;
+        private String gIdToken;
+        private LocalDateTime gAccessTokenCreatedAt;
+        private Long gTokenExpiresIn;
         private String currentSessionId;
         private LocalDateTime lastLoginTime;
         private LocalDateTime createdAt;
@@ -250,8 +271,18 @@ public class TaUser {
             this.gAccessToken = gAccessToken;
             return this;
         }
-        public Builder gRefreshToken(String gRefreshToken) {
-            this.gRefreshToken = gRefreshToken;
+
+        public Builder gIdToken(String gIdToken) {
+            this.gIdToken = gIdToken;
+            return this;
+        }
+
+        public Builder gAccessTokenCreatedAt(LocalDateTime gAccessTokenCreatedAt) {
+            this.gAccessTokenCreatedAt = gAccessTokenCreatedAt;
+            return this;
+        }
+        public Builder gTokenExpiresIn(Long gTokenExpiresIn) {
+            this.gTokenExpiresIn = gTokenExpiresIn;
             return this;
         }
 
