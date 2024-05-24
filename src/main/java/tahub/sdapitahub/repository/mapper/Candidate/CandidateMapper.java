@@ -1,4 +1,4 @@
-package tahub.sdapitahub.repository.mapper;
+package tahub.sdapitahub.repository.mapper.Candidate;
 
 import org.springframework.jdbc.core.RowMapper;
 import tahub.sdapitahub.entity.Candidate;

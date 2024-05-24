@@ -1,10 +1,11 @@
-package tahub.sdapitahub.repository;
+package tahub.sdapitahub.repository.Candidate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import tahub.sdapitahub.entity.Candidate;
-import tahub.sdapitahub.repository.mapper.CandidateMapper;
+import tahub.sdapitahub.repository.mapper.Candidate.CandidateMapper;
+import tahub.sdapitahub.repository.mapper.Candidate.CandidateViewMapper;
 import tahub.sdapitahub.repository.query.CandidateQuery;
 
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ public class CandidateRepository {
 
     public List<Candidate> findAll() {
         return jdbcTemplate.query(CandidateQuery.FIND_ALL.getQuery(), new CandidateMapper());
+    }
+
+    public List<Candidate> candidatesViewAll() {
+        return jdbcTemplate.query(CandidateQuery.CANDIDATE_STATUS.getQuery(), new CandidateViewMapper());
     }
 
     public Optional<Candidate> findById(Long id) {
