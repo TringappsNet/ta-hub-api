@@ -13,6 +13,9 @@ public class Task {
     private String roleType;
     private String modeOfWork;
     private String workLocation;
+    private int yearsOfExperienceRequired;
+    private String primarySkillSet;
+    private String secondarySkillSet;
     private String clientBudget;
     private String assignedBudget;
     private String primaryAssignee;
@@ -31,6 +34,9 @@ public class Task {
         this.roleType = builder.roleType;
         this.modeOfWork = builder.modeOfWork;
         this.workLocation = builder.workLocation;
+        this.yearsOfExperienceRequired = builder.yearsOfExperienceRequired;
+        this.primarySkillSet = builder.primarySkillSet;
+        this.secondarySkillSet = builder.secondarySkillSet;
         this.clientBudget = builder.clientBudget;
         this.assignedBudget = builder.assignedBudget;
         this.primaryAssignee = builder.primaryAssignee;
@@ -91,6 +97,30 @@ public class Task {
 
     public void setWorkLocation(String workLocation) {
         this.workLocation = workLocation;
+    }
+
+    public int getYearsOfExperienceRequired() {
+        return yearsOfExperienceRequired;
+    }
+
+    public void setYearsOfExperienceRequired(int yearsOfExperienceRequired) {
+        this.yearsOfExperienceRequired = yearsOfExperienceRequired;
+    }
+
+    public String getPrimarySkillSet() {
+        return primarySkillSet;
+    }
+
+    public void setPrimarySkillSet(String primarySkillSet) {
+        this.primarySkillSet = primarySkillSet;
+    }
+
+    public String getSecondarySkillSet() {
+        return secondarySkillSet;
+    }
+
+    public void setSecondarySkillSet(String secondarySkillSet) {
+        this.secondarySkillSet = secondarySkillSet;
     }
 
     public String getAssignedBudget() {
@@ -174,6 +204,9 @@ public class Task {
         private String roleType;
         private String modeOfWork;
         private String workLocation;
+        private int yearsOfExperienceRequired;
+        private String primarySkillSet;
+        private String secondarySkillSet;
         private String clientBudget;
         private String assignedBudget;
         private String primaryAssignee;
@@ -211,6 +244,21 @@ public class Task {
 
         public Builder workLocation(String workLocation) {
             this.workLocation = workLocation;
+            return this;
+        }
+
+        public Builder yearsOfExperienceRequired(int yearsOfExperienceRequired) {
+            this.yearsOfExperienceRequired = yearsOfExperienceRequired;
+            return this;
+        }
+
+        public Builder primarySkillSet(String primarySkillSet) {
+            this.primarySkillSet = primarySkillSet;
+            return this;
+        }
+
+        public Builder secondarySkillSet(String secondarySkillSet) {
+            this.secondarySkillSet = secondarySkillSet;
             return this;
         }
 

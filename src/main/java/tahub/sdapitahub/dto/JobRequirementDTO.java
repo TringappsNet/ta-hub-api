@@ -36,12 +36,6 @@ public class JobRequirementDTO {
     @NotNull
     private String approvedBy;
     @NotNull
-    private int yearsOfExperienceRequired;
-    @NotNull
-    private String primarySkillSet;
-    @NotNull
-    private String secondarySkillSet;
-    @NotNull
     private String createdAt;
     @NotNull
     private String lastUpdated;
@@ -101,17 +95,6 @@ public class JobRequirementDTO {
         return approvedBy;
     }
 
-    public int getYearsOfExperienceRequired() {
-        return yearsOfExperienceRequired;
-    }
-
-    public String getPrimarySkillSet() {
-        return primarySkillSet;
-    }
-
-    public String getSecondarySkillSet() {
-        return secondarySkillSet;
-    }
 
     public long getJobId() {
         return jobId;

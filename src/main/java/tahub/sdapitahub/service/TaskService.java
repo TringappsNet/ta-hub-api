@@ -30,6 +30,9 @@ public class TaskService {
                         .roleType(taskDTO.getRoleType())
                         .modeOfWork(taskDTO.getModeOfWork())
                         .workLocation(taskDTO.getWorkLocation())
+                        .yearsOfExperienceRequired(taskDTO.getYearsOfExperienceRequired())
+                        .primarySkillSet(taskDTO.getPrimarySkillSet())
+                        .secondarySkillSet(taskDTO.getSecondarySkillSet())
                         .createdAt(LocalDateTime.now())
                         .lastUpdated(LocalDateTime.now())
                         .build();
