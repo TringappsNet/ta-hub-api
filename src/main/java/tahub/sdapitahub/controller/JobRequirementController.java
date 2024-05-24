@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.JobRequirementDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.TaUser;
+import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.service.JobRequirementService;
 import tahub.sdapitahub.service.AuthService;
@@ -73,6 +74,23 @@ public class JobRequirementController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job requirement not found with ID: " + id);
         }
+    }
+
+
+    @PutMapping("/requirement/{id}")
+    public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @RequestBody JobRequirement jobRequirement) {
+        JobRequirement updatedJobRequirement = jobRequirementService.updateJobRequirement(id, jobRequirement);
+        if (updatedJobRequirement != null) {
+            return new ResponseEntity<>(updatedJobRequirement, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/requirement/{id}")
+    public ResponseEntity<Void> deleteJobRequirement(@PathVariable Long id) {
+        jobRequirementService.deleteJobRequirement(id);
+        return ResponseEntity.noContent().build();
     }
 
 

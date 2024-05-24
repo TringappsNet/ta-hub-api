@@ -38,6 +38,9 @@ public class TaskRepository {
                 task.getRoleType(),
                 task.getModeOfWork(),
                 task.getWorkLocation(),
+                task.getYearsOfExperienceRequired(),
+                task.getPrimarySkillSet(),
+                task.getSecondarySkillSet(),
                 task.getClientBudget(),
                 task.getAssignedBudget(),
                 task.getPrimaryAssignee(),
@@ -123,5 +126,8 @@ public class TaskRepository {
 
         return task;
     }
+
+
+
 
 }

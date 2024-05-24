@@ -26,6 +26,12 @@ public class TaskDTO {
     @NotNull
     private String secondaryAssignee;
     @NotNull
+    private int yearsOfExperienceRequired;
+    @NotNull
+    private String primarySkillSet;
+    @NotNull
+    private String secondarySkillSet;
+    @NotNull
     private String taskStatus;
     @NotNull
     private boolean backlogs;
@@ -64,6 +70,18 @@ public class TaskDTO {
 
     public String getWorkLocation() {
         return description;
+    }
+
+    public int getYearsOfExperienceRequired() {
+        return yearsOfExperienceRequired;
+    }
+
+    public String getPrimarySkillSet() {
+        return primarySkillSet;
+    }
+
+    public String getSecondarySkillSet() {
+        return secondarySkillSet;
     }
 
     public LocalDateTime getCreatedAt() {

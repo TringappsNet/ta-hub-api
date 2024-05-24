@@ -22,9 +22,6 @@ public class JobRequirement {
     private LocalDate tentativeStartDate;
     private String tentativeDuration;
     private String approvedBy;
-    private int yearsOfExperienceRequired;
-    private String primarySkillSet;
-    private String secondarySkillSet;
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdated;
 
@@ -43,9 +40,6 @@ public class JobRequirement {
         this.tentativeStartDate = builder.tentativeStartDate;
         this.tentativeDuration = builder.tentativeDuration;
         this.approvedBy = builder.approvedBy;
-        this.yearsOfExperienceRequired = builder.yearsOfExperienceRequired;
-        this.primarySkillSet = builder.primarySkillSet;
-        this.secondarySkillSet = builder.secondarySkillSet;
         this.createdAt = builder.createdAt;
         this.lastUpdated = builder.lastUpdated;
     }
@@ -164,29 +158,7 @@ public class JobRequirement {
         this.approvedBy = approvedBy;
     }
 
-    public int getYearsOfExperienceRequired() {
-        return yearsOfExperienceRequired;
-    }
 
-    public void setYearsOfExperienceRequired(int yearsOfExperienceRequired) {
-        this.yearsOfExperienceRequired = yearsOfExperienceRequired;
-    }
-
-    public String getPrimarySkillSet() {
-        return primarySkillSet;
-    }
-
-    public void setPrimarySkillSet(String primarySkillSet) {
-        this.primarySkillSet = primarySkillSet;
-    }
-
-    public String getSecondarySkillSet() {
-        return secondarySkillSet;
-    }
-
-    public void setSecondarySkillSet(String secondarySkillSet) {
-        this.secondarySkillSet = secondarySkillSet;
-    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -220,9 +192,6 @@ public class JobRequirement {
         private LocalDate tentativeStartDate;
         private String tentativeDuration;
         private String approvedBy;
-        private int yearsOfExperienceRequired;
-        private String primarySkillSet;
-        private String secondarySkillSet;
         private LocalDateTime createdAt;
         private LocalDateTime lastUpdated;
 
@@ -296,20 +265,6 @@ public class JobRequirement {
             return this;
         }
 
-        public Builder yearsOfExperienceRequired(int yearsOfExperienceRequired) {
-            this.yearsOfExperienceRequired = yearsOfExperienceRequired;
-            return this;
-        }
-
-        public Builder primarySkillSet(String primarySkillSet) {
-            this.primarySkillSet = primarySkillSet;
-            return this;
-        }
-
-        public Builder secondarySkillSet(String secondarySkillSet) {
-            this.secondarySkillSet = secondarySkillSet;
-            return this;
-        }
 
         public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import tahub.sdapitahub.dto.JobRequirementDTO;
 import tahub.sdapitahub.dto.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
-import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 
 import java.time.LocalDateTime;
@@ -27,6 +26,15 @@ public class JobRequirementService {
         return jobRequirementRepository.save(jobRequirement);
     }
 
+    public void deleteJobRequirement(Long id) {
+        jobRequirementRepository.deleteById(id);
+    }
+
+    public JobRequirement updateJobRequirement(Long id, JobRequirement jobRequirement) {
+        jobRequirement.setJobId(id);
+        jobRequirement.setLastUpdated(LocalDateTime.now());
+        return jobRequirementRepository.update(jobRequirement);
+    }
 
     public List<JobRequirement> getAllJobRequirements() {
         return jobRequirementRepository.findAll();
@@ -69,9 +77,6 @@ public class JobRequirementService {
                 .tentativeStartDate(jobRequirementDTO.getTentativeStartDate())
                 .tentativeDuration(jobRequirementDTO.getTentativeDuration())
                 .approvedBy(jobRequirementDTO.getApprovedBy())
-                .yearsOfExperienceRequired(jobRequirementDTO.getYearsOfExperienceRequired())
-                .primarySkillSet(jobRequirementDTO.getPrimarySkillSet())
-                .secondarySkillSet(jobRequirementDTO.getSecondarySkillSet())
                 .createdAt(LocalDateTime.now())
                 .lastUpdated(LocalDateTime.now())
                 .build();
