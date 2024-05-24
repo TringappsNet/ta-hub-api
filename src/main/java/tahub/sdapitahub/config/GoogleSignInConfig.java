@@ -46,6 +46,9 @@ public class GoogleSignInConfig {
         TaUser existingUser = taUserRepository.findByEmail(responseDto.getEmail());
         if (existingUser != null) {
             existingUser.setgAccessToken(responseDto.getAccessToken());
+            existingUser.setgAccessTokenCreatedAt(LocalDateTime.now());
+            existingUser.setgTokenExpiresIn(responseDto.getExpiresIn());
+            existingUser.setIsActive(true);
             existingUser.setLastUpdated(LocalDateTime.now());
             taUserRepository.update(existingUser);
         } else {
@@ -59,10 +62,12 @@ public class GoogleSignInConfig {
                     .lastUpdated(LocalDateTime.now())
                     .build();
 
-            // Set access token, refresh token, and last updated time
+            // Set access token, token expiry
             user.setgAccessToken(responseDto.getAccessToken());
-            user.setgRefreshToken(responseDto.getRefreshToken());
+            user.setgAccessTokenCreatedAt(LocalDateTime.now());
+            user.setgTokenExpiresIn(responseDto.getExpiresIn());
             user.setLastUpdated(LocalDateTime.now());
+            user.setIsActive(true);
             taUserRepository.save(user);
         }
     }

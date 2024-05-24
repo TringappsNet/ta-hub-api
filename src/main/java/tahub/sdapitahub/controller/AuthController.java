@@ -125,7 +125,7 @@ public class AuthController {
             if (user != null) {
                 // Clear tokens from database
                 user.setgAccessToken(null);
-                user.setgRefreshToken(null);
+                user.setgTokenExpiresIn(null);
                 user.setCurrentSessionId(null);
                 taUserRepository.update(user);
                 session.removeAttribute("loggedInUser");

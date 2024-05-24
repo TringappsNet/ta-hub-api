@@ -25,10 +25,24 @@ public class TaUserRepository {
         return jdbcTemplate.query(UserQuery.FIND_BY_ID.getQuery(), new Object[]{id}, new TaUserMapper()).stream().findFirst();
     }
 
+    public Optional<TaUser> findByAccessToken(String accessToken) {
+        return jdbcTemplate.query(UserQuery.FIND_BY_ACCESS_TOKEN.getQuery(), new Object[]{accessToken}, new TaUserMapper()).stream().findFirst();
+    }
+
     public TaUser save(TaUser user) {
         jdbcTemplate.update(UserQuery.SAVE.getQuery(),user.getRoleId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), user.getPhone(),
-                user.getResetToken(), user.getPassword(), user.getIsActive(), user.getgAccessToken(), user.getgRefreshToken(), user.getCurrentSessionId(), user.getLastLoginTime(), user.getCreatedAt(), user.getLastUpdated());
+                user.getResetToken(), user.getPassword(), user.getIsActive(), user.getgAccessToken(), user.getgAccessTokenCreatedAt(), user.getgTokenExpiresIn(), user.getgIdToken(), user.getCurrentSessionId(), user.getLastLoginTime(), user.getCreatedAt(), user.getLastUpdated());
         return user;
+    }
+
+    public TaUser findByEmail(String email) {
+        List<TaUser> users = jdbcTemplate.query(UserQuery.FIND_BY_EMAIL.getQuery(), new Object[]{email}, new TaUserMapper());
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    public TaUser findByResetToken(String resetToken) {
+        List<TaUser> users = jdbcTemplate.query(UserQuery.FIND_BY_RESET_TOKEN.getQuery(), new Object[]{resetToken}, new TaUserMapper());
+        return users.isEmpty() ? null : users.get(0);
     }
 
     public TaUser update(TaUser user) {
@@ -83,9 +97,20 @@ public class TaUserRepository {
             queryParams.add(user.getgAccessToken());
             fieldsUpdated = true;
         }
-        if (user.getgRefreshToken() != null) {
-            queryBuilder.append("g_refresh_token = ?, ");
-            queryParams.add(user.getgRefreshToken());
+
+        if (user.getgAccessTokenCreatedAt() != null) {
+            queryBuilder.append("g_access_token_created_at = ?, ");
+            queryParams.add(user.getgAccessTokenCreatedAt());
+            fieldsUpdated = true;
+        }
+        if (user.getgIdToken() != null) {
+            queryBuilder.append("g_id_token = ?, ");
+            queryParams.add(user.getgIdToken());
+            fieldsUpdated = true;
+        }
+        if (user.getgTokenExpiresIn() != null) {
+            queryBuilder.append("g_token_expires_in = ?, ");
+            queryParams.add(user.getgTokenExpiresIn());
             fieldsUpdated = true;
         }
         if (user.getCurrentSessionId() != null) {
@@ -120,13 +145,5 @@ public class TaUserRepository {
         jdbcTemplate.update(UserQuery.DELETE_BY_ID.getQuery(), id);
     }
 
-    public TaUser findByEmail(String email) {
-        List<TaUser> users = jdbcTemplate.query(UserQuery.FIND_BY_EMAIL.getQuery(), new Object[]{email}, new TaUserMapper());
-        return users.isEmpty() ? null : users.get(0);
-    }
 
-    public TaUser findByResetToken(String resetToken) {
-        List<TaUser> users = jdbcTemplate.query(UserQuery.FIND_BY_RESET_TOKEN.getQuery(), new Object[]{resetToken}, new TaUserMapper());
-        return users.isEmpty() ? null : users.get(0);
-    }
 }
