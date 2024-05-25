@@ -26,6 +26,8 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdated;
 
+    private String clientName;
+
     // Private constructor to enforce builder usage
     private Task(Builder builder) {
         this.taskId = builder.taskId;
@@ -46,6 +48,9 @@ public class Task {
         this.description = builder.description;
         this.createdAt = builder.createdAt;
         this.lastUpdated = builder.lastUpdated;
+
+        this.clientName = builder.clientName;
+
     }
 
     // Getters and Setters
@@ -195,6 +200,16 @@ public class Task {
         this.lastUpdated = lastUpdated;
     }
 
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+
     // Builder class
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
@@ -216,6 +231,8 @@ public class Task {
         private String description;
         private LocalDateTime createdAt;
         private LocalDateTime lastUpdated;
+
+        private String clientName;
 
         public Builder taskId(Long taskId) {
             this.taskId = taskId;
@@ -308,6 +325,10 @@ public class Task {
             return this;
         }
 
+        public Builder clientName(String clientName) {
+            this.clientName = clientName;
+            return this;
+        }
         public Task build() {
             return new Task(this);
         }
