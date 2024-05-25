@@ -1,4 +1,4 @@
-package tahub.sdapitahub.repository.mapper;
+package tahub.sdapitahub.repository.mapper.Task;
 
 import org.springframework.jdbc.core.RowMapper;
 import tahub.sdapitahub.entity.Task;

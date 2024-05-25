@@ -1,4 +1,4 @@
-package tahub.sdapitahub.repository.Candidate;
+package tahub.sdapitahub.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

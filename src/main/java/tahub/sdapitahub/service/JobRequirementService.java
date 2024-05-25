@@ -1,7 +1,6 @@
 package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.Utils.MailUtil;

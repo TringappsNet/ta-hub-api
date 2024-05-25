@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import tahub.sdapitahub.entity.Task;
-import tahub.sdapitahub.repository.mapper.TaskMapper;
+import tahub.sdapitahub.repository.mapper.Task.TaskMapper;
+import tahub.sdapitahub.repository.mapper.Task.TaskViewMapper;
 import tahub.sdapitahub.repository.query.TaskQuery;
 
 import java.util.ArrayList;
@@ -24,6 +25,10 @@ public class TaskRepository {
 
     public List<Task> findAll() {
         return jdbcTemplate.query(TaskQuery.FIND_ALL.getQuery(), new TaskMapper());
+    }
+
+    public List<Task> taskViewAll() {
+        return jdbcTemplate.query(TaskQuery.TASK_VIEW_ALL.getQuery(), new TaskViewMapper());
     }
 
     public Optional<Task> findById(Long id) {

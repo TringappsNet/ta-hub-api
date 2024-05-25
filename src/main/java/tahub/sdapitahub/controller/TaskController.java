@@ -26,6 +26,13 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
+    @GetMapping("/task/view")
+    public ResponseEntity<List<Task>> getTaskViewAll() {
+        List<Task> tasks = taskService.taskViewAll();
+        return ResponseEntity.ok(tasks);
+    }
+
+
     @GetMapping("/task/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         Optional<Task> task = taskService.getTaskById(id);
