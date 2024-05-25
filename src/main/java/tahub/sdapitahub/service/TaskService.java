@@ -20,7 +20,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> createTasksForJobRequirement(JobRequirement jobRequirement, List<TaskDTO> taskDTOs, int noOfOpenings) {
+    public List<Task>  createTasksForJobRequirement(JobRequirement jobRequirement, List<TaskDTO> taskDTOs, int noOfOpenings) {
         List<Task> tasks = new ArrayList<>();
         for (TaskDTO taskDTO : taskDTOs) {
             for (int i = 0; i < noOfOpenings; i++) {
