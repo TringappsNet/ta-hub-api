@@ -42,9 +42,10 @@ public class JobRequirementService {
 
         String subject = "Job Approval Request";
         String text = "To Approve, please visit the following link: " +
-                "http://localhost:3000/forget-password?token=" + encryptedToken;
+                "http://localhost:5173/navbar?token=" + encryptedToken;
         MailUtil.sendMail(user.getEmail(), subject, text);
     }
+
     public JobRequirement createJobRequirement(JobRequirementDTO jobRequirementDTO) {
         JobRequirement jobRequirement = convertToEntity(jobRequirementDTO);
         jobRequirement.setCreatedAt(LocalDateTime.now());
