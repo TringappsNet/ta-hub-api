@@ -66,6 +66,7 @@ public class AuthService {
         MailUtil.sendMail(user.getEmail(), subject, text);
     }
 
+
     public TaUser sendInvitation(String email, Long roleId) {
         String inviteToken = TokenUtil.generateRandomString();
         String encryptedToken = TokenUtil.encryptToken(inviteToken);
@@ -86,6 +87,7 @@ public class AuthService {
         return user;
     }
 
+
     public TaUser resetPassword(TaUser user, String newPassword) {
         user.setPassword(encodePassword(newPassword));
         user.setResetToken(null);
@@ -100,4 +102,5 @@ public class AuthService {
         Optional<TaUser> user = userRepository.findByInviteToken(inviteToken);
         return user != null;
     }
+
 }
