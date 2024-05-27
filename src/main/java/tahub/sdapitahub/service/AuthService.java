@@ -81,7 +81,7 @@ public class AuthService {
 
         // Send invitation email
         String subject = "Invitation to Register";
-        String text = "You have been invited to register. Please use the following link to complete your registration: " + "http://localhost:5173/reset-new?token=" + inviteToken;
+        String text = "You have been invited to register. Please use the following link to complete your registration: " + "http://localhost:5173/register?token=" + inviteToken;
         MailUtil.sendMail(email, subject, text);
 
         return user;
