@@ -109,9 +109,9 @@ public class JobRequirementController {
 
 
     @PostMapping("/approve-requirement")
-    public ResponseEntity<?> validateTokenAndApprove(@RequestParam String token, @RequestParam Long jobId) {
+    public ResponseEntity<?> validateTokenAndApprove(@RequestParam String token) {
         try {
-            jobRequirementService.approveRequirement(token, jobId);
+            jobRequirementService.approveRequirement(token);
             return ResponseEntity.status(HttpStatus.OK).body("Job requirement approved successfully!");
         } catch (ValidationException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
