@@ -27,6 +27,9 @@ public class JobRequirementMapper implements RowMapper<JobRequirement> {
                 .tentativeStartDate(resultSet.getObject("tentative_start_date", LocalDate.class))
                 .tentativeDuration(resultSet.getString("tentative_duration"))
                 .approvedBy(resultSet.getString("approved_by"))
+                .approvalStatus(resultSet.getBoolean("approval_status"))
+                .approvalToken(resultSet.getString("approval_token"))
+
                 .createdAt(resultSet.getObject("created_at", LocalDateTime.class))
                 .lastUpdated(resultSet.getObject("last_updated", LocalDateTime.class));
 

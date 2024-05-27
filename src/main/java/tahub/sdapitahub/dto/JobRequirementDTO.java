@@ -36,6 +36,10 @@ public class JobRequirementDTO {
     @NotNull
     private String approvedBy;
     @NotNull
+    private String approvalToken;
+    @NotNull
+    private Boolean approvalStatus;
+    @NotNull
     private String createdAt;
     @NotNull
     private String lastUpdated;
@@ -110,5 +114,21 @@ public class JobRequirementDTO {
 
     public String getLastUpdated() {
         return lastUpdated;
+    }
+
+    public Boolean getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(Boolean approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
+
+    public String getApprovalToken() {
+        return approvalToken;
+    }
+
+    public void setApprovalToken(String approvalToken) {
+        this.approvalToken = approvalToken;
     }
 }

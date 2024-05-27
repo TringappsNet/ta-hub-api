@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.entity.Task;
+import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.repository.TaskRepository;
 import tahub.sdapitahub.dto.TaskDTO;
 
@@ -54,6 +55,12 @@ public class TaskService {
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
+
+
+    public List<Task> getTasksByJobId(Long jobId) {
+        return taskRepository.fingTasksByJobId(jobId);
+    }
+
 
     public Task createTask(Task task) {
         task.setCreatedAt(LocalDateTime.now());

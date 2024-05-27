@@ -8,13 +8,17 @@ import tahub.sdapitahub.Utils.TokenUtil;
 import tahub.sdapitahub.dto.JobRequirementDTO;
 import tahub.sdapitahub.dto.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
-import tahub.sdapitahub.entity.TaUser;
+import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.repository.TaUserRepository;
 
+import javax.validation.ValidationException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JobRequirementService {
@@ -29,25 +33,61 @@ public class JobRequirementService {
 
 
 
-    public void JobApproval(String email) {
-        TaUser user = taUserRepository.findByEmail(email);
-        if (user == null) {
+
+    public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<TaskDTO> positions) {
+        JobRequirement jobRequirement = jobRequirementRepository.findByApprovedBy(email);
+        if (jobRequirement == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
         String token = TokenUtil.generateRandomString();
         String encryptedToken = TokenUtil.encryptToken(token);
-        user.setResetToken(encryptedToken);
-        taUserRepository.update(user);
+        jobRequirement.setApprovalToken(encryptedToken);
+        jobRequirementRepository.update(jobRequirement);
 
         String subject = "Job Approval Request";
-        String text = "To Approve, please visit the following link: " +
-                "http://localhost:5173/navbar?token=" + encryptedToken;
-        MailUtil.sendMail(user.getEmail(), subject, text);
+        String text = "Hey " + ", you have a client requirement to approve, for the client " + clientName +
+                ", which starts from " + requirementStartDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+                " with " + positions.stream()
+                .map(p -> p.getNoOfOpenings() + " openings on the " + p.getJobTitle())
+                .collect(Collectors.joining(" and ")) + " To Approve, please visit the following link: " +
+        "http://localhost:5173/navbar?token=" + encryptedToken;
+
+        MailUtil.sendMail(jobRequirement.getApprovedBy(), subject, text);
     }
+
+
+    public void approveRequirement(String token, Long jobId) {
+        Optional<JobRequirement> optionalJobRequirement = jobRequirementRepository.findById(jobId);
+        if (!optionalJobRequirement.isPresent()) {
+            throw new ValidationException("Job requirement not found with ID: " + jobId);
+        }
+
+        JobRequirement jobRequirement = optionalJobRequirement.get();
+
+        if (!TokenUtil.isApprovalTokenValid(jobRequirement, token)) {
+            throw new ValidationException("Invalid token");
+        }
+
+        // Update job requirement approval status
+        jobRequirement.setApprovalStatus(true);
+        jobRequirement.setLastUpdated(LocalDateTime.now());
+        jobRequirementRepository.update(jobRequirement);
+
+        // Update associated tasks' approval status
+        List<Task> tasks = taskService.getTasksByJobId(jobId);
+        for (Task task : tasks) {
+            task.setApprovalStatus(true);
+            task.setLastUpdated(LocalDateTime.now());
+            taskService.updateTask(task.getTaskId(), task);
+        }
+
+    }
+
 
     public JobRequirement createJobRequirement(JobRequirementDTO jobRequirementDTO) {
         JobRequirement jobRequirement = convertToEntity(jobRequirementDTO);
+        jobRequirement.setApprovalStatus(false);
         jobRequirement.setCreatedAt(LocalDateTime.now());
         jobRequirement.setLastUpdated(LocalDateTime.now());
         return jobRequirementRepository.save(jobRequirement);
@@ -89,7 +129,6 @@ public class JobRequirementService {
 
 
 
-
     private JobRequirement convertToEntity(JobRequirementDTO jobRequirementDTO) {
         return new JobRequirement.Builder()
                 .requirementStartDate(jobRequirementDTO.getRequirementStartDate())
@@ -104,6 +143,9 @@ public class JobRequirementService {
                 .tentativeStartDate(jobRequirementDTO.getTentativeStartDate())
                 .tentativeDuration(jobRequirementDTO.getTentativeDuration())
                 .approvedBy(jobRequirementDTO.getApprovedBy())
+                .approvalStatus(jobRequirementDTO.getApprovalStatus())
+                .approvalToken(jobRequirementDTO.getApprovalToken())
+
                 .createdAt(LocalDateTime.now())
                 .lastUpdated(LocalDateTime.now())
                 .build();

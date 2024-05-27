@@ -11,8 +11,6 @@ import tahub.sdapitahub.Utils.MailUtil;
 import tahub.sdapitahub.Utils.TokenUtil;
 
 import java.time.LocalDateTime;
-import java.util.Random;
-import java.security.SecureRandom;
 
 @Service
 public class AuthService {
@@ -64,14 +62,8 @@ public class AuthService {
 
         String subject = "Password Reset Request";
         String text = "To reset your password, please visit the following link: " +
-                "http://localhost:3000/forget-password?token=" + encryptedToken;
+                "http://localhost:5173/reset-new?token=" + encryptedToken;
         MailUtil.sendMail(user.getEmail(), subject, text);
-    }
-
-
-    public boolean isTokenValid(TaUser user, String token) {
-        String decryptedToken = TokenUtil.decryptToken(user.getResetToken());
-        return decryptedToken.equals(token);
     }
 
     public TaUser resetPassword(TaUser user, String newPassword) {

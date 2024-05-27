@@ -21,6 +21,15 @@ public class JobRequirementRepository {
         return jdbcTemplate.query(JobRequirementQuery.FIND_ALL.getQuery(), new JobRequirementMapper());
     }
 
+    public JobRequirement findByApprovedBy(String email) {
+        List<JobRequirement> jobRequirements = jdbcTemplate.query(JobRequirementQuery.FIND_BY_APPROVED_BY.getQuery(), new Object[]{email}, new JobRequirementMapper());
+        if (jobRequirements.isEmpty()) {
+            return null;
+        }
+        return jobRequirements.get(0);
+    }
+
+
     public Optional<JobRequirement> findById(Long id) {
         return jdbcTemplate.query(JobRequirementQuery.FIND_BY_ID.getQuery(), new Object[]{id}, new JobRequirementMapper())
                 .stream()
@@ -29,7 +38,6 @@ public class JobRequirementRepository {
     public List<JobRequirement> findByClientName(String clientName) {
         return jdbcTemplate.query(JobRequirementQuery.FIND_BY_CLIENT_NAME.getQuery(), new Object[]{clientName}, new JobRequirementMapper());
     }
-
 
     public JobRequirement save(JobRequirement jobRequirement) {
         jdbcTemplate.update(
@@ -46,6 +54,9 @@ public class JobRequirementRepository {
                 jobRequirement.getTentativeStartDate(),
                 jobRequirement.getTentativeDuration(),
                 jobRequirement.getApprovedBy(),
+                jobRequirement.getApprovalStatus(),
+                jobRequirement.getApprovalToken(),
+
                 jobRequirement.getCreatedAt(),
                 jobRequirement.getLastUpdated()
 
@@ -123,6 +134,16 @@ public class JobRequirementRepository {
         if (jobRequirement.getApprovedBy() != null) {
             queryBuilder.append("approved_by = ?, ");
             queryParams.add(jobRequirement.getApprovedBy());
+            fieldsUpdated = true;
+        }
+        if (jobRequirement.getApprovalStatus() != null) {
+            queryBuilder.append("approval_status = ?, ");
+            queryParams.add(jobRequirement.getApprovalStatus());
+            fieldsUpdated = true;
+        }
+        if (jobRequirement.getApprovalToken() != null) {
+            queryBuilder.append("approval_token = ?, ");
+            queryParams.add(jobRequirement.getApprovalToken());
             fieldsUpdated = true;
         }
         if (jobRequirement.getLastUpdated() != null) {

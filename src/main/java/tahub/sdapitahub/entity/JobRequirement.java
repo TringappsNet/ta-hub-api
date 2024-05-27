@@ -22,6 +22,8 @@ public class JobRequirement {
     private LocalDate tentativeStartDate;
     private String tentativeDuration;
     private String approvedBy;
+    private String approvalToken;
+    private Boolean approvalStatus;
     private LocalDateTime createdAt;
     private LocalDateTime lastUpdated;
 
@@ -40,6 +42,9 @@ public class JobRequirement {
         this.tentativeStartDate = builder.tentativeStartDate;
         this.tentativeDuration = builder.tentativeDuration;
         this.approvedBy = builder.approvedBy;
+        this.approvalStatus = builder.approvalStatus;
+        this.approvalToken = builder.approvalToken;
+
         this.createdAt = builder.createdAt;
         this.lastUpdated = builder.lastUpdated;
     }
@@ -158,8 +163,6 @@ public class JobRequirement {
         this.approvedBy = approvedBy;
     }
 
-
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -174,6 +177,22 @@ public class JobRequirement {
 
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getApprovalToken() {
+        return approvalToken;
+    }
+
+    public void setApprovalToken(String approvalToken) {
+        this.approvalToken = approvalToken;
+    }
+
+    public Boolean getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(Boolean approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 
     @JsonPOJOBuilder(withPrefix = "")
@@ -192,6 +211,9 @@ public class JobRequirement {
         private LocalDate tentativeStartDate;
         private String tentativeDuration;
         private String approvedBy;
+        private String approvalToken;
+        private Boolean approvalStatus;
+
         private LocalDateTime createdAt;
         private LocalDateTime lastUpdated;
 
@@ -262,6 +284,16 @@ public class JobRequirement {
 
         public Builder approvedBy(String approvedBy) {
             this.approvedBy = approvedBy;
+            return this;
+        }
+
+        public Builder approvalStatus(Boolean approvalStatus) {
+            this.approvalStatus = approvalStatus;
+            return this;
+        }
+
+        public Builder approvalToken(String approvalToken) {
+            this.approvalToken = approvalToken;
             return this;
         }
 

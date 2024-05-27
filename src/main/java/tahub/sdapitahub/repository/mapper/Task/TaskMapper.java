@@ -26,6 +26,7 @@ public class TaskMapper implements RowMapper<Task> {
                 .secondaryAssignee(rs.getString("secondary_assignee"))
                 .taskStatus(rs.getString("task_status"))
                 .backlogs(rs.getBoolean("backlogs"))
+                .approvalStatus(rs.getBoolean("approval_status"))
                 .description(rs.getString("description"))
                 .createdAt(rs.getObject("created_at", LocalDateTime.class))
                 .lastUpdated(rs.getObject("last_updated", LocalDateTime.class))
