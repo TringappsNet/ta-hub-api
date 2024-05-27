@@ -34,6 +34,7 @@ public class TaskService {
                         .yearsOfExperienceRequired(taskDTO.getYearsOfExperienceRequired())
                         .primarySkillSet(taskDTO.getPrimarySkillSet())
                         .secondarySkillSet(taskDTO.getSecondarySkillSet())
+                        .approvalStatus(false)
                         .createdAt(LocalDateTime.now())
                         .lastUpdated(LocalDateTime.now())
                         .build();
