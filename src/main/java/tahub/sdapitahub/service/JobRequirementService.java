@@ -51,19 +51,19 @@ public class JobRequirementService {
                 " with " + positions.stream()
                 .map(p -> p.getNoOfOpenings() + " openings on the " + p.getJobTitle())
                 .collect(Collectors.joining(" and ")) + " To Approve, please visit the following link: " +
-        "http://localhost:5173/navbar?token=" + encryptedToken;
+        "http://localhost:5173/approval-req?token=" + encryptedToken;
 
         MailUtil.sendMail(jobRequirement.getApprovedBy(), subject, text);
     }
 
 
-    public void approveRequirement(String token, Long jobId) {
-        Optional<JobRequirement> optionalJobRequirement = jobRequirementRepository.findById(jobId);
-        if (!optionalJobRequirement.isPresent()) {
-            throw new ValidationException("Job requirement not found with ID: " + jobId);
+    public void approveRequirement(String token) {
+        List<JobRequirement> jobRequirements = jobRequirementRepository.findByApprovalToken(token);
+        if (jobRequirements.isEmpty()) {
+            throw new ValidationException("Job requirement not found with approval token: " + token);
         }
 
-        JobRequirement jobRequirement = optionalJobRequirement.get();
+        JobRequirement jobRequirement = jobRequirements.get(0);
 
         if (!TokenUtil.isApprovalTokenValid(jobRequirement, token)) {
             throw new ValidationException("Invalid token");
@@ -75,13 +75,12 @@ public class JobRequirementService {
         jobRequirementRepository.update(jobRequirement);
 
         // Update associated tasks' approval status
-        List<Task> tasks = taskService.getTasksByJobId(jobId);
+        List<Task> tasks = taskService.getTasksByJobId(jobRequirement.getJobId());
         for (Task task : tasks) {
             task.setApprovalStatus(true);
             task.setLastUpdated(LocalDateTime.now());
             taskService.updateTask(task.getTaskId(), task);
         }
-
     }
 
 

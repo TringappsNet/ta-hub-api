@@ -39,6 +39,10 @@ public class JobRequirementRepository {
         return jdbcTemplate.query(JobRequirementQuery.FIND_BY_CLIENT_NAME.getQuery(), new Object[]{clientName}, new JobRequirementMapper());
     }
 
+    public List<JobRequirement> findByApprovalToken(String approval_token) {
+        return jdbcTemplate.query(JobRequirementQuery.FIND_BY_APPROVAL_TOKEN.getQuery(), new Object[]{approval_token}, new JobRequirementMapper());
+    }
+
     public JobRequirement save(JobRequirement jobRequirement) {
         jdbcTemplate.update(
                 JobRequirementQuery.SAVE.getQuery(),
