@@ -1,5 +1,9 @@
 package tahub.sdapitahub.Utils;
 
+import tahub.sdapitahub.entity.JobRequirement;
+import tahub.sdapitahub.entity.TaUser;
+import tahub.sdapitahub.entity.Task;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -13,7 +17,7 @@ public class TokenUtil {
     private static final int KEY_LENGTH_IN_BITS = 128;
     private static final int KEY_LENGTH_IN_BYTES = KEY_LENGTH_IN_BITS / 8;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int LENGTH = 15;
+    private static final int LENGTH = 25;
 
     private static SecretKey secretKey;
 
@@ -35,17 +39,6 @@ public class TokenUtil {
         }
     }
 
-    public static String decryptToken(String encryptedToken) {
-        try {
-            Cipher cipher = Cipher.getInstance(SECRET_KEY_ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedToken));
-            return new String(decryptedBytes);
-        } catch (Exception e) {
-            throw new RuntimeException("Error decrypting token", e);
-        }
-    }
-
     public static String generateRandomString() {
         Random random = new SecureRandom();
         StringBuilder sb = new StringBuilder();
@@ -55,4 +48,15 @@ public class TokenUtil {
         }
         return sb.toString();
     }
+
+    public static boolean isResetTokenValid(TaUser user, String token) {
+        String decryptedToken = user.getResetToken();
+        return decryptedToken.equals(token);
+    }
+
+    public static boolean isApprovalTokenValid(JobRequirement jobRequirement, String token) {
+        String decryptedToken = jobRequirement.getApprovalToken();
+        return decryptedToken.equals(token);
+    }
+
 }

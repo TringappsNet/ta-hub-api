@@ -21,6 +21,7 @@ public class Task {
     private String primaryAssignee;
     private String taskStatus;
     private String secondaryAssignee;
+    private Boolean approvalStatus;
     private boolean backlogs;
     private String description;
     private LocalDateTime createdAt;
@@ -45,6 +46,7 @@ public class Task {
         this.secondaryAssignee = builder.secondaryAssignee;
         this.taskStatus = builder.taskStatus;
         this.backlogs = builder.backlogs;
+        this.approvalStatus = builder.approvalStatus;
         this.description = builder.description;
         this.createdAt = builder.createdAt;
         this.lastUpdated = builder.lastUpdated;
@@ -175,6 +177,13 @@ public class Task {
     public void setBacklogs(boolean backlogs) {
         this.backlogs = backlogs;
     }
+    public Boolean getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(Boolean approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
 
     public String getDescription() {
         return description;
@@ -228,6 +237,7 @@ public class Task {
         private String secondaryAssignee;
         private String taskStatus;
         private boolean backlogs;
+        private Boolean approvalStatus;
         private String description;
         private LocalDateTime createdAt;
         private LocalDateTime lastUpdated;
@@ -310,6 +320,10 @@ public class Task {
             return this;
         }
 
+        public Builder approvalStatus(Boolean approvalStatus) {
+            this.approvalStatus = approvalStatus;
+            return this;
+        }
         public Builder description(String description) {
             this.description = description;
             return this;

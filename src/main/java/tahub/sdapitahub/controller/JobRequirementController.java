@@ -4,10 +4,11 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.JobRequirementDTO;
+import tahub.sdapitahub.dto.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
-import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.service.JobRequirementService;
 import tahub.sdapitahub.service.AuthService;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 import javax.validation.ValidationException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -94,11 +96,29 @@ public class JobRequirementController {
 
 
     @PostMapping("/job-approval")
-    public ResponseEntity<Object> jobApproval(@RequestBody TaUser taUser) {
-        String email = taUser.getEmail();
-        jobRequirementService.JobApproval(email);
-        return ResponseEntity.status(200).body("Job approval request sent!");
+    public ResponseEntity<Object> jobApproval(@RequestBody JobRequirementDTO jobRequirementDTO) {
+        String email = jobRequirementDTO.getApprovedBy();
+        String clientName = jobRequirementDTO.getClientName();
+        LocalDate requirementStartDate = jobRequirementDTO.getRequirementStartDate();
+        List<TaskDTO> positions = jobRequirementDTO.getPositions();
+
+        jobRequirementService.jobApproval(email, clientName, requirementStartDate, positions);
+        return ResponseEntity.status(HttpStatus.OK).body("Job approval request sent!");
     }
 
 
+
+    @PostMapping("/approve-requirement")
+    public ResponseEntity<?> validateTokenAndApprove(@RequestParam String token, @RequestParam Long jobId) {
+        try {
+            jobRequirementService.approveRequirement(token, jobId);
+            return ResponseEntity.status(HttpStatus.OK).body("Job requirement approved successfully!");
+        } catch (ValidationException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (UsernameNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (ServiceException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while approving job requirement.");
+        }
+    }
 }

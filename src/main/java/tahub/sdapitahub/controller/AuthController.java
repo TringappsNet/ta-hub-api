@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.Utils.TokenUtil;
 import tahub.sdapitahub.dto.TaUserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
@@ -26,6 +27,7 @@ public class AuthController {
     private TaUserRepository taUserRepository;
     @Autowired
     private AuthService authService;
+
 
     @PostMapping("/register")
     public ResponseEntity<TaUser> register(@RequestBody TaUser user) {
@@ -103,7 +105,7 @@ public class AuthController {
             throw new UsernameNotFoundException("User not found");
         }
 
-        if (!authService.isTokenValid(user, token)) {
+        if (!TokenUtil.isResetTokenValid(user, token)) {
             throw new BadCredentialsException("Invalid token");
         }
 

@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import tahub.sdapitahub.entity.Task;
+import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.repository.mapper.Task.TaskMapper;
 import tahub.sdapitahub.repository.mapper.Task.TaskViewMapper;
+import tahub.sdapitahub.repository.mapper.TaskCandidates.TaskCandidateMapper;
+import tahub.sdapitahub.repository.query.TaskCandidateQuery;
 import tahub.sdapitahub.repository.query.TaskQuery;
 
 import java.util.ArrayList;
@@ -31,6 +34,10 @@ public class TaskRepository {
         return jdbcTemplate.query(TaskQuery.TASK_VIEW_ALL.getQuery(), new TaskViewMapper());
     }
 
+    public List<Task> fingTasksByJobId(Long id) {
+        return jdbcTemplate.query(TaskQuery.FIND_BY_JOB_ID.getQuery(),new Object[]{id}, new TaskMapper());
+    }
+
     public Optional<Task> findById(Long id) {
         return jdbcTemplate.query(TaskQuery.FIND_BY_ID.getQuery(), new Object[]{id}, new TaskMapper())
                 .stream().findFirst();
@@ -52,6 +59,7 @@ public class TaskRepository {
                 task.getSecondaryAssignee(),
                 task.getTaskStatus(),
                 task.isBacklogs(),
+                task.getApprovalStatus(),
                 task.getDescription(),
                 task.getCreatedAt(),
                 task.getLastUpdated());
@@ -107,6 +115,11 @@ public class TaskRepository {
         if (task.isBacklogs()) {
             queryBuilder.append("backlogs = ?, ");
             queryParams.add(task.isBacklogs());
+            fieldsUpdated = true;
+        }
+        if (task.getApprovalStatus() != null) {
+            queryBuilder.append("approval_status = ?, ");
+            queryParams.add(task.getApprovalStatus());
             fieldsUpdated = true;
         }
         if (task.getDescription() != null) {
