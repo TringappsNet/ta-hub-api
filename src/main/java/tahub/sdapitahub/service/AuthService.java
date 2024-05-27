@@ -1,6 +1,5 @@
 package tahub.sdapitahub.service;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -66,6 +65,8 @@ public class AuthService {
         MailUtil.sendMail(user.getEmail(), subject, text);
     }
 
+
+
     public TaUser resetPassword(TaUser user, String newPassword) {
         user.setPassword(encodePassword(newPassword));
         user.setResetToken(null);
@@ -75,4 +76,7 @@ public class AuthService {
     public TaUser findUserByResetToken(String resetToken) {
         return userRepository.findByResetToken(resetToken);
     }
+
+
+
 }
