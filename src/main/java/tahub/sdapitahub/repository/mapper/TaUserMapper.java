@@ -12,7 +12,7 @@ public class TaUserMapper implements RowMapper<TaUser> {
     public TaUser mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new TaUser.Builder()
                 .userId(rs.getLong("user_id"))
-                .roleId(rs.getInt("role_id"))
+                .roleId(rs.getLong("role_id"))
                 .firstName(rs.getString("first_name"))
                 .lastName(rs.getString("last_name"))
                 .username(rs.getString("username"))
@@ -21,6 +21,7 @@ public class TaUserMapper implements RowMapper<TaUser> {
                 .resetToken(rs.getString("reset_token"))
                 .password(rs.getString("password_hash"))
                 .isActive(rs.getBoolean("is_active"))
+                .inviteToken(rs.getString("invite_token"))
                 .gAccessToken(rs.getString("g_access_token"))
                 .gAccessTokenCreatedAt(rs.getObject("g_access_token_created_at",LocalDateTime.class))
                 .gTokenExpiresIn(rs.getLong("g_token_expires_in"))

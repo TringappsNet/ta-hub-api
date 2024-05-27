@@ -25,13 +25,23 @@ public class TaUserRepository {
         return jdbcTemplate.query(UserQuery.FIND_BY_ID.getQuery(), new Object[]{id}, new TaUserMapper()).stream().findFirst();
     }
 
+    public Optional<TaUser> findByInviteToken(String inviteToken) {
+        return jdbcTemplate.query(UserQuery.FIND_BY_INVITE_TOKEN.getQuery(), new Object[]{inviteToken}, new TaUserMapper()).stream().findFirst();
+    }
+
     public Optional<TaUser> findByAccessToken(String accessToken) {
         return jdbcTemplate.query(UserQuery.FIND_BY_ACCESS_TOKEN.getQuery(), new Object[]{accessToken}, new TaUserMapper()).stream().findFirst();
     }
 
+
     public TaUser save(TaUser user) {
         jdbcTemplate.update(UserQuery.SAVE.getQuery(),user.getRoleId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), user.getPhone(),
-                user.getResetToken(), user.getPassword(), user.getIsActive(), user.getgAccessToken(), user.getgAccessTokenCreatedAt(), user.getgTokenExpiresIn(), user.getgIdToken(), user.getCurrentSessionId(), user.getLastLoginTime(), user.getCreatedAt(), user.getLastUpdated());
+                user.getResetToken(), user.getPassword(), user.getIsActive(), user.getInviteToken(), user.getgAccessToken(), user.getgAccessTokenCreatedAt(), user.getgTokenExpiresIn(), user.getgIdToken(), user.getCurrentSessionId(), user.getLastLoginTime(), user.getCreatedAt(), user.getLastUpdated());
+        return user;
+    }
+
+    public TaUser create(TaUser user) {
+        jdbcTemplate.update(UserQuery.CREATE.getQuery(),user.getRoleId(), user.getEmail(), user.getInviteToken());
         return user;
     }
 
@@ -90,6 +100,11 @@ public class TaUserRepository {
         if (user.getIsActive()) {
             queryBuilder.append("is_active = ?, ");
             queryParams.add(user.getIsActive());
+            fieldsUpdated = true;
+        }
+        if (user.getInviteToken() != null) {
+            queryBuilder.append("invite_token = ?, ");
+            queryParams.add(user.getInviteToken());
             fieldsUpdated = true;
         }
         if (user.getgAccessToken() != null) {

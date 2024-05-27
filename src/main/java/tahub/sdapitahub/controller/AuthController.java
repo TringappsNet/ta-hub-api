@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +31,10 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<TaUser> register(@RequestBody TaUser user) {
+    public ResponseEntity<Object> register(@RequestBody TaUser user, @RequestParam String inviteToken) {
+        if (!authService.validateInviteToken(inviteToken)) {
+            return ResponseEntity.badRequest().body("Invalid invite token");
+        }
         TaUser registeredUser = authService.registerUser(user);
         return ResponseEntity.ok(registeredUser);
     }
@@ -114,6 +118,22 @@ public class AuthController {
         return ResponseEntity.status(200).body("Password reset successfully");
     }
 
+
+    @PostMapping("/send-invite")
+    public ResponseEntity<Object> sendInvite(@RequestBody TaUserDTO userDTO) {
+        String email = userDTO.getEmail();
+        Long roleId =  userDTO.getRoleId();
+
+        if (email == null || roleId <= 0) {
+            return ResponseEntity.badRequest().body("Invalid request body");
+        }
+        try {
+            TaUser user = authService.sendInvitation(email, roleId);
+            return ResponseEntity.ok("Invitation sent to " + email);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send invitation: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/logout")
     public ResponseEntity<Object> logout(HttpServletRequest request) {

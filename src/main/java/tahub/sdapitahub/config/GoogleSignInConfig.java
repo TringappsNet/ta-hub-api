@@ -56,7 +56,7 @@ public class GoogleSignInConfig {
             TaUser user = builder
                     .email(responseDto.getEmail())
                     .username(responseDto.getUsername())
-                    .roleId(1)
+                    .roleId(1L)
                     .isActive(true)
                     .createdAt(LocalDateTime.now())
                     .lastUpdated(LocalDateTime.now())
