@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @JsonDeserialize(builder = TaUser.Builder.class)
 public class TaUser {
     private Long userId;
-    private long roleId;
+    private Long roleId;
     private String firstName;
     private String lastName;
     private String username;
@@ -17,6 +17,7 @@ public class TaUser {
     private String resetToken;
     private String password;
     private boolean isActive;
+    private String inviteToken;
     private String gAccessToken;
     private Long gTokenExpiresIn;
     private String gIdToken;
@@ -37,6 +38,7 @@ public class TaUser {
         this.resetToken = builder.resetToken;
         this.password = builder.password;
         this.isActive = builder.isActive;
+        this.inviteToken = builder.inviteToken;
         this.gAccessToken = builder.gAccessToken;
         this.gAccessTokenCreatedAt = builder.gAccessTokenCreatedAt;
         this.gIdToken = builder.gIdToken;
@@ -59,11 +61,11 @@ public class TaUser {
         this.userId = userId;
     }
 
-    public long getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(long roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
@@ -129,6 +131,14 @@ public class TaUser {
 
     public void setIsActive(boolean active) {
         isActive = active;
+    }
+
+    public String getInviteToken() {
+        return inviteToken;
+    }
+
+    public void setInviteToken(String inviteToken) {
+        this.inviteToken = inviteToken;
     }
 
     public String getgAccessToken() {
@@ -198,7 +208,7 @@ public class TaUser {
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private Long userId;
-        private int roleId;
+        private Long roleId;
         private String firstName;
         private String lastName;
         private String username;
@@ -207,6 +217,7 @@ public class TaUser {
         private String resetToken;
         private String password;
         private boolean isActive;
+        private String inviteToken;
         private String gAccessToken;
         private String gIdToken;
         private LocalDateTime gAccessTokenCreatedAt;
@@ -221,7 +232,7 @@ public class TaUser {
             return this;
         }
 
-        public Builder roleId(int roleId) {
+        public Builder roleId(Long roleId) {
             this.roleId = roleId;
             return this;
         }
@@ -266,6 +277,11 @@ public class TaUser {
             this.isActive = isActive;
             return this;
         }
+        public Builder inviteToken(String inviteToken) {
+            this.inviteToken = inviteToken;
+            return this;
+        }
+
 
         public Builder gAccessToken(String gAccessToken) {
             this.gAccessToken = gAccessToken;

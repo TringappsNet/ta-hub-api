@@ -1,6 +1,5 @@
 package tahub.sdapitahub.service;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +10,7 @@ import tahub.sdapitahub.Utils.MailUtil;
 import tahub.sdapitahub.Utils.TokenUtil;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -66,6 +66,26 @@ public class AuthService {
         MailUtil.sendMail(user.getEmail(), subject, text);
     }
 
+    public TaUser sendInvitation(String email, Long roleId) {
+        String inviteToken = TokenUtil.generateRandomString();
+        String encryptedToken = TokenUtil.encryptToken(inviteToken);
+
+        TaUser.Builder builder = new TaUser.Builder();
+            TaUser user = builder
+                    .email(email)
+                    .roleId(roleId)
+                    .inviteToken(encryptedToken)
+                    .build();
+            userRepository.create(user);
+
+        // Send invitation email
+        String subject = "Invitation to Register";
+        String text = "You have been invited to register. Please use the following link to complete your registration: " + "http://localhost:5173/reset-new?token=" + inviteToken;
+        MailUtil.sendMail(email, subject, text);
+
+        return user;
+    }
+
     public TaUser resetPassword(TaUser user, String newPassword) {
         user.setPassword(encodePassword(newPassword));
         user.setResetToken(null);
@@ -74,5 +94,10 @@ public class AuthService {
 
     public TaUser findUserByResetToken(String resetToken) {
         return userRepository.findByResetToken(resetToken);
+    }
+
+    public boolean validateInviteToken(String inviteToken) {
+        Optional<TaUser> user = userRepository.findByInviteToken(inviteToken);
+        return user != null;
     }
 }
