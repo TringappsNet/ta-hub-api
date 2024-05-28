@@ -138,6 +138,11 @@ public class TaUserRepository {
             queryParams.add(user.getLastLoginTime());
             fieldsUpdated = true;
         }
+        if (user.getCreatedAt() != null) {
+            queryBuilder.append("created_at = ?, ");
+            queryParams.add(user.getCreatedAt());
+            fieldsUpdated = true;
+        }
 
         if (user.getLastUpdated() != null) {
             queryBuilder.append("last_updated = ?, ");

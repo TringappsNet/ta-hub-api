@@ -33,12 +33,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody TaUser user, @RequestParam String inviteToken) {
-        Optional<TaUser> existingUserOptional = authService.findUserByInviteToken(inviteToken);
-
-        if (!existingUserOptional.isPresent()) {
+        Optional<TaUser> invitedUserOptional = authService.findUserByInviteToken(inviteToken);
+        if (!invitedUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("Invalid invite token");
         }
-        TaUser invitedUser = existingUserOptional.get();
+        TaUser invitedUser = invitedUserOptional.get();
         invitedUser.setUsername(user.getUsername());
         invitedUser.setPhone(user.getPhone());
         invitedUser.setPassword(user.getPassword());
