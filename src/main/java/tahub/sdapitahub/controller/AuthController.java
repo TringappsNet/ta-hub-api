@@ -42,6 +42,7 @@ public class AuthController {
         invitedUser.setUsername(user.getUsername());
         invitedUser.setPhone(user.getPhone());
         invitedUser.setPassword(user.getPassword());
+        invitedUser.setInviteToken(null);
 
         TaUser registeredUser = authService.registerUser(invitedUser);
 
@@ -99,7 +100,7 @@ public class AuthController {
         }
 
         user.setPassword(authService.encodePassword(userDTO.getNewPassword()));
-        authService.saveUser(user);
+        authService.updateUser(user);
 
         return ResponseEntity.status(200).body("Password reset successfully");
     }

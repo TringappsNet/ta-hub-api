@@ -2,7 +2,6 @@ package tahub.sdapitahub.Utils;
 
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.TaUser;
-import tahub.sdapitahub.entity.Task;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -16,8 +15,8 @@ public class TokenUtil {
     private static final String SECRET_KEY_ALGORITHM = "AES";
     private static final int KEY_LENGTH_IN_BITS = 128;
     private static final int KEY_LENGTH_IN_BYTES = KEY_LENGTH_IN_BITS / 8;
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int LENGTH = 25;
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnowbhfsdbcs807612734623742343287423pqrstuvwxyz0123456789";
+    private static final int LENGTH = 30;
 
     private static SecretKey secretKey;
 
@@ -50,13 +49,13 @@ public class TokenUtil {
     }
 
     public static boolean isResetTokenValid(TaUser user, String token) {
-        String decryptedToken = user.getResetToken();
-        return decryptedToken.equals(token);
+        String validToken = user.getResetToken();
+        return validToken.equals(token);
     }
 
     public static boolean isApprovalTokenValid(JobRequirement jobRequirement, String token) {
-        String decryptedToken = jobRequirement.getApprovalToken();
-        return decryptedToken.equals(token);
+        String validToken = jobRequirement.getApprovalToken();
+        return validToken.equals(token);
     }
 
 }
