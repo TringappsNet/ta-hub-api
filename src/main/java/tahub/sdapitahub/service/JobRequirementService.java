@@ -41,8 +41,8 @@ public class JobRequirementService {
         }
 
         String token = TokenUtil.generateRandomString();
-        String encryptedToken = TokenUtil.encryptToken(token);
-        jobRequirement.setApprovalToken(encryptedToken);
+//        String encryptedToken = TokenUtil.encryptToken(token);
+        jobRequirement.setApprovalToken(token);
         jobRequirementRepository.update(jobRequirement);
 
         String subject = "Job Approval Request";
@@ -51,7 +51,7 @@ public class JobRequirementService {
                 " with " + positions.stream()
                 .map(p -> p.getNoOfOpenings() + " openings on the " + p.getJobTitle())
                 .collect(Collectors.joining(" and ")) + " To Approve, please visit the following link: " +
-        "http://localhost:5173/approval-req?token=" + encryptedToken;
+        "http://localhost:5173/approval-req?token=" + token;
 
         MailUtil.sendMail(jobRequirement.getApprovedBy(), subject, text);
     }

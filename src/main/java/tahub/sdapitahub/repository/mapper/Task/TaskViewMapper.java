@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
                     .taskStatus(rs.getString("task_status"))
                     .backlogs(rs.getBoolean("backlogs"))
                     .description(rs.getString("description"))
+                    .approvalStatus(rs.getBoolean("approval_status"))
                     .createdAt(rs.getObject("created_at", LocalDateTime.class))
                     .lastUpdated(rs.getObject("last_updated", LocalDateTime.class))
 

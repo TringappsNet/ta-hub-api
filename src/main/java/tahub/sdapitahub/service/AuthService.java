@@ -28,7 +28,6 @@ public class AuthService {
         String hashedPassword = passwordEncoder.encode(taUser.getPassword());
         taUser.setPassword(hashedPassword);
         taUser.setIsActive(true);
-        taUser.setInviteToken(null);
         taUser.setCreatedAt(LocalDateTime.now());
         taUser.setLastUpdated(LocalDateTime.now());
         return userRepository.update(taUser);
@@ -55,6 +54,10 @@ public class AuthService {
         return userRepository.save(user);
     }
 
+    public TaUser updateUser(TaUser user) {
+        return userRepository.update(user);
+    }
+
     public void forgetPassword(String email) {
         TaUser user = userRepository.findByEmail(email);
         if (user == null) {
@@ -62,32 +65,32 @@ public class AuthService {
         }
 
         String token = TokenUtil.generateRandomString();
-        String encryptedToken = TokenUtil.encryptToken(token);
-        user.setResetToken(encryptedToken);
+//        String encryptedToken = TokenUtil.encryptToken(token);
+        user.setResetToken(token);
         userRepository.update(user);
 
         String subject = "Password Reset Request";
         String text = "To reset your password, please visit the following link: " +
-                "http://localhost:5173/reset-new?token=" + encryptedToken;
+                "http://localhost:5173/reset-new?token=" + token;
         MailUtil.sendMail(user.getEmail(), subject, text);
     }
 
 
     public TaUser sendInvitation(String email, Long roleId) {
         String inviteToken = TokenUtil.generateRandomString();
-        String encryptedToken = TokenUtil.encryptToken(inviteToken);
+//        String encryptedToken = TokenUtil.encryptToken(inviteToken);
 
         TaUser.Builder builder = new TaUser.Builder();
             TaUser user = builder
                     .email(email)
                     .roleId(roleId)
-                    .inviteToken(encryptedToken)
+                    .inviteToken(inviteToken)
                     .build();
             userRepository.create(user);
 
         // Send invitation email
         String subject = "Invitation to Register";
-        String text = "You have been invited to register into TA-Hub. Please use the following link to complete your registration: " + "http://localhost:5173/register?token=" + encryptedToken;
+        String text = "You have been invited to register into TA-Hub. Please use the following link to complete your registration: " + "http://localhost:5173/register?token=" + inviteToken;
         MailUtil.sendMail(email, subject, text);
 
         return user;
