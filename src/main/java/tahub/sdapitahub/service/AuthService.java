@@ -26,7 +26,7 @@ public class AuthService {
         taUser.setIsActive(true);
         taUser.setCreatedAt(LocalDateTime.now());
         taUser.setLastUpdated(LocalDateTime.now());
-        return userRepository.save(taUser);
+        return userRepository.update(taUser);
     }
 
     public BCryptPasswordEncoder getPasswordEncoder() {
