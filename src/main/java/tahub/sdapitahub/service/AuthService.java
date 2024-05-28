@@ -28,9 +28,10 @@ public class AuthService {
         String hashedPassword = passwordEncoder.encode(taUser.getPassword());
         taUser.setPassword(hashedPassword);
         taUser.setIsActive(true);
+        taUser.setInviteToken(null);
         taUser.setCreatedAt(LocalDateTime.now());
         taUser.setLastUpdated(LocalDateTime.now());
-        return userRepository.save(taUser);
+        return userRepository.update(taUser);
     }
 
 
@@ -86,7 +87,7 @@ public class AuthService {
 
         // Send invitation email
         String subject = "Invitation to Register";
-        String text = "You have been invited to register into TA-Hub. Please use the following link to complete your registration: " + "http://localhost:5173/register?token=" + inviteToken;
+        String text = "You have been invited to register into TA-Hub. Please use the following link to complete your registration: " + "http://localhost:5173/register?token=" + encryptedToken;
         MailUtil.sendMail(email, subject, text);
 
         return user;
