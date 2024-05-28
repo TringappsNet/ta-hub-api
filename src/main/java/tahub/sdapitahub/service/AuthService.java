@@ -20,14 +20,19 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    public Optional<TaUser> findUserByInviteToken(String inviteToken) {
+        return userRepository.findByInviteToken(inviteToken);
+    }
+
     public TaUser registerUser(TaUser taUser) {
         String hashedPassword = passwordEncoder.encode(taUser.getPassword());
         taUser.setPassword(hashedPassword);
         taUser.setIsActive(true);
         taUser.setCreatedAt(LocalDateTime.now());
         taUser.setLastUpdated(LocalDateTime.now());
-        return userRepository.update(taUser);
+        return userRepository.save(taUser);
     }
+
 
     public BCryptPasswordEncoder getPasswordEncoder() {
         return passwordEncoder;
@@ -100,7 +105,7 @@ public class AuthService {
 
     public boolean validateInviteToken(String inviteToken) {
         Optional<TaUser> user = userRepository.findByInviteToken(inviteToken);
-        return user != null;
+        return user.isPresent();
     }
 
 }

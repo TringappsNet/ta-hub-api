@@ -14,6 +14,7 @@ import tahub.sdapitahub.dto.TaUserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
+import java.util.Optional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -32,12 +33,21 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody TaUser user, @RequestParam String inviteToken) {
-        if (!authService.validateInviteToken(inviteToken)) {
+        Optional<TaUser> existingUserOptional = authService.findUserByInviteToken(inviteToken);
+
+        if (!existingUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("Invalid invite token");
         }
-        TaUser registeredUser = authService.registerUser(user);
+        TaUser invitedUser = existingUserOptional.get();
+        invitedUser.setUsername(user.getUsername());
+        invitedUser.setPhone(user.getPhone());
+        invitedUser.setPassword(user.getPassword());
+
+        TaUser registeredUser = authService.registerUser(invitedUser);
+
         return ResponseEntity.ok(registeredUser);
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO, HttpServletRequest request) {
