@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class MailUtil {
 
     private static JavaMailSender mailSender;
+    public static final String BASE_URL = "http://localhost:5173";
 
     @Autowired
     public MailUtil(JavaMailSender mailSender) {

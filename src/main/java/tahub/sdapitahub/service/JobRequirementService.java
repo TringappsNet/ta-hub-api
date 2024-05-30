@@ -51,7 +51,7 @@ public class JobRequirementService {
                 " with " + positions.stream()
                 .map(p -> p.getNoOfOpenings() + " openings on the " + p.getJobTitle())
                 .collect(Collectors.joining(" and ")) + " To Approve, please visit the following link: " +
-        "http://localhost:5173/approval-req?token=" + token;
+                MailUtil.BASE_URL + "/approval-req?token=" + token;
 
         MailUtil.sendMail(jobRequirement.getApprovedBy(), subject, text);
     }
@@ -68,7 +68,6 @@ public class JobRequirementService {
         if (!TokenUtil.isApprovalTokenValid(jobRequirement, token)) {
             throw new ValidationException("Invalid token");
         }
-
         // Update job requirement approval status
         jobRequirement.setApprovalStatus(true);
         jobRequirement.setLastUpdated(LocalDateTime.now());
