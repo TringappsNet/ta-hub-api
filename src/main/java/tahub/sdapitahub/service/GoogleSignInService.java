@@ -18,7 +18,6 @@ import tahub.sdapitahub.repository.TaUserRepository;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
