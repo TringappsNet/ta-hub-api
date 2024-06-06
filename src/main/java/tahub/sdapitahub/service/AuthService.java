@@ -27,23 +27,13 @@ public class AuthService {
 
     public TaUser registerUser(TaUser taUser) {
         String hashedPassword = passwordEncoder.encode(taUser.getPassword());
-        TaUser existingUser = userRepository.findByEmail(taUser.getEmail());
-        if (existingUser != null) {
-            taUser.setPassword(hashedPassword);
-            existingUser.setIsActive(true);
-            existingUser.setLastUpdated(LocalDateTime.now());
-            userRepository.update(existingUser);
-        } else {
-            taUser.setPassword(hashedPassword);
-            taUser.setIsActive(true);
-            taUser.setCreatedAt(LocalDateTime.now());
-            taUser.setLastUpdated(LocalDateTime.now());
-            return userRepository.update(taUser);
-        }
+        taUser.setPassword(hashedPassword);
+        taUser.setIsActive(true);
+        taUser.setLastUpdated(LocalDateTime.now());
+        userRepository.update(taUser);
         return taUser;
     }
-
-
+    
     public void forgetPassword(String email) {
         TaUser user = userRepository.findByEmail(email);
         if (user == null) {
