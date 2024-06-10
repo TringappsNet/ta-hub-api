@@ -45,8 +45,11 @@ public class AuthController {
         invitedUser.setInviteToken(null);
 
         TaUser registeredUser = authService.registerUser(invitedUser);
+        if(registeredUser == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register");
+        }
 
-        return ResponseEntity.ok(registeredUser);
+        return ResponseEntity.ok("Registration successful!");
     }
 
 
