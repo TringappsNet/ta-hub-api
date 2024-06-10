@@ -3,6 +3,7 @@ package tahub.sdapitahub.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid; // Ensure this import is added
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.Utils.TokenUtil;
-import tahub.sdapitahub.dto.TaUserDTO;
+import tahub.sdapitahub.dto.authentication.ForgotPasswordDTO;
+import tahub.sdapitahub.dto.authentication.RegisterDTO;
+import tahub.sdapitahub.dto.authentication.LoginDTO;
+import tahub.sdapitahub.dto.authentication.InviteUserDTO;
+import tahub.sdapitahub.dto.authentication.ResetNewPasswordDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
@@ -30,33 +35,39 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody TaUser user, @RequestParam String inviteToken) {
+    public ResponseEntity<Object> register(@Valid @RequestBody RegisterDTO registerDTO, @RequestParam String inviteToken) {
         Optional<TaUser> invitedUserOptional = authService.findUserByInviteToken(inviteToken);
         if (!invitedUserOptional.isPresent()) {
             return ResponseEntity.badRequest().body("Invalid invite token");
         }
         TaUser invitedUser = invitedUserOptional.get();
-        invitedUser.setUsername(user.getUsername());
-        invitedUser.setPhone(user.getPhone());
-        invitedUser.setPassword(user.getPassword());
+        invitedUser.setUsername(registerDTO.getUsername());
+        invitedUser.setPhone(registerDTO.getPhone());
+        invitedUser.setPassword(registerDTO.getPassword());
         invitedUser.setInviteToken(null);
 
         TaUser registeredUser = authService.registerUser(invitedUser);
 
-        return ResponseEntity.ok(registeredUser);
+        // Create and return the RegisterDTO with the required fields
+        RegisterDTO responseDTO = new RegisterDTO();
+        responseDTO.setUsername(registeredUser.getUsername());
+        responseDTO.setEmail(registeredUser.getEmail());
+        responseDTO.setPhone(registeredUser.getPhone());
+        responseDTO.setPassword(registerDTO.getPassword());
+
+        return ResponseEntity.ok(responseDTO);
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO, HttpServletRequest request) {
-        TaUser user = authService.findUserByEmail(userDTO.getEmail());
+    public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request) {
+        TaUser user = authService.findUserByEmail(loginDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        boolean passwordMatches = authService.checkPasswordMatch(userDTO.getPassword(), user.getPassword());
+        boolean passwordMatches = authService.checkPasswordMatch(loginDTO.getPassword(), user.getPassword());
         if (!passwordMatches) {
             throw new BadCredentialsException("Invalid password");
         }
@@ -71,42 +82,38 @@ public class AuthController {
         user.setLastLoginTime(LocalDateTime.now());
         taUserRepository.update(user);
 
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("user", user);
-        responseData.put("sessionId", session.getId());
-        responseData.put("sessionCreationTime", session.getCreationTime());
-        responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
-        responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
+        // Return only email and password
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("email", loginDTO.getEmail());
+        responseData.put("password", loginDTO.getPassword());
 
         return ResponseEntity.status(200).body(responseData);
     }
 
 
-    @PostMapping("/reset-new-password")
 
-    public ResponseEntity<Object> resetPassword(
-            @RequestBody TaUserDTO userDTO,
-            @RequestHeader("Session-Id") String sessionId,
-            @RequestHeader("Email") String email) {
-        TaUser user = authService.findUserByEmail(userDTO.getEmail());
+    @PostMapping("/reset-new-password")
+    public ResponseEntity<Object> resetPassword(@Valid @RequestBody ResetNewPasswordDTO resetNewPasswordDTO, @RequestHeader("Session-Id") String sessionId, @RequestHeader("Email") String email) {
+        TaUser user = authService.findUserByEmail(resetNewPasswordDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        boolean oldPasswordMatches = authService.checkPasswordMatch(userDTO.getOldPassword(), user.getPassword());
+        boolean oldPasswordMatches = authService.checkPasswordMatch(resetNewPasswordDTO.getOldPassword(), user.getPassword());
         if (!oldPasswordMatches) {
             throw new BadCredentialsException("Invalid old password");
         }
 
-        user.setPassword(authService.encodePassword(userDTO.getNewPassword()));
+        user.setPassword(authService.encodePassword(resetNewPasswordDTO.getNewPassword()));
+        user.setCurrentSessionId(sessionId); // Update currentSessionId
         authService.updateUser(user);
 
         return ResponseEntity.status(200).body("Password reset successfully");
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<Object> forgotPassword(@RequestBody TaUserDTO userDTO) {
-        String email = userDTO.getEmail();
+    public ResponseEntity<Object> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
+        String email = forgotPasswordDTO.getEmail();
         authService.forgetPassword(email);
         return ResponseEntity.status(200).body("Password reset link sent to email");
     }
@@ -130,11 +137,11 @@ public class AuthController {
 
 
     @PostMapping("/send-invite")
-    public ResponseEntity<Object> sendInvite(@RequestBody TaUserDTO userDTO) {
-        String email = userDTO.getEmail();
-        Long roleId =  userDTO.getRoleId();
+    public ResponseEntity<Object> sendInvite(@Valid @RequestBody InviteUserDTO inviteUserDTO) {
+        String email = inviteUserDTO.getEmail();
+        Long roleId = inviteUserDTO.getRoleId();
 
-        if (email == null || roleId <= 0) {
+        if (email == null || roleId == null || roleId <= 0) {
             return ResponseEntity.badRequest().body("Invalid request body");
         }
         try {
