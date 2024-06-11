@@ -1,6 +1,8 @@
 package tahub.sdapitahub.handlers;
 
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tahub.sdapitahub.exception.InvalidTokenException;
 import tahub.sdapitahub.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
         return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

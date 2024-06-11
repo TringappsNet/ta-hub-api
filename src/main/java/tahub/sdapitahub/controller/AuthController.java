@@ -15,6 +15,10 @@ import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
 import java.util.Optional;
+import tahub.sdapitahub.dto.ErrorResponse;
+
+
+
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -51,9 +55,43 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO, HttpServletRequest request) {
+<<<<<<< Updated upstream
         TaUser user = authService.findUserByEmail(userDTO.getEmail());
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
+=======
+        try {
+            TaUser user = authService.findUserByEmail(userDTO.getEmail());
+
+            if (user == null || !authService.checkPasswordMatch(userDTO.getPassword(), user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"" + AuthMessages.INVALID_CREDENTIALS.getMessage() + "\"}");
+            }
+
+
+            // Create session
+            HttpSession session = request.getSession(true);
+            session.setAttribute("loggedInUser", user);
+            session.setMaxInactiveInterval(24 * 60 * 60);
+
+            // Update user's current session ID
+            user.setCurrentSessionId(session.getId());
+            user.setLastLoginTime(LocalDateTime.now());
+            taUserRepository.update(user);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("user", user);
+            responseData.put("sessionId", session.getId());
+            responseData.put("sessionCreationTime", session.getCreationTime());
+            responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
+            responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
+            responseData.put("message", "Login success");
+
+            return ResponseEntity.status(200).body(responseData);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(AuthMessages.SERVER_ERROR));
+>>>>>>> Stashed changes
         }
 
         boolean passwordMatches = authService.checkPasswordMatch(userDTO.getPassword(), user.getPassword());
@@ -61,6 +99,7 @@ public class AuthController {
             throw new BadCredentialsException("Invalid password");
         }
 
+<<<<<<< Updated upstream
         // Create session
         HttpSession session = request.getSession(true);
         session.setAttribute("loggedInUser", user);
@@ -79,6 +118,8 @@ public class AuthController {
         responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
 
         return ResponseEntity.status(200).body(responseData);
+=======
+>>>>>>> Stashed changes
     }
 
 
