@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.dto.UserCreateDTO; // Ensure this import is correct
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -24,7 +26,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<TaUser> getUserById(@PathVariable("id") Long id) {
         TaUser user = userService.getUserById(id);
         if (user != null) {
@@ -35,12 +37,12 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<TaUser> createUser(@RequestBody TaUser user) {
-        TaUser createdUser = userService.createUser(user);
+    public ResponseEntity<TaUser> createUser(@RequestBody UserCreateDTO userCreateDTO) {
+        TaUser createdUser = userService.createUser(userCreateDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("user/{id}")
+    @PutMapping("/user/{id}")
     public ResponseEntity<TaUser> updateUser(@PathVariable("id") Long id, @RequestBody TaUser user) {
         TaUser updatedUser = userService.updateUser(id, user);
         if (updatedUser != null) {
@@ -50,7 +52,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("user/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
