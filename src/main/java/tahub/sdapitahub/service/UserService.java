@@ -2,7 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.dto.UserCreateDTO; // Ensure this import is correct
+import tahub.sdapitahub.dto.UserCreateDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 
@@ -26,28 +26,44 @@ public class UserService {
     }
 
     public TaUser createUser(UserCreateDTO userCreateDTO) {
-        // Set the created and last updated timestamps
-        userCreateDTO.setCreatedAt(LocalDateTime.now());
-        userCreateDTO.setLastUpdated(LocalDateTime.now());
-
-        // Convert UserCreateDTO to TaUser
         TaUser taUser = new TaUser.Builder()
-                .userId(userCreateDTO.getUserId())
                 .firstName(userCreateDTO.getFirstName())
-                .lastName(userCreateDTO.getLastName()) // Assuming you have a lastName field
-                .email(userCreateDTO.getEmail()) // Assuming you have an email field
-                .createdAt(userCreateDTO.getCreatedAt())
-                .lastUpdated(userCreateDTO.getLastUpdated())
+                .lastName(userCreateDTO.getLastName())
+                .username(userCreateDTO.getUsername())
+                .email(userCreateDTO.getEmail())
+                .phone(userCreateDTO.getPhone())
+                .resetToken(userCreateDTO.getResetToken())
+                .password(userCreateDTO.getPassword())
+                .isActive(userCreateDTO.getIsActive())
+                .currentSessionId(userCreateDTO.getCurrentSessionId())
+                .lastLoginTime(userCreateDTO.getLastLoginTime())
+                .createdAt(LocalDateTime.now())
+                .lastUpdated(LocalDateTime.now())
                 .build();
 
-        // Save the TaUser entity to the repository
         return userRepository.save(taUser);
     }
 
-    public TaUser updateUser(Long id, TaUser user) {
-        user.setUserId(id);
-        user.setLastUpdated(LocalDateTime.now());
-        return userRepository.save(user); // Assuming `update` method in repository is actually `save`
+    public TaUser updateUser(Long id, UserCreateDTO userCreateDTO) {
+        Optional<TaUser> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            TaUser existingUser = userOptional.get();
+            existingUser.setFirstName(userCreateDTO.getFirstName());
+            existingUser.setLastName(userCreateDTO.getLastName());
+            existingUser.setUsername(userCreateDTO.getUsername());
+            existingUser.setEmail(userCreateDTO.getEmail());
+            existingUser.setPhone(userCreateDTO.getPhone());
+            existingUser.setResetToken(userCreateDTO.getResetToken());
+            existingUser.setPassword(userCreateDTO.getPassword());
+            existingUser.setIsActive(userCreateDTO.getIsActive());
+            existingUser.setCurrentSessionId(userCreateDTO.getCurrentSessionId());
+            existingUser.setLastLoginTime(userCreateDTO.getLastLoginTime());
+            existingUser.setLastUpdated(LocalDateTime.now());
+
+            return userRepository.save(existingUser);
+        } else {
+            return null; // Or throw an exception, depending on your requirements
+        }
     }
 
     public void deleteUser(Long id) {

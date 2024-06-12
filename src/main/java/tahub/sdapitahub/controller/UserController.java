@@ -43,8 +43,8 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<TaUser> updateUser(@PathVariable("id") Long id, @RequestBody TaUser user) {
-        TaUser updatedUser = userService.updateUser(id, user);
+    public ResponseEntity<TaUser> updateUser(@PathVariable("id") Long id, @RequestBody UserCreateDTO userCreateDTO) {
+        TaUser updatedUser = userService.updateUser(id, userCreateDTO);
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {

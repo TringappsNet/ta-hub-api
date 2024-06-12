@@ -2,6 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.dto.TaskPostDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.entity.Task;
@@ -63,9 +64,28 @@ public class TaskService {
     }
 
 
-    public Task createTask(Task task) {
-        task.setCreatedAt(LocalDateTime.now());
-        task.setLastUpdated(LocalDateTime.now());
+    public Task createTask(TaskPostDTO taskPostDTO) {
+        Task task = new Task.Builder()
+                .jobId(taskPostDTO.getJob_id())
+                .jobTitle(taskPostDTO.getJobTitle())
+                .roleType(taskPostDTO.getRoleType())
+                .modeOfWork(taskPostDTO.getModeOfWork())
+                .workLocation(taskPostDTO.getWorkLocation())
+                .yearsOfExperienceRequired(taskPostDTO.getYearsOfExperienceRequired())
+                .primarySkillSet(taskPostDTO.getPrimarySkillSet())
+                .secondarySkillSet(taskPostDTO.getSecondarySkillSet())
+                .clientBudget(taskPostDTO.getClientBudget())
+                .assignedBudget(taskPostDTO.getAssignedBudget())
+                .primaryAssignee(taskPostDTO.getPrimaryAssignee())
+                .secondaryAssignee(taskPostDTO.getSecondaryAssignee())
+                .taskStatus(taskPostDTO.getTaskStatus())
+                .approvalStatus(taskPostDTO.isApprovalStatus())
+                .backlogs(taskPostDTO.isBacklogs())
+                .description(taskPostDTO.getDescription())
+                .createdAt(LocalDateTime.now())
+                .lastUpdated(LocalDateTime.now())
+                .clientName(taskPostDTO.getClientName())
+                .build();
         return taskRepository.save(task);
     }
 

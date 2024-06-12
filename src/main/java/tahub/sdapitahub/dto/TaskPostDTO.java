@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 public class TaskPostDTO {
 
     @NotNull
-    private long jobId;
+    private long job_id;
     @NotNull
     private String jobTitle;
     @NotNull
@@ -27,9 +27,9 @@ public class TaskPostDTO {
     @NotNull
     private String primaryAssignee;
     @NotNull
-    private String taskStatus;
-    @NotNull
     private String secondaryAssignee;
+    @NotNull
+    private String taskStatus;
     @NotNull
     private boolean approvalStatus;
     @NotNull
@@ -41,12 +41,12 @@ public class TaskPostDTO {
 
     // Getters and Setters
 
-    public long getJobId() {
-        return jobId;
+    public long getJob_id() {
+        return job_id;
     }
 
-    public void setJobId(long jobId) {
-        this.jobId = jobId;
+    public void setJob_id(long job_id) {
+        this.job_id = job_id;
     }
 
     public String getJobTitle() {
@@ -129,20 +129,20 @@ public class TaskPostDTO {
         this.primaryAssignee = primaryAssignee;
     }
 
-    public String getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(String taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
     public String getSecondaryAssignee() {
         return secondaryAssignee;
     }
 
     public void setSecondaryAssignee(String secondaryAssignee) {
         this.secondaryAssignee = secondaryAssignee;
+    }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
     }
 
     public boolean isApprovalStatus() {

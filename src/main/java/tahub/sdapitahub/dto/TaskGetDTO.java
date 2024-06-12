@@ -1,24 +1,28 @@
 package tahub.sdapitahub.dto;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 
-public class TaskDTO {
+public class TaskGetDTO {
 
     @NotNull
-    private long task_id;
+    private long taskId;
     @NotNull
-    private long job_id;
+    private long jobId;
     @NotNull
     private String jobTitle;
-    @NotNull
-    private int noOfOpenings;
     @NotNull
     private String roleType;
     @NotNull
     private String modeOfWork;
     @NotNull
     private String workLocation;
+    @NotNull
+    private int yearsOfExperienceRequired;
+    @NotNull
+    private String primarySkillSet;
+    @NotNull
+    private String secondarySkillSet;
     @NotNull
     private String clientBudget;
     @NotNull
@@ -28,39 +32,36 @@ public class TaskDTO {
     @NotNull
     private String secondaryAssignee;
     @NotNull
-    private int yearsOfExperienceRequired;
-    @NotNull
-    private String primarySkillSet;
-    @NotNull
-    private String secondarySkillSet;
-    @NotNull
     private String taskStatus;
     @NotNull
     private boolean backlogs;
+    @NotNull
+    private boolean approvalStatus;
     @NotNull
     private String description;
     @NotNull
     private LocalDateTime createdAt;
     @NotNull
     private LocalDateTime lastUpdated;
+    @NotNull
+    private String clientName;
 
-    //Getters and Setters
+    // Getters and Setters
 
-
-    public long getTask_id() {
-        return task_id;
+    public long getTaskId() {
+        return taskId;
     }
 
-    public void setTask_id(long task_id) {
-        this.task_id = task_id;
+    public void setTaskId(long taskId) {
+        this.taskId = taskId;
     }
 
-    public long getJob_id() {
-        return job_id;
+    public long getJobId() {
+        return jobId;
     }
 
-    public void setJob_id(long job_id) {
-        this.job_id = job_id;
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 
     public String getJobTitle() {
@@ -69,14 +70,6 @@ public class TaskDTO {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
-    }
-
-    public int getNoOfOpenings() {
-        return noOfOpenings;
-    }
-
-    public void setNoOfOpenings(int noOfOpenings) {
-        this.noOfOpenings = noOfOpenings;
     }
 
     public String getRoleType() {
@@ -101,6 +94,30 @@ public class TaskDTO {
 
     public void setWorkLocation(String workLocation) {
         this.workLocation = workLocation;
+    }
+
+    public int getYearsOfExperienceRequired() {
+        return yearsOfExperienceRequired;
+    }
+
+    public void setYearsOfExperienceRequired(int yearsOfExperienceRequired) {
+        this.yearsOfExperienceRequired = yearsOfExperienceRequired;
+    }
+
+    public String getPrimarySkillSet() {
+        return primarySkillSet;
+    }
+
+    public void setPrimarySkillSet(String primarySkillSet) {
+        this.primarySkillSet = primarySkillSet;
+    }
+
+    public String getSecondarySkillSet() {
+        return secondarySkillSet;
+    }
+
+    public void setSecondarySkillSet(String secondarySkillSet) {
+        this.secondarySkillSet = secondarySkillSet;
     }
 
     public String getClientBudget() {
@@ -135,30 +152,6 @@ public class TaskDTO {
         this.secondaryAssignee = secondaryAssignee;
     }
 
-    public int getYearsOfExperienceRequired() {
-        return yearsOfExperienceRequired;
-    }
-
-    public void setYearsOfExperienceRequired(int yearsOfExperienceRequired) {
-        this.yearsOfExperienceRequired = yearsOfExperienceRequired;
-    }
-
-    public String getPrimarySkillSet() {
-        return primarySkillSet;
-    }
-
-    public void setPrimarySkillSet(String primarySkillSet) {
-        this.primarySkillSet = primarySkillSet;
-    }
-
-    public String getSecondarySkillSet() {
-        return secondarySkillSet;
-    }
-
-    public void setSecondarySkillSet(String secondarySkillSet) {
-        this.secondarySkillSet = secondarySkillSet;
-    }
-
     public String getTaskStatus() {
         return taskStatus;
     }
@@ -173,6 +166,14 @@ public class TaskDTO {
 
     public void setBacklogs(boolean backlogs) {
         this.backlogs = backlogs;
+    }
+
+    public boolean isApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(boolean approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 
     public String getDescription() {
@@ -197,5 +198,13 @@ public class TaskDTO {
 
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 }

@@ -2,9 +2,11 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.dto.RoleCreateDTO;
 import tahub.sdapitahub.dto.RoleDTO;
 import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.repository.RoleRepository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,15 +25,26 @@ public class RoleService {
     }
 
     public Optional<Role> getRoleById(Long id) {
-        return Optional.ofNullable(roleRepository.findById(id));
+        Role role = roleRepository.findById(id);
+        return Optional.ofNullable(role);
     }
-    public Role createRole(Role role) {
+
+    public Role createRole(RoleCreateDTO roleCreateDTO) {
+        Role role = new Role.Builder()
+                .role(roleCreateDTO.getRole())
+                .build();
         return roleRepository.save(role);
     }
 
-    public Role updateRole(Long id, Role role) {
-        role.setRoleId(id);
-        return roleRepository.update(role);
+    public Role updateRole(Long id, RoleCreateDTO roleCreateDTO) {
+        Optional<Role> roleOptional = getRoleById(id);
+        if (roleOptional.isPresent()) {
+            Role role = roleOptional.get();
+            role.setRole(roleCreateDTO.getRole());
+            return roleRepository.save(role);
+        } else {
+            return null; // Or throw an exception, depending on your requirements
+        }
     }
 
     public void deleteRole(Long id) {

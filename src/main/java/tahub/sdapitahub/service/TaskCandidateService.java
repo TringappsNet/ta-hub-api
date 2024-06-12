@@ -2,6 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.dto.TaskCandidatePostDTO;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
@@ -39,9 +40,17 @@ public class TaskCandidateService {
         return taskCandidateRepository.findById(id);
     }
 
-    public TaskCandidate createTaskCandidate(TaskCandidate taskCandidate) {
-        taskCandidate.setCreatedAt(LocalDateTime.now());
-        taskCandidate.setLastUpdated(LocalDateTime.now());
+    public TaskCandidate createTaskCandidate(TaskCandidatePostDTO taskCandidatePostDTO) {
+        TaskCandidate taskCandidate = new TaskCandidate.Builder()
+                .taskId(taskCandidatePostDTO.getTaskId())
+                .candidateId(taskCandidatePostDTO.getCandidateId())
+                .taskCandidateStatus(taskCandidatePostDTO.getTaskCandidateStatus())
+                .taskCandidateComments(taskCandidatePostDTO.getTaskCandidateComments())
+                .modifiedBy(taskCandidatePostDTO.getModifiedBy())
+                .createdAt(LocalDateTime.now())
+                .lastUpdated(LocalDateTime.now())
+                .build();
+
         TaskCandidate savedTaskCandidate = taskCandidateRepository.save(taskCandidate);
 
         saveTaskCandidateStatusHistory(savedTaskCandidate);
@@ -81,3 +90,4 @@ public class TaskCandidateService {
         }
     }
 }
+
