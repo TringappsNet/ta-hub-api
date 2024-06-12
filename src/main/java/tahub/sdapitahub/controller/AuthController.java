@@ -15,6 +15,7 @@ import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
 import java.util.Optional;
+import tahub.sdapitahub.constants.AuthMessages;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class AuthController {
     public ResponseEntity<Object> register(@RequestBody TaUser user, @RequestParam String inviteToken) {
         Optional<TaUser> invitedUserOptional = authService.findUserByInviteToken(inviteToken);
         if (!invitedUserOptional.isPresent()) {
-            return ResponseEntity.badRequest().body("Invalid invite token");
+            return ResponseEntity.badRequest().body(AuthMessages.INVALID_INVITE_TOKEN.getMessage());
         }
         TaUser invitedUser = invitedUserOptional.get();
         invitedUser.setUsername(user.getUsername());
@@ -51,35 +52,35 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody TaUserDTO userDTO, HttpServletRequest request) {
-        TaUser user = authService.findUserByEmail(userDTO.getEmail());
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+
+            TaUser user = authService.findUserByEmail(userDTO.getEmail());
+            if (user == null || !authService.checkPasswordMatch(userDTO.getPassword(), user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"" + AuthMessages.INVALID_CREDENTIALS.getMessage() + "\"}");
+            }
+
+
+            // Create session
+            HttpSession session = request.getSession(true);
+            session.setAttribute("loggedInUser", user);
+            session.setMaxInactiveInterval(24 * 60 * 60);
+
+            // Update user's current session ID
+            user.setCurrentSessionId(session.getId());
+            user.setLastLoginTime(LocalDateTime.now());
+            taUserRepository.update(user);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("user", user);
+            responseData.put("sessionId", session.getId());
+            responseData.put("sessionCreationTime", session.getCreationTime());
+            responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
+            responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
+            responseData.put("message", "Login success");
+
+
+            return ResponseEntity.status(200).body(responseData);
         }
 
-        boolean passwordMatches = authService.checkPasswordMatch(userDTO.getPassword(), user.getPassword());
-        if (!passwordMatches) {
-            throw new BadCredentialsException("Invalid password");
-        }
-
-        // Create session
-        HttpSession session = request.getSession(true);
-        session.setAttribute("loggedInUser", user);
-        session.setMaxInactiveInterval(24 * 60 * 60);
-
-        // Update user's current session ID
-        user.setCurrentSessionId(session.getId());
-        user.setLastLoginTime(LocalDateTime.now());
-        taUserRepository.update(user);
-
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("user", user);
-        responseData.put("sessionId", session.getId());
-        responseData.put("sessionCreationTime", session.getCreationTime());
-        responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
-        responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
-
-        return ResponseEntity.status(200).body(responseData);
-    }
 
 
     @PostMapping("/reset-new-password")
@@ -101,14 +102,14 @@ public class AuthController {
         user.setPassword(authService.encodePassword(userDTO.getNewPassword()));
         authService.updateUser(user);
 
-        return ResponseEntity.status(200).body("Password reset successfully");
+        return ResponseEntity.status(200).body(AuthMessages.RESET_PASSWORD.getMessage());
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<Object> forgotPassword(@RequestBody TaUserDTO userDTO) {
         String email = userDTO.getEmail();
         authService.forgetPassword(email);
-        return ResponseEntity.status(200).body("Password reset link sent to email");
+        return ResponseEntity.status(200).body(AuthMessages.FORGOT_PASSWORD.getMessage());
     }
 
 
@@ -125,7 +126,7 @@ public class AuthController {
 
         authService.resetPassword(user, newPassword);
 
-        return ResponseEntity.status(200).body("Password reset successfully");
+        return ResponseEntity.status(200).body(AuthMessages.RESET_PASS_SUCCESS.getMessage());
     }
 
 
@@ -165,7 +166,7 @@ public class AuthController {
             session.invalidate();
         }
 
-        return ResponseEntity.status(200).body("Logged out successfully");
+        return ResponseEntity.status(200).body(AuthMessages.LOGOUT.getMessage());
     }
 
 }
