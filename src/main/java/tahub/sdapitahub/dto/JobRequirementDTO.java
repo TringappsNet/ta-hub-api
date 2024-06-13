@@ -39,10 +39,7 @@ public class JobRequirementDTO {
     private String approvalToken;
     @NotNull
     private Boolean approvalStatus;
-    @NotNull
-    private String createdAt;
-    @NotNull
-    private String lastUpdated;
+
 
 
     //getters and setters
@@ -100,35 +97,7 @@ public class JobRequirementDTO {
     }
 
 
-    public long getJobId() {
-        return jobId;
-    }
 
-    public long getClientId() {
-        return clientId;
-    }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
 
-    public String getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public Boolean getApprovalStatus() {
-        return approvalStatus;
-    }
-
-    public void setApprovalStatus(Boolean approvalStatus) {
-        this.approvalStatus = approvalStatus;
-    }
-
-    public String getApprovalToken() {
-        return approvalToken;
-    }
-
-    public void setApprovalToken(String approvalToken) {
-        this.approvalToken = approvalToken;
-    }
 }

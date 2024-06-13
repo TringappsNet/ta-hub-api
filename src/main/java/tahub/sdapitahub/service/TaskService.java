@@ -82,8 +82,7 @@ public class TaskService {
                 .approvalStatus(taskPostDTO.isApprovalStatus())
                 .backlogs(taskPostDTO.isBacklogs())
                 .description(taskPostDTO.getDescription())
-                .createdAt(LocalDateTime.now())
-                .lastUpdated(LocalDateTime.now())
+
                 .clientName(taskPostDTO.getClientName())
                 .build();
         return taskRepository.save(task);
@@ -93,6 +92,32 @@ public class TaskService {
         task.setTaskId(id);
         task.setLastUpdated(LocalDateTime.now());
         return taskRepository.update(task);
+    }
+
+    public Task updateTask(Long id, TaskPostDTO taskPostDTO) {
+        Task task = new Task.Builder()
+                .taskId(id)
+                .jobId(taskPostDTO.getJob_id())
+                .jobTitle(taskPostDTO.getJobTitle())
+                .roleType(taskPostDTO.getRoleType())
+                .modeOfWork(taskPostDTO.getModeOfWork())
+                .workLocation(taskPostDTO.getWorkLocation())
+                .yearsOfExperienceRequired(taskPostDTO.getYearsOfExperienceRequired())
+                .primarySkillSet(taskPostDTO.getPrimarySkillSet())
+                .secondarySkillSet(taskPostDTO.getSecondarySkillSet())
+                .clientBudget(taskPostDTO.getClientBudget())
+                .assignedBudget(taskPostDTO.getAssignedBudget())
+                .primaryAssignee(taskPostDTO.getPrimaryAssignee())
+                .secondaryAssignee(taskPostDTO.getSecondaryAssignee())
+                .taskStatus(taskPostDTO.getTaskStatus())
+                .approvalStatus(taskPostDTO.isApprovalStatus())
+                .backlogs(taskPostDTO.isBacklogs())
+                .description(taskPostDTO.getDescription())
+                .createdAt(taskRepository.findById(id).get().getCreatedAt()) // retain original creation date
+                .lastUpdated(LocalDateTime.now())
+                .clientName(taskPostDTO.getClientName())
+                .build();
+        return taskRepository.save(task);
     }
 
     public void deleteTask(Long id) {

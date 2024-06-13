@@ -5,8 +5,7 @@ import java.time.LocalDateTime;
 
 public class TaskDTO {
 
-    @NotNull
-    private long task_id;
+
     @NotNull
     private long job_id;
     @NotNull
@@ -39,29 +38,13 @@ public class TaskDTO {
     private boolean backlogs;
     @NotNull
     private String description;
-    @NotNull
-    private LocalDateTime createdAt;
-    @NotNull
-    private LocalDateTime lastUpdated;
 
     //Getters and Setters
 
 
-    public long getTask_id() {
-        return task_id;
-    }
 
-    public void setTask_id(long task_id) {
-        this.task_id = task_id;
-    }
 
-    public long getJob_id() {
-        return job_id;
-    }
 
-    public void setJob_id(long job_id) {
-        this.job_id = job_id;
-    }
 
     public String getJobTitle() {
         return jobTitle;
@@ -103,37 +86,11 @@ public class TaskDTO {
         this.workLocation = workLocation;
     }
 
-    public String getClientBudget() {
-        return clientBudget;
-    }
 
-    public void setClientBudget(String clientBudget) {
-        this.clientBudget = clientBudget;
-    }
 
-    public String getAssignedBudget() {
-        return assignedBudget;
-    }
 
-    public void setAssignedBudget(String assignedBudget) {
-        this.assignedBudget = assignedBudget;
-    }
 
-    public String getPrimaryAssignee() {
-        return primaryAssignee;
-    }
 
-    public void setPrimaryAssignee(String primaryAssignee) {
-        this.primaryAssignee = primaryAssignee;
-    }
-
-    public String getSecondaryAssignee() {
-        return secondaryAssignee;
-    }
-
-    public void setSecondaryAssignee(String secondaryAssignee) {
-        this.secondaryAssignee = secondaryAssignee;
-    }
 
     public int getYearsOfExperienceRequired() {
         return yearsOfExperienceRequired;
@@ -159,43 +116,7 @@ public class TaskDTO {
         this.secondarySkillSet = secondarySkillSet;
     }
 
-    public String getTaskStatus() {
-        return taskStatus;
-    }
 
-    public void setTaskStatus(String taskStatus) {
-        this.taskStatus = taskStatus;
-    }
 
-    public boolean isBacklogs() {
-        return backlogs;
-    }
 
-    public void setBacklogs(boolean backlogs) {
-        this.backlogs = backlogs;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
 }

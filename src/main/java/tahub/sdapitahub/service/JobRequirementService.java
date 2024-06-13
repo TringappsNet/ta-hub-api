@@ -7,6 +7,9 @@ import tahub.sdapitahub.Utils.MailUtil;
 import tahub.sdapitahub.Utils.TokenUtil;
 import tahub.sdapitahub.dto.JobRequirementDTO;
 import tahub.sdapitahub.dto.TaskDTO;
+import tahub.sdapitahub.dto.JobTaskDTO;
+import tahub.sdapitahub.dto.JobDTO;
+import tahub.sdapitahub.dto.JobPostDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.JobRequirementRepository;
@@ -34,11 +37,13 @@ public class JobRequirementService {
 
 
 
-    public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<TaskDTO> positions) {
+    public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<JobTaskDTO> positions) {
         JobRequirement jobRequirement = jobRequirementRepository.findByApprovedBy(email);
         if (jobRequirement == null) {
             throw new UsernameNotFoundException("User not found");
         }
+
+
 
         String token = TokenUtil.generateRandomString();
 //        String encryptedToken = TokenUtil.encryptToken(token);
@@ -95,10 +100,23 @@ public class JobRequirementService {
         jobRequirementRepository.deleteById(id);
     }
 
-    public JobRequirement updateJobRequirement(Long id, JobRequirement jobRequirement) {
-        jobRequirement.setJobId(id);
-        jobRequirement.setLastUpdated(LocalDateTime.now());
-        return jobRequirementRepository.update(jobRequirement);
+    public JobRequirement updateJobRequirement(Long id, JobPostDTO jobPostDTO) {
+        Optional<JobRequirement> optionalJobRequirement = jobRequirementRepository.findById(id);
+        if (optionalJobRequirement.isPresent()) {
+            JobRequirement jobRequirement = optionalJobRequirement.get();
+            jobRequirement.setLastUpdated(LocalDateTime.now());
+
+
+            JobPostDTO.setTaskId(jobPostDTO.getTaskId());
+            JobPostDTO.setCandidateId(jobPostDTO.getCandidateId());
+            JobPostDTO.setTaskCandidateStatus(jobPostDTO.getTaskCandidateStatus());
+            JobPostDTO.setTaskCandidateComments(jobPostDTO.getTaskCandidateComments());
+            JobPostDTO.setModifiedBy(jobPostDTO.getModifiedBy());
+
+            return jobRequirementRepository.save(jobRequirement);
+        } else {
+            throw new ValidationException("Job requirement not found with ID: " + id);
+        }
     }
 
     public List<JobRequirement> getAllJobRequirements() {
@@ -141,8 +159,6 @@ public class JobRequirementService {
                 .tentativeStartDate(jobRequirementDTO.getTentativeStartDate())
                 .tentativeDuration(jobRequirementDTO.getTentativeDuration())
                 .approvedBy(jobRequirementDTO.getApprovedBy())
-                .approvalStatus(jobRequirementDTO.getApprovalStatus())
-                .approvalToken(jobRequirementDTO.getApprovalToken())
 
                 .createdAt(LocalDateTime.now())
                 .lastUpdated(LocalDateTime.now())
