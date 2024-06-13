@@ -5,8 +5,10 @@ public enum AuthMessages {
     INVALID_INVITE_TOKEN("Invalid invite token"),
     RESET_PASSWORD("Password reset successfully"),
     FORGOT_PASSWORD("Password reset link sent to email"),
-    RESET_PASS_SUCCESS("Password reset successfully"),
-    LOGOUT("Logged out successfully");
+    RESET_PASS_SUCCESS("Password reset sent successfully"),
+    LOGOUT("Logged out successfully"),
+    INVALID_REQUEST_BODY("Invalid request body");
+
 
 
 

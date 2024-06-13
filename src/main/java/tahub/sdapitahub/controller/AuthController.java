@@ -10,6 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.Utils.TokenUtil;
+import tahub.sdapitahub.constants.ErrorResponse;
 import tahub.sdapitahub.dto.TaUserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
@@ -90,13 +91,13 @@ public class AuthController {
             @RequestHeader("Session-Id") String sessionId,
             @RequestHeader("Email") String email) {
         TaUser user = authService.findUserByEmail(userDTO.getEmail());
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+        if (user == null) {  //username wrong entered means this error
+            return ResponseEntity.badRequest().body(ErrorResponse.USER_NOT_FOUND.getMessage());
         }
 
         boolean oldPasswordMatches = authService.checkPasswordMatch(userDTO.getOldPassword(), user.getPassword());
-        if (!oldPasswordMatches) {
-            throw new BadCredentialsException("Invalid old password");
+        if (!oldPasswordMatches) { //if the old password provided by the user does not match the old password stored in the database
+            return ResponseEntity.badRequest().body(ErrorResponse.INVALID_OLD_PASSWORD.getMessage());
         }
 
         user.setPassword(authService.encodePassword(userDTO.getNewPassword()));
@@ -117,11 +118,11 @@ public class AuthController {
     public ResponseEntity<Object> resetPassword(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
         TaUser user = authService.findUserByResetToken(token);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            return ResponseEntity.badRequest().body(ErrorResponse.USER_NOT_FOUND.getMessage());
         }
 
         if (!TokenUtil.isResetTokenValid(user, token)) {
-            throw new BadCredentialsException("Invalid token");
+            return ResponseEntity.badRequest().body(ErrorResponse.INVALID_TOKEN.getMessage());
         }
 
         authService.resetPassword(user, newPassword);
@@ -136,7 +137,7 @@ public class AuthController {
         Long roleId =  userDTO.getRoleId();
 
         if (email == null || roleId <= 0) {
-            return ResponseEntity.badRequest().body("Invalid request body");
+            return ResponseEntity.badRequest().body(AuthMessages.INVALID_REQUEST_BODY.getMessage());
         }
         try {
             TaUser user = authService.sendInvitation(email, roleId);
