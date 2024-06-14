@@ -5,13 +5,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.Utils.MailUtil;
 import tahub.sdapitahub.Utils.TokenUtil;
-import tahub.sdapitahub.dto.JobRequirementDTO;
-import tahub.sdapitahub.dto.TaskDTO;
-import tahub.sdapitahub.dto.JobTaskDTO;
-import tahub.sdapitahub.dto.JobDTO;
-import tahub.sdapitahub.dto.JobPostDTO;
+import tahub.sdapitahub.dto.*;
+import tahub.sdapitahub.dto.Task.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
-import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.repository.TaUserRepository;
 
@@ -34,19 +30,13 @@ public class JobRequirementService {
     @Autowired
     private TaUserRepository taUserRepository;
 
-
-
-
     public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<JobTaskDTO> positions) {
         JobRequirement jobRequirement = jobRequirementRepository.findByApprovedBy(email);
         if (jobRequirement == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-
-
         String token = TokenUtil.generateRandomString();
-//        String encryptedToken = TokenUtil.encryptToken(token);
         jobRequirement.setApprovalToken(token);
         jobRequirementRepository.update(jobRequirement);
 
@@ -61,7 +51,6 @@ public class JobRequirementService {
         MailUtil.sendMail(jobRequirement.getApprovedBy(), subject, text);
     }
 
-
     public void approveRequirement(String token) {
         List<JobRequirement> jobRequirements = jobRequirementRepository.findByApprovalToken(token);
         if (jobRequirements.isEmpty()) {
@@ -73,20 +62,12 @@ public class JobRequirementService {
         if (!TokenUtil.isApprovalTokenValid(jobRequirement, token)) {
             throw new ValidationException("Invalid token");
         }
-        // Update job requirement approval status
         jobRequirement.setApprovalStatus(true);
         jobRequirement.setLastUpdated(LocalDateTime.now());
         jobRequirementRepository.update(jobRequirement);
 
-        // Update associated tasks' approval status
-        List<Task> tasks = taskService.getTasksByJobId(jobRequirement.getJobId());
-        for (Task task : tasks) {
-            task.setApprovalStatus(true);
-            task.setLastUpdated(LocalDateTime.now());
-            taskService.updateTask(task.getTaskId(), task);
-        }
-    }
 
+    }
 
     public JobRequirement createJobRequirement(JobRequirementDTO jobRequirementDTO) {
         JobRequirement jobRequirement = convertToEntity(jobRequirementDTO);
@@ -100,23 +81,25 @@ public class JobRequirementService {
         jobRequirementRepository.deleteById(id);
     }
 
-    public JobRequirement updateJobRequirement(Long id, JobPostDTO jobPostDTO) {
-        Optional<JobRequirement> optionalJobRequirement = jobRequirementRepository.findById(id);
-        if (optionalJobRequirement.isPresent()) {
-            JobRequirement jobRequirement = optionalJobRequirement.get();
-            jobRequirement.setLastUpdated(LocalDateTime.now());
-
-
-            JobPostDTO.setTaskId(jobPostDTO.getTaskId());
-            JobPostDTO.setCandidateId(jobPostDTO.getCandidateId());
-            JobPostDTO.setTaskCandidateStatus(jobPostDTO.getTaskCandidateStatus());
-            JobPostDTO.setTaskCandidateComments(jobPostDTO.getTaskCandidateComments());
-            JobPostDTO.setModifiedBy(jobPostDTO.getModifiedBy());
-
-            return jobRequirementRepository.save(jobRequirement);
-        } else {
+    public JobRequirement updateJobRequirement(Long id, JobRequirementPostDTO jobRequirementPostDTO) {
+        Optional<JobRequirement> existingRequirementOpt = jobRequirementRepository.findById(id);
+        if (!existingRequirementOpt.isPresent()) {
             throw new ValidationException("Job requirement not found with ID: " + id);
         }
+        JobRequirement existingRequirement = existingRequirementOpt.get();
+        existingRequirement.setClientName(jobRequirementPostDTO.getClientName());
+        existingRequirement.setClientSpocName(jobRequirementPostDTO.getClientSpocName());
+        existingRequirement.setClientSpocContact(jobRequirementPostDTO.getClientSpocContact());
+        existingRequirement.setAccountManager(jobRequirementPostDTO.getAccountManager());
+        existingRequirement.setAccountManagerEmail(jobRequirementPostDTO.getAccountManagerEmail());
+        existingRequirement.setTotalNoOfOpenings(jobRequirementPostDTO.getTotalNoOfOpenings());
+        existingRequirement.setSalaryBudget(jobRequirementPostDTO.getSalaryBudget());
+        existingRequirement.setModeOfInterviews(jobRequirementPostDTO.getModeOfInterviews());
+        existingRequirement.setTentativeStartDate(jobRequirementPostDTO.getTentativeStartDate());
+        existingRequirement.setTentativeDuration(jobRequirementPostDTO.getTentativeDuration());
+        existingRequirement.setApprovedBy(jobRequirementPostDTO.getApprovedBy());
+        existingRequirement.setLastUpdated(LocalDateTime.now());
+        return jobRequirementRepository.update(existingRequirement);
     }
 
     public List<JobRequirement> getAllJobRequirements() {
@@ -139,11 +122,8 @@ public class JobRequirementService {
                 int noOfOpenings = taskDTOs.get(0).getNoOfOpenings();
                 taskService.createTasksForJobRequirement(jobRequirement, taskDTOs, noOfOpenings);
             }
-        } else {
         }
     }
-
-
 
     private JobRequirement convertToEntity(JobRequirementDTO jobRequirementDTO) {
         return new JobRequirement.Builder()
@@ -159,10 +139,8 @@ public class JobRequirementService {
                 .tentativeStartDate(jobRequirementDTO.getTentativeStartDate())
                 .tentativeDuration(jobRequirementDTO.getTentativeDuration())
                 .approvedBy(jobRequirementDTO.getApprovedBy())
-
                 .createdAt(LocalDateTime.now())
                 .lastUpdated(LocalDateTime.now())
                 .build();
     }
-
 }

@@ -1,34 +1,27 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.TaskCandidates;
 
-import javax.validation.constraints.NotNull;
-
-public class JobPostDTO {
-    @NotNull
-    private long taskId;
-    @NotNull
-    private long candidateId;
-    @NotNull
+public class TaskCandidatePostDTO {
+    private Long taskId;
+    private Long candidateId;
     private String taskCandidateStatus;
-    @NotNull
     private String taskCandidateComments;
-    @NotNull
-    private long modifiedBy;
+    private Long modifiedBy;
 
     // Getters and Setters
 
-    public long getTaskId() {
+    public Long getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(long taskId) {
+    public void setTaskId(Long taskId) {
         this.taskId = taskId;
     }
 
-    public long getCandidateId() {
+    public Long getCandidateId() {
         return candidateId;
     }
 
-    public void setCandidateId(long candidateId) {
+    public void setCandidateId(Long candidateId) {
         this.candidateId = candidateId;
     }
 
@@ -48,11 +41,11 @@ public class JobPostDTO {
         this.taskCandidateComments = taskCandidateComments;
     }
 
-    public long getModifiedBy() {
+    public Long getModifiedBy() {
         return modifiedBy;
     }
 
-    public void setModifiedBy(long modifiedBy) {
+    public void setModifiedBy(Long modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
 }

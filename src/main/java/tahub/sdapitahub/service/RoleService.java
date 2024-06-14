@@ -3,7 +3,7 @@ package tahub.sdapitahub.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.dto.RoleCreateDTO;
-import tahub.sdapitahub.dto.RoleDTO;
+import tahub.sdapitahub.dto.Role.RoleDTO;
 import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.repository.RoleRepository;
 
@@ -41,7 +41,7 @@ public class RoleService {
         if (roleOptional.isPresent()) {
             Role role = roleOptional.get();
             role.setRole(roleCreateDTO.getRole());
-            return roleRepository.save(role);
+            return roleRepository.update(role);
         } else {
             return null; // Or throw an exception, depending on your requirements
         }

@@ -5,13 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.ClientCreateDTO;
-import tahub.sdapitahub.dto.ClientUpdateDTO;
-import tahub.sdapitahub.dto.ClientDTO;
+import tahub.sdapitahub.dto.Client.ClientCreateDTO;
+import tahub.sdapitahub.dto.Client.ClientUpdateDTO;
+import tahub.sdapitahub.dto.Client.ClientDTO;
 import tahub.sdapitahub.entity.Client;
 import tahub.sdapitahub.service.ClientService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,6 +99,7 @@ public class ClientController {
         Optional<Client> existingClientOptional = clientService.getClientById(id);
         if (existingClientOptional.isPresent()) {
             Client existingClient = existingClientOptional.get();
+            existingClient.setClientId(clientUpdateDTO.getClientId());
             existingClient.setClientName(clientUpdateDTO.getClientName());
             existingClient.setClientSpocName(clientUpdateDTO.getClientSpocName());
             existingClient.setClientSpocContact(clientUpdateDTO.getClientSpocContact());

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.TaskPostDTO;
+import tahub.sdapitahub.dto.Task.TaskPostDTO;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.service.TaskService;
 

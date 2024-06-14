@@ -1,5 +1,7 @@
 package tahub.sdapitahub.dto;
 
+import tahub.sdapitahub.dto.Task.TaskDTO;
+
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;

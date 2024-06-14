@@ -1,10 +1,11 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Client;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-
-public class ClientCreateDTO {
-
+public class ClientDTO {
+    @NotNull
+    private long clientId;
     @NotNull
     private String clientName;
     @NotNull
@@ -14,13 +15,20 @@ public class ClientCreateDTO {
     @NotNull
     private String clientLocation;
     @NotNull
-
+    private LocalDateTime createdAt;
+    @NotNull
+    private LocalDateTime lastUpdated;
     @NotNull
     private String jobTitle;
 
     // Getters and setters
+    public long getClientId() {
+        return clientId;
+    }
 
-
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
+    }
 
     public String getClientName() {
         return clientName;
@@ -52,6 +60,22 @@ public class ClientCreateDTO {
 
     public void setClientLocation(String clientLocation) {
         this.clientLocation = clientLocation;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public String getJobTitle() {

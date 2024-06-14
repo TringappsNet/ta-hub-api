@@ -2,13 +2,11 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.dto.TaskPostDTO;
+import tahub.sdapitahub.dto.Task.TaskPostDTO;
 import tahub.sdapitahub.entity.JobRequirement;
-import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.entity.Task;
-import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.repository.TaskRepository;
-import tahub.sdapitahub.dto.TaskDTO;
+import tahub.sdapitahub.dto.Task.TaskDTO;
 
 
 import java.time.LocalDateTime;
@@ -88,11 +86,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public Task updateTask(Long id, Task task) {
-        task.setTaskId(id);
-        task.setLastUpdated(LocalDateTime.now());
-        return taskRepository.update(task);
-    }
+
 
     public Task updateTask(Long id, TaskPostDTO taskPostDTO) {
         Task task = new Task.Builder()

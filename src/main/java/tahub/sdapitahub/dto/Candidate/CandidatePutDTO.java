@@ -1,4 +1,4 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Candidate;
 
 public class CandidatePutDTO {
     private String candidateName;

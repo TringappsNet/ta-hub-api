@@ -5,7 +5,7 @@
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.*;
-//import tahub.sdapitahub.dto.RoleDTO;
+//import tahub.sdapitahub.dto.Role.RoleDTO;
 //import tahub.sdapitahub.entity.Role;
 //import tahub.sdapitahub.service.RoleService;
 //
@@ -66,7 +66,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.RoleCreateDTO;
-import tahub.sdapitahub.dto.RoleDTO;
+import tahub.sdapitahub.dto.Role.RoleDTO;
 import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.service.RoleService;
 

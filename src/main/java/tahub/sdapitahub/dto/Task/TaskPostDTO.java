@@ -1,14 +1,11 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Task;
 
-import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 
-public class TaskGetDTO {
+public class TaskPostDTO {
 
     @NotNull
-    private long taskId;
-    @NotNull
-    private long jobId;
+    private long job_id;
     @NotNull
     private String jobTitle;
     @NotNull
@@ -34,34 +31,22 @@ public class TaskGetDTO {
     @NotNull
     private String taskStatus;
     @NotNull
-    private boolean backlogs;
-    @NotNull
     private boolean approvalStatus;
     @NotNull
+    private boolean backlogs;
+    @NotNull
     private String description;
-    @NotNull
-    private LocalDateTime createdAt;
-    @NotNull
-    private LocalDateTime lastUpdated;
     @NotNull
     private String clientName;
 
     // Getters and Setters
 
-    public long getTaskId() {
-        return taskId;
+    public long getJob_id() {
+        return job_id;
     }
 
-    public void setTaskId(long taskId) {
-        this.taskId = taskId;
-    }
-
-    public long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(long jobId) {
-        this.jobId = jobId;
+    public void setJob_id(long job_id) {
+        this.job_id = job_id;
     }
 
     public String getJobTitle() {
@@ -160,14 +145,6 @@ public class TaskGetDTO {
         this.taskStatus = taskStatus;
     }
 
-    public boolean isBacklogs() {
-        return backlogs;
-    }
-
-    public void setBacklogs(boolean backlogs) {
-        this.backlogs = backlogs;
-    }
-
     public boolean isApprovalStatus() {
         return approvalStatus;
     }
@@ -176,28 +153,20 @@ public class TaskGetDTO {
         this.approvalStatus = approvalStatus;
     }
 
+    public boolean isBacklogs() {
+        return backlogs;
+    }
+
+    public void setBacklogs(boolean backlogs) {
+        this.backlogs = backlogs;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
     }
 
     public String getClientName() {

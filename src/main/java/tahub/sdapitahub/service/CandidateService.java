@@ -71,7 +71,7 @@ package tahub.sdapitahub.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.dto.CandidatePostDTO;
-import tahub.sdapitahub.dto.CandidatePutDTO;
+import tahub.sdapitahub.dto.Candidate.CandidatePutDTO;
 import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.repository.CandidateRepository;
 

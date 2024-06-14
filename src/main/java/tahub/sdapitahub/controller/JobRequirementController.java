@@ -6,18 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.JobRequirementDTO;
-import tahub.sdapitahub.dto.TaskDTO;
-import tahub.sdapitahub.dto.JobDTO;
-import tahub.sdapitahub.dto.JobPostDTO;
-import tahub.sdapitahub.dto.JobTaskDTO;
-
+import tahub.sdapitahub.dto.*;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.service.JobRequirementService;
 import tahub.sdapitahub.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 
 import javax.validation.ValidationException;
 import java.time.LocalDate;
@@ -54,8 +48,6 @@ public class JobRequirementController {
         }
     }
 
-
-
     @GetMapping("/requirements")
     public ResponseEntity<List<JobRequirement>> getAllJobRequirements() {
         try {
@@ -81,11 +73,10 @@ public class JobRequirementController {
         }
     }
 
-
     @PutMapping("/requirement/{id}")
-    public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @RequestBody JobPostDTO jobPostDTO) {
+    public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @RequestBody JobRequirementPostDTO jobRequirementPostDTO) {
         try {
-            JobRequirement updatedJobRequirement = jobRequirementService.updateJobRequirement(id, jobPostDTO);
+            JobRequirement updatedJobRequirement = jobRequirementService.updateJobRequirement(id, jobRequirementPostDTO);
             return new ResponseEntity<>(updatedJobRequirement, HttpStatus.OK);
         } catch (ValidationException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,7 +89,6 @@ public class JobRequirementController {
         return ResponseEntity.noContent().build();
     }
 
-
     @PostMapping("/job-approval")
     public ResponseEntity<Object> jobApproval(@RequestBody JobDTO jobDTO) {
         String email = jobDTO.getApprovedBy();
@@ -109,8 +99,6 @@ public class JobRequirementController {
         jobRequirementService.jobApproval(email, clientName, requirementStartDate, position);
         return ResponseEntity.status(HttpStatus.OK).body("Job approval request sent!");
     }
-
-
 
     @PostMapping("/approve-requirement")
     public ResponseEntity<?> validateTokenAndApprove(@RequestParam String token) {

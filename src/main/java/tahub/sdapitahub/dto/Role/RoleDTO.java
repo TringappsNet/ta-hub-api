@@ -1,4 +1,4 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Role;
 
 import javax.validation.constraints.NotNull;
 

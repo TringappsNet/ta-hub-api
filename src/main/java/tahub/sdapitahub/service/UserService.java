@@ -60,7 +60,7 @@ public class UserService {
             existingUser.setLastLoginTime(userCreateDTO.getLastLoginTime());
             existingUser.setLastUpdated(LocalDateTime.now());
 
-            return userRepository.save(existingUser);
+            return userRepository.update(existingUser);
         } else {
             return null; // Or throw an exception, depending on your requirements
         }
@@ -70,3 +70,80 @@ public class UserService {
         userRepository.deleteById(id);
     }
 }
+
+
+//package tahub.sdapitahub.service;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//import tahub.sdapitahub.entity.TaUser;
+//import tahub.sdapitahub.repository.TaUserRepository;
+//import tahub.sdapitahub.dto.UserCreateDTO;
+//
+//import java.time.LocalDateTime;
+//import java.util.List;
+//import java.util.Optional;
+//
+//@Service
+//public class UserService {
+//
+//    @Autowired
+//    private TaUserRepository userRepository;
+//
+//    public List<TaUser> getAllUsers() {
+//        return userRepository.findAll();
+//    }
+//
+//    public TaUser getUserById(Long id) {
+//        Optional<TaUser> userOptional = userRepository.findById(id);
+//        return userOptional.orElse(null);
+//    }
+//
+//    public TaUser createUser(UserCreateDTO userCreateDTO) {
+//        TaUser taUser = new TaUser.Builder()
+//                .firstName(userCreateDTO.getFirstName())
+//                .lastName(userCreateDTO.getLastName())
+//                .username(userCreateDTO.getUsername())
+//                .email(userCreateDTO.getEmail())
+//                .phone(userCreateDTO.getPhone())
+//                .resetToken(userCreateDTO.getResetToken())
+//                .password(userCreateDTO.getPassword())
+//                .isActive(userCreateDTO.getIsActive())
+//                .currentSessionId(userCreateDTO.getCurrentSessionId())
+//                .lastLoginTime(userCreateDTO.getLastLoginTime())
+//                .createdAt(LocalDateTime.now())
+//                .lastUpdated(LocalDateTime.now())
+//                .build();
+//
+//        return userRepository.save(taUser);
+//    }
+//
+//    public TaUser updateUser(Long id, TaUser user) {
+//        user.setUserId(id);
+//        user.setLastUpdated(LocalDateTime.now());
+//        return userRepository.save(user);
+//    }
+//
+//    public void deleteUser(Long id) {
+//        userRepository.deleteById(id);
+//    }
+//
+//    // Helper method to build TaUser from UserCreateDTO
+//    private TaUser buildUserFromDTO(UserCreateDTO userCreateDTO) {
+//        return new TaUser.Builder()
+//
+//                .firstName(userCreateDTO.getFirstName())
+//                .lastName(userCreateDTO.getLastName())
+//                .username(userCreateDTO.getUsername())
+//                .email(userCreateDTO.getEmail())
+//                .phone(userCreateDTO.getPhone())
+//                .resetToken(userCreateDTO.getResetToken())
+//                .password(userCreateDTO.getPassword())
+//                .isActive(userCreateDTO.getIsActive())
+//                .currentSessionId(userCreateDTO.getCurrentSessionId())
+//                .lastLoginTime(userCreateDTO.getLastLoginTime())
+//
+//                .lastUpdated(LocalDateTime.now())
+//                .build();
+//    }
+//}

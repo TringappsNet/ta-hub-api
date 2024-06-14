@@ -1,4 +1,4 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Candidate;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
