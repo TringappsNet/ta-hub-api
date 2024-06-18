@@ -56,7 +56,7 @@ public class AuthController {
 
             TaUser user = authService.findUserByEmail(userDTO.getEmail());
             if (user == null || !authService.checkPasswordMatch(userDTO.getPassword(), user.getPassword())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"" + AuthMessages.INVALID_CREDENTIALS.getMessage() + "\"}");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthMessages.INVALID_CREDENTIALS.getMessage());
             }
 
 
