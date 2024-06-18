@@ -111,7 +111,7 @@ public class TaskService {
                 .lastUpdated(LocalDateTime.now())
                 .clientName(taskPostDTO.getClientName())
                 .build();
-        return taskRepository.save(task);
+        return taskRepository.update(task);
     }
 
     public void deleteTask(Long id) {

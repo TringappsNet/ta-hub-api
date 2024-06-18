@@ -1,10 +1,13 @@
 package tahub.sdapitahub.dto.TaskCandidates;
 
+import javax.validation.constraints.NotNull;
+
 public class TaskCandidatePostDTO {
     private Long taskId;
     private Long candidateId;
     private String taskCandidateStatus;
     private String taskCandidateComments;
+    @NotNull
     private Long modifiedBy;
 
     // Getters and Setters
