@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.dto.Candidate.CandidateCreateDTO;
+import tahub.sdapitahub.dto.Candidate.CandidateUpdateDTO;
 import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.service.CandidateService;
 
@@ -42,15 +44,19 @@ public class CandidateController {
     }
 
     @PostMapping("/candidate")
-    public ResponseEntity<Candidate> createCandidate(@RequestBody Candidate candidate) {
-        Candidate createdCandidate = candidateService.createCandidate(candidate);
+    public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
+        Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
         return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
     }
 
     @PutMapping("/candidate/{id}")
-    public ResponseEntity<Candidate> updateCandidate(@PathVariable("id") Long id, @RequestBody Candidate candidate) {
-        Candidate updatedCandidate = candidateService.updateCandidate(id, candidate);
-        return new ResponseEntity<>(updatedCandidate, HttpStatus.OK);
+    public ResponseEntity<Candidate> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidateUpdateDTO candidatePutDTO) {
+        try {
+            Candidate updatedCandidate = candidateService.updateCandidate(id, candidatePutDTO);
+            return new ResponseEntity<>(updatedCandidate, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/candidate/{id}")

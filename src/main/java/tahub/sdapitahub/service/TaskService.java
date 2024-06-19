@@ -2,12 +2,11 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.dto.Task.TaskCreateDTO;
 import tahub.sdapitahub.entity.JobRequirement;
-import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.entity.Task;
-import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.repository.TaskRepository;
-import tahub.sdapitahub.dto.TaskDTO;
+import tahub.sdapitahub.dto.Task.TaskDTO;
 
 
 import java.time.LocalDateTime;
@@ -63,15 +62,55 @@ public class TaskService {
     }
 
 
-    public Task createTask(Task task) {
-        task.setCreatedAt(LocalDateTime.now());
-        task.setLastUpdated(LocalDateTime.now());
+    public Task createTask(TaskCreateDTO taskPostDTO) {
+        Task task = new Task.Builder()
+                .jobId(taskPostDTO.getJob_id())
+                .jobTitle(taskPostDTO.getJobTitle())
+                .roleType(taskPostDTO.getRoleType())
+                .modeOfWork(taskPostDTO.getModeOfWork())
+                .workLocation(taskPostDTO.getWorkLocation())
+                .yearsOfExperienceRequired(taskPostDTO.getYearsOfExperienceRequired())
+                .primarySkillSet(taskPostDTO.getPrimarySkillSet())
+                .secondarySkillSet(taskPostDTO.getSecondarySkillSet())
+                .clientBudget(taskPostDTO.getClientBudget())
+                .assignedBudget(taskPostDTO.getAssignedBudget())
+                .primaryAssignee(taskPostDTO.getPrimaryAssignee())
+                .secondaryAssignee(taskPostDTO.getSecondaryAssignee())
+                .taskStatus(taskPostDTO.getTaskStatus())
+                .approvalStatus(taskPostDTO.isApprovalStatus())
+                .backlogs(taskPostDTO.isBacklogs())
+                .description(taskPostDTO.getDescription())
+
+                .clientName(taskPostDTO.getClientName())
+                .build();
         return taskRepository.save(task);
     }
 
-    public Task updateTask(Long id, Task task) {
-        task.setTaskId(id);
-        task.setLastUpdated(LocalDateTime.now());
+
+
+    public Task updateTask(Long id, TaskCreateDTO taskPostDTO) {
+        Task task = new Task.Builder()
+                .taskId(id)
+                .jobId(taskPostDTO.getJob_id())
+                .jobTitle(taskPostDTO.getJobTitle())
+                .roleType(taskPostDTO.getRoleType())
+                .modeOfWork(taskPostDTO.getModeOfWork())
+                .workLocation(taskPostDTO.getWorkLocation())
+                .yearsOfExperienceRequired(taskPostDTO.getYearsOfExperienceRequired())
+                .primarySkillSet(taskPostDTO.getPrimarySkillSet())
+                .secondarySkillSet(taskPostDTO.getSecondarySkillSet())
+                .clientBudget(taskPostDTO.getClientBudget())
+                .assignedBudget(taskPostDTO.getAssignedBudget())
+                .primaryAssignee(taskPostDTO.getPrimaryAssignee())
+                .secondaryAssignee(taskPostDTO.getSecondaryAssignee())
+                .taskStatus(taskPostDTO.getTaskStatus())
+                .approvalStatus(taskPostDTO.isApprovalStatus())
+                .backlogs(taskPostDTO.isBacklogs())
+                .description(taskPostDTO.getDescription())
+                .createdAt(taskRepository.findById(id).get().getCreatedAt()) // retain original creation date
+                .lastUpdated(LocalDateTime.now())
+                .clientName(taskPostDTO.getClientName())
+                .build();
         return taskRepository.update(task);
     }
 

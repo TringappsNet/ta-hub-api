@@ -1,4 +1,4 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Client;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -14,14 +14,14 @@ public class ClientDTO {
     private String clientSpocContact;
     @NotNull
     private String clientLocation;
-//    @NotNull
-//    private byte[] clientLogo;
     @NotNull
     private LocalDateTime createdAt;
     @NotNull
     private LocalDateTime lastUpdated;
-    // Getters and setters
+    @NotNull
+    private String jobTitle;
 
+    // Getters and setters
     public long getClientId() {
         return clientId;
     }
@@ -34,31 +34,55 @@ public class ClientDTO {
         return clientName;
     }
 
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
     public String getClientSpocName() {
         return clientSpocName;
+    }
+
+    public void setClientSpocName(String clientSpocName) {
+        this.clientSpocName = clientSpocName;
     }
 
     public String getClientSpocContact() {
         return clientSpocContact;
     }
 
-    public String getCientLocation() {
+    public void setClientSpocContact(String clientSpocContact) {
+        this.clientSpocContact = clientSpocContact;
+    }
+
+    public String getClientLocation() {
         return clientLocation;
     }
 
-//    public byte[] getClientLogo() {
-//        return clientLogo;
-//    }
-//
-//    public void setClientLogo(byte[] clientLogo) {
-//        this.clientLogo = clientLogo;
-//    }
+    public void setClientLocation(String clientLocation) {
+        this.clientLocation = clientLocation;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getLastUpdated() {
         return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 }
