@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.RoleMessages;
 import tahub.sdapitahub.dto.RoleDTO;
 import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.service.RoleService;
@@ -37,20 +38,20 @@ public class RoleController {
     }
 
     @PostMapping("/role")
-    public ResponseEntity<Role> createRole(@RequestBody Role role) {
+    public ResponseEntity<String> createRole(@RequestBody Role role) {
         Role createdRole = roleService.createRole(role);
-        return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.OK).body(RoleMessages.ROLE_CREATED.getMessage());
     }
 
     @PutMapping("/role/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable("id") Long id, @RequestBody Role role) {
+    public ResponseEntity<String> updateRole(@PathVariable("id") Long id, @RequestBody Role role) {
         Role updatedRole = roleService.updateRole(id, role);
-        return new ResponseEntity<>(updatedRole, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(RoleMessages.ROLE_UPDATED.getMessage());
     }
 
     @DeleteMapping("/role/{id}")
-    public ResponseEntity<Void> deleteRole(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteRole(@PathVariable("id") Long id) {
         roleService.deleteRole(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.OK).body(RoleMessages.ROLE_DELETED.getMessage());
     }
 }

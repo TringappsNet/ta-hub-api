@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.JobMessages;
 import tahub.sdapitahub.dto.JobRequirementDTO;
 import tahub.sdapitahub.dto.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
@@ -79,19 +80,19 @@ public class JobRequirementController {
 
 
     @PutMapping("/requirement/{id}")
-    public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @RequestBody JobRequirement jobRequirement) {
+    public ResponseEntity<String> updateJobRequirement(@PathVariable Long id, @RequestBody JobRequirement jobRequirement) {
         JobRequirement updatedJobRequirement = jobRequirementService.updateJobRequirement(id, jobRequirement);
         if (updatedJobRequirement != null) {
-            return new ResponseEntity<>(updatedJobRequirement, HttpStatus.OK);
+            return  ResponseEntity.status(HttpStatus.OK).body(JobMessages.JOB_UPDATED.getMessage());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(JobMessages.JOB_NOT_UPDATED.getMessage());
         }
     }
 
     @DeleteMapping("/requirement/{id}")
-    public ResponseEntity<Void> deleteJobRequirement(@PathVariable Long id) {
+    public ResponseEntity<String> deleteJobRequirement(@PathVariable Long id) {
         jobRequirementService.deleteJobRequirement(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body(JobMessages.JOB_REQ_DELETED.getMessage());
     }
 
 
@@ -103,7 +104,7 @@ public class JobRequirementController {
         List<TaskDTO> positions = jobRequirementDTO.getPositions();
 
         jobRequirementService.jobApproval(email, clientName, requirementStartDate, positions);
-        return ResponseEntity.status(HttpStatus.OK).body("Job approval request sent!");
+        return ResponseEntity.status(HttpStatus.OK).body(JobMessages.JOB_APPROVAL_SENT.getMessage());
     }
 
 
@@ -112,13 +113,13 @@ public class JobRequirementController {
     public ResponseEntity<?> validateTokenAndApprove(@RequestParam String token) {
         try {
             jobRequirementService.approveRequirement(token);
-            return ResponseEntity.status(HttpStatus.OK).body("Job requirement approved successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body(JobMessages.JOB_APPROVAL_SUCCESS.getMessage());
         } catch (ValidationException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (UsernameNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (ServiceException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while approving job requirement.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(JobMessages.JOB_ERROR.getMessage());
         }
     }
 }
