@@ -17,7 +17,6 @@ import tahub.sdapitahub.dto.authentication.LoginDTO;
 import tahub.sdapitahub.dto.authentication.InviteUserDTO;
 import tahub.sdapitahub.dto.authentication.ResetNewPasswordDTO;
 import tahub.sdapitahub.constants.AuthMessages;
-import tahub.sdapitahub.dto.TaUserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
