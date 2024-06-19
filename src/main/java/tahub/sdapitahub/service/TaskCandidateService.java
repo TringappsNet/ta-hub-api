@@ -2,6 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.dto.TaskCandidates.TaskCandidateDTO;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
@@ -39,9 +40,17 @@ public class TaskCandidateService {
         return taskCandidateRepository.findById(id);
     }
 
-    public TaskCandidate createTaskCandidate(TaskCandidate taskCandidate) {
-        taskCandidate.setCreatedAt(LocalDateTime.now());
-        taskCandidate.setLastUpdated(LocalDateTime.now());
+    public TaskCandidate createTaskCandidate(TaskCandidateDTO taskCandidatePostDTO) {
+        TaskCandidate taskCandidate = new TaskCandidate.Builder()
+                .taskId(taskCandidatePostDTO.getTaskId())
+                .candidateId(taskCandidatePostDTO.getCandidateId())
+                .taskCandidateStatus(taskCandidatePostDTO.getTaskCandidateStatus())
+                .taskCandidateComments(taskCandidatePostDTO.getTaskCandidateComments())
+                .modifiedBy(taskCandidatePostDTO.getModifiedBy())
+                .createdAt(LocalDateTime.now())
+                .lastUpdated(LocalDateTime.now())
+                .build();
+
         TaskCandidate savedTaskCandidate = taskCandidateRepository.save(taskCandidate);
 
         saveTaskCandidateStatusHistory(savedTaskCandidate);
@@ -49,15 +58,27 @@ public class TaskCandidateService {
         return savedTaskCandidate;
     }
 
-    public TaskCandidate updateTaskCandidate(Long id, TaskCandidate taskCandidate) {
-        taskCandidate.setTaskCandidatesId(id);
-        taskCandidate.setLastUpdated(LocalDateTime.now());
-        TaskCandidate updatedTaskCandidate = taskCandidateRepository.update(taskCandidate);
+    public TaskCandidate updateTaskCandidate(Long id, TaskCandidateDTO taskCandidatePostDTO) {
+        Optional<TaskCandidate> optionalTaskCandidate = taskCandidateRepository.findById(id);
+        if (optionalTaskCandidate.isPresent()) {
+            TaskCandidate taskCandidate = optionalTaskCandidate.get();
+            taskCandidate.setTaskId(taskCandidatePostDTO.getTaskId());
+            taskCandidate.setCandidateId(taskCandidatePostDTO.getCandidateId());
+            taskCandidate.setTaskCandidateStatus(taskCandidatePostDTO.getTaskCandidateStatus());
+            taskCandidate.setTaskCandidateComments(taskCandidatePostDTO.getTaskCandidateComments());
+            taskCandidate.setModifiedBy(taskCandidatePostDTO.getModifiedBy());
+            taskCandidate.setLastUpdated(LocalDateTime.now());
 
-        saveTaskCandidateStatusHistory(updatedTaskCandidate);
+            TaskCandidate updatedTaskCandidate = taskCandidateRepository.save(taskCandidate);
 
-        return updatedTaskCandidate;
+            saveTaskCandidateStatusHistory(updatedTaskCandidate);
+
+            return updatedTaskCandidate;
+        } else {
+            return null;
+        }
     }
+
 
     public void deleteTaskCandidate(Long id) {
         taskCandidateRepository.deleteById(id);
@@ -81,3 +102,4 @@ public class TaskCandidateService {
         }
     }
 }
+

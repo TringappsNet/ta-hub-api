@@ -12,7 +12,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tahub.sdapitahub.dto.GoogleSignInResponseDto;
+import tahub.sdapitahub.dto.google.GoogleSignInResponseDto;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 

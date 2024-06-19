@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.entity.Board;
-import tahub.sdapitahub.dto.BoardDTO;
+import tahub.sdapitahub.dto.Board.BoardDTO;
 import tahub.sdapitahub.service.BoardService;
 
 import java.util.List;

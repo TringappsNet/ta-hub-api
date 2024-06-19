@@ -1,4 +1,4 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Board;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;

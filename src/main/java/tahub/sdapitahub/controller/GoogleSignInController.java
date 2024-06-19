@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tahub.sdapitahub.dto.GoogleSignInResponseDto;
+import tahub.sdapitahub.dto.google.GoogleSignInResponseDto;
 import tahub.sdapitahub.config.GoogleSignInConfig;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
