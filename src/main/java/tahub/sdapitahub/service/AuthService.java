@@ -77,7 +77,7 @@ public class AuthService {
     public TaUser resetPassword(TaUser user, String newPassword) {
         user.setPassword(encodePassword(newPassword));
         user.setResetToken(null);
-        return saveUser(user);
+        return updateUser(user);
     }
 
     public TaUser findUserByResetToken(String resetToken) {

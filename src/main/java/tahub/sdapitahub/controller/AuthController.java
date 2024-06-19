@@ -16,6 +16,8 @@ import tahub.sdapitahub.dto.authentication.RegisterDTO;
 import tahub.sdapitahub.dto.authentication.LoginDTO;
 import tahub.sdapitahub.dto.authentication.InviteUserDTO;
 import tahub.sdapitahub.dto.authentication.ResetNewPasswordDTO;
+import tahub.sdapitahub.constants.AuthMessages;
+import tahub.sdapitahub.dto.TaUserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
@@ -39,7 +41,7 @@ public class AuthController {
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterDTO registerDTO, @RequestParam String inviteToken) {
         Optional<TaUser> invitedUserOptional = authService.findUserByInviteToken(inviteToken);
         if (!invitedUserOptional.isPresent()) {
-            return ResponseEntity.badRequest().body("Invalid invite token");
+            return ResponseEntity.badRequest().body(AuthMessages.INVALID_INVITE_TOKEN.getMessage());
         }
         TaUser invitedUser = invitedUserOptional.get();
         invitedUser.setUsername(registerDTO.getUsername());
@@ -63,13 +65,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request) {
         TaUser user = authService.findUserByEmail(loginDTO.getEmail());
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
+      
+         if (user == null || !authService.checkPasswordMatch(loginDTO.getPassword(), loginDTO.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"" + AuthMessages.INVALID_CREDENTIALS.getMessage() + "\"}");
 
-        boolean passwordMatches = authService.checkPasswordMatch(loginDTO.getPassword(), user.getPassword());
-        if (!passwordMatches) {
-            throw new BadCredentialsException("Invalid password");
         }
 
         // Create session
@@ -92,7 +91,6 @@ public class AuthController {
         responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
         responseData.put("message", "Login success");
 
-
         return ResponseEntity.status(200).body(responseData);
     }
 
@@ -114,14 +112,14 @@ public class AuthController {
         user.setCurrentSessionId(sessionId); // Update currentSessionId
         authService.updateUser(user);
 
-        return ResponseEntity.status(200).body("Password reset successfully");
+        return ResponseEntity.status(200).body(AuthMessages.RESET_PASSWORD.getMessage());
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<Object> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
         String email = forgotPasswordDTO.getEmail();
         authService.forgetPassword(email);
-        return ResponseEntity.status(200).body("Password reset link sent to email");
+        return ResponseEntity.status(200).body(AuthMessages.FORGOT_PASSWORD.getMessage());
     }
 
 
@@ -138,7 +136,7 @@ public class AuthController {
 
         authService.resetPassword(user, newPassword);
 
-        return ResponseEntity.status(200).body("Password reset successfully");
+        return ResponseEntity.status(200).body(AuthMessages.RESET_PASS_SUCCESS.getMessage());
     }
 
 
@@ -178,7 +176,7 @@ public class AuthController {
             session.invalidate();
         }
 
-        return ResponseEntity.status(200).body("Logged out successfully");
+        return ResponseEntity.status(200).body(AuthMessages.LOGOUT.getMessage());
     }
 
 }
