@@ -5,13 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.BoardContMsgs;
+import tahub.sdapitahub.constants.ClientMsgs;
 import tahub.sdapitahub.dto.Candidate.CandidateCreateDTO;
 import tahub.sdapitahub.dto.Candidate.CandidateUpdateDTO;
 import tahub.sdapitahub.entity.Candidate;
+import tahub.sdapitahub.entity.Client;
 import tahub.sdapitahub.service.CandidateService;
 
 import java.util.List;
 import java.util.Optional;
+import tahub.sdapitahub.constants.CandidateMsgs;
+
 
 @RestController
 @Tag(name = "Candidates", description = "Operations related to Candidates")
@@ -43,10 +48,17 @@ public class CandidateController {
         }
     }
 
-    @PostMapping("/candidate")
+   @PostMapping("/candidate")
     public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
-        Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
-        return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
+    Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
+   if( createdCandidate!=null) {
+//        return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
+            return ResponseEntity.status(200).body(CandidateMsgs.CANDIDATE_CREATED.getMessage());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CandidateMsgs.CANDIDATE_NOT_CREATED.getMessage());
+
+        }
     }
 
     @PutMapping("/candidate/{id}")
@@ -60,8 +72,9 @@ public class CandidateController {
     }
 
     @DeleteMapping("/candidate/{id}")
-    public ResponseEntity<Void> deleteCandidate(@PathVariable("id") Long id) {
-        candidateService.deleteCandidate(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteCandidate(@PathVariable("id") Long id) {
+            candidateService.deleteCandidate(id);
+            return ResponseEntity.status(HttpStatus.OK).body(CandidateMsgs.CANDIDATE_DELETED.getMessage());
+
     }
 }

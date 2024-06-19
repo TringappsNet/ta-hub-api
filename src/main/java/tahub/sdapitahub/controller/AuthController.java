@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.Utils.TokenUtil;
+import tahub.sdapitahub.constants.ErrorResponse;
 import tahub.sdapitahub.dto.authentication.ForgotPasswordDTO;
 import tahub.sdapitahub.dto.authentication.RegisterDTO;
 import tahub.sdapitahub.dto.authentication.LoginDTO;
@@ -21,6 +22,7 @@ import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 import tahub.sdapitahub.service.AuthService;
 import java.util.Optional;
+import tahub.sdapitahub.constants.AuthMessages;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -58,26 +60,25 @@ public class AuthController {
 
 
     @PostMapping("/login")
+
     public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request) {
-        TaUser user = authService.findUserByEmail(loginDTO.getEmail());
+                  TaUser user = authService.findUserByEmail(loginDTO.getEmail());
+            if (user == null || !authService.checkPasswordMatch(loginDTO.getPassword(), user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthMessages.INVALID_CREDENTIALS.getMessage());
+            }
+
+
+
+            // Create session
+            HttpSession session = request.getSession(true);
+            session.setAttribute("loggedInUser", user);
+            session.setMaxInactiveInterval(24 * 60 * 60);
+
+            user.setCurrentSessionId(session.getId());
+            user.setLastLoginTime(LocalDateTime.now());
+            taUserRepository.update(user);
       
-         if (user == null || !authService.checkPasswordMatch(loginDTO.getPassword(), loginDTO.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"" + AuthMessages.INVALID_CREDENTIALS.getMessage() + "\"}");
-
-        }
-
-        // Create session
-        HttpSession session = request.getSession(true);
-        session.setAttribute("loggedInUser", user);
-        session.setMaxInactiveInterval(24 * 60 * 60);
-
-        // Update user's current session ID
-        user.setCurrentSessionId(session.getId());
-        user.setLastLoginTime(LocalDateTime.now());
-        taUserRepository.update(user);
-
-        // Return only email and password
-        Map<String, Object> responseData = new HashMap<>();
+       Map<String, Object> responseData = new HashMap<>();
 
         responseData.put("user", user);
         responseData.put("sessionId", session.getId());
@@ -85,22 +86,25 @@ public class AuthController {
         responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
         responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
         responseData.put("message", "Login success");
+            return ResponseEntity.status(200).body(responseData);
+        }
 
-        return ResponseEntity.status(200).body(responseData);
-    }
+
+
 
 
 
     @PostMapping("/reset-new-password")
     public ResponseEntity<Object> resetPassword(@Valid @RequestBody ResetNewPasswordDTO resetNewPasswordDTO, @RequestHeader("Session-Id") String sessionId, @RequestHeader("Email") String email) {
         TaUser user = authService.findUserByEmail(resetNewPasswordDTO.getEmail());
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+        if (user == null) {  //username wrong entered means this error
+            return ResponseEntity.badRequest().body(ErrorResponse.USER_NOT_FOUND.getMessage());
         }
 
-        boolean oldPasswordMatches = authService.checkPasswordMatch(resetNewPasswordDTO.getOldPassword(), user.getPassword());
-        if (!oldPasswordMatches) {
-            throw new BadCredentialsException("Invalid old password");
+        boolean oldPasswordMatches = authService.checkPasswordMatch(resetNewPasswordDTO.getOldPassword(), resetNewPasswordDTO.getPassword());
+        if (!oldPasswordMatches) { //if the old password provided by the user does not match the old password stored in the database
+            return ResponseEntity.badRequest().body(ErrorResponse.INVALID_OLD_PASSWORD.getMessage());
+
         }
 
         user.setPassword(authService.encodePassword(resetNewPasswordDTO.getNewPassword()));
@@ -122,11 +126,11 @@ public class AuthController {
     public ResponseEntity<Object> resetPassword(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
         TaUser user = authService.findUserByResetToken(token);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            return ResponseEntity.badRequest().body(ErrorResponse.USER_NOT_FOUND.getMessage());
         }
 
         if (!TokenUtil.isResetTokenValid(user, token)) {
-            throw new BadCredentialsException("Invalid token");
+            return ResponseEntity.badRequest().body(ErrorResponse.INVALID_TOKEN.getMessage());
         }
 
         authService.resetPassword(user, newPassword);
@@ -140,8 +144,9 @@ public class AuthController {
         String email = inviteUserDTO.getEmail();
         Long roleId = inviteUserDTO.getRoleId();
 
-        if (email == null || roleId == null || roleId <= 0) {
-            return ResponseEntity.badRequest().body("Invalid request body");
+        if (email == null || roleId <= 0) {
+            return ResponseEntity.badRequest().body(AuthMessages.INVALID_REQUEST_BODY.getMessage());
+
         }
         try {
             TaUser user = authService.sendInvitation(email, roleId);

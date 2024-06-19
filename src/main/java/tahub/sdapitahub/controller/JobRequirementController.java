@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.JobMessages;
 import tahub.sdapitahub.dto.Job.JobDTO;
 import tahub.sdapitahub.dto.Job.JobRequirementDTO;
 import tahub.sdapitahub.dto.Job.JobRequirementUpdateDTO;
@@ -77,6 +78,7 @@ public class JobRequirementController {
     }
 
     @PutMapping("/requirement/{id}")
+
     public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @RequestBody JobRequirementUpdateDTO jobRequirementPostDTO) {
         try {
             JobRequirement updatedJobRequirement = jobRequirementService.updateJobRequirement(id, jobRequirementPostDTO);
@@ -87,9 +89,9 @@ public class JobRequirementController {
     }
 
     @DeleteMapping("/requirement/{id}")
-    public ResponseEntity<Void> deleteJobRequirement(@PathVariable Long id) {
+    public ResponseEntity<String> deleteJobRequirement(@PathVariable Long id) {
         jobRequirementService.deleteJobRequirement(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body(JobMessages.JOB_REQ_DELETED.getMessage());
     }
 
     @PostMapping("/job-approval")
@@ -107,13 +109,13 @@ public class JobRequirementController {
     public ResponseEntity<?> validateTokenAndApprove(@RequestParam String token) {
         try {
             jobRequirementService.approveRequirement(token);
-            return ResponseEntity.status(HttpStatus.OK).body("Job requirement approved successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body(JobMessages.JOB_APPROVAL_SUCCESS.getMessage());
         } catch (ValidationException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (UsernameNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (ServiceException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while approving job requirement.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(JobMessages.JOB_ERROR.getMessage());
         }
     }
 }

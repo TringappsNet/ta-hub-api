@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.ClientMsgs;
 import tahub.sdapitahub.dto.Client.ClientCreateDTO;
 import tahub.sdapitahub.dto.Client.ClientUpdateDTO;
 import tahub.sdapitahub.dto.Client.ClientDTO;
@@ -80,6 +81,7 @@ public class ClientController {
     }
 
     @PostMapping("/client")
+
     public ResponseEntity<Client> createClient(@RequestBody ClientCreateDTO clientCreateDTO) {
         Client client = new Client.Builder()
 
@@ -90,11 +92,20 @@ public class ClientController {
                 .clientLocation(clientCreateDTO.getClientLocation())
                 .jobTitle(clientCreateDTO.getJobTitle())
                 .build();
+
         Client createdClient = clientService.createClient(client);
-        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
+
+        if( createdClient!=null) {
+//        return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
+            return ResponseEntity.status(200).body(ClientMsgs.CLIENT_CREATED.getMessage());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ClientMsgs.CLIENT_NOT_CREATED.getMessage());
+        }
     }
 
     @PutMapping("client/{id}")
+
     public ResponseEntity<Client> updateClient(@PathVariable("id") Long id, @RequestBody ClientUpdateDTO clientUpdateDTO) {
         Optional<Client> existingClientOptional = clientService.getClientById(id);
         if (existingClientOptional.isPresent()) {
@@ -114,8 +125,9 @@ public class ClientController {
 
 
     @DeleteMapping("client/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteClient(@PathVariable("id") Long id) {
         clientService.deleteClient(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.OK).body(ClientMsgs.CLIENT_DELETED.getMessage());
+
     }
 }
