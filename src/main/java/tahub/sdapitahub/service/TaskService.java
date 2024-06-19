@@ -2,7 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.dto.Task.TaskPostDTO;
+import tahub.sdapitahub.dto.Task.TaskCreateDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.repository.TaskRepository;
@@ -62,7 +62,7 @@ public class TaskService {
     }
 
 
-    public Task createTask(TaskPostDTO taskPostDTO) {
+    public Task createTask(TaskCreateDTO taskPostDTO) {
         Task task = new Task.Builder()
                 .jobId(taskPostDTO.getJob_id())
                 .jobTitle(taskPostDTO.getJobTitle())
@@ -88,7 +88,7 @@ public class TaskService {
 
 
 
-    public Task updateTask(Long id, TaskPostDTO taskPostDTO) {
+    public Task updateTask(Long id, TaskCreateDTO taskPostDTO) {
         Task task = new Task.Builder()
                 .taskId(id)
                 .jobId(taskPostDTO.getJob_id())

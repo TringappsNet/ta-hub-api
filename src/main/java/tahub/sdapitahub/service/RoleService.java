@@ -2,8 +2,8 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.dto.RoleCreateDTO;
 import tahub.sdapitahub.dto.Role.RoleDTO;
+import tahub.sdapitahub.dto.Role.RoleGetDTO;
 import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.repository.RoleRepository;
 
@@ -17,10 +17,10 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public List<RoleDTO> getAllRoles() {
+    public List<RoleGetDTO> getAllRoles() {
         List<Role> roles = roleRepository.findAll();
         return roles.stream()
-                .map(role -> new RoleDTO(role.getRoleId(), role.getRole()))
+                .map(role -> new RoleGetDTO(role.getRoleId(), role.getRole()))
                 .collect(Collectors.toList());
     }
 
@@ -29,14 +29,14 @@ public class RoleService {
         return Optional.ofNullable(role);
     }
 
-    public Role createRole(RoleCreateDTO roleCreateDTO) {
+    public Role createRole(RoleDTO roleCreateDTO) {
         Role role = new Role.Builder()
                 .role(roleCreateDTO.getRole())
                 .build();
         return roleRepository.save(role);
     }
 
-    public Role updateRole(Long id, RoleCreateDTO roleCreateDTO) {
+    public Role updateRole(Long id, RoleDTO roleCreateDTO) {
         Optional<Role> roleOptional = getRoleById(id);
         if (roleOptional.isPresent()) {
             Role role = roleOptional.get();

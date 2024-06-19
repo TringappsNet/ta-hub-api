@@ -1,8 +1,8 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.User;
 
 import java.time.LocalDateTime;
 
-public class UserCreateDTO {
+public class UserDTO {
 
     private String firstName;
     private String lastName;

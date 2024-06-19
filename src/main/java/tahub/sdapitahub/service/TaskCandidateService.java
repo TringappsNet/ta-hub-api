@@ -2,7 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.dto.TaskCandidates.TaskCandidatePostDTO;
+import tahub.sdapitahub.dto.TaskCandidates.TaskCandidateDTO;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
@@ -40,7 +40,7 @@ public class TaskCandidateService {
         return taskCandidateRepository.findById(id);
     }
 
-    public TaskCandidate createTaskCandidate(TaskCandidatePostDTO taskCandidatePostDTO) {
+    public TaskCandidate createTaskCandidate(TaskCandidateDTO taskCandidatePostDTO) {
         TaskCandidate taskCandidate = new TaskCandidate.Builder()
                 .taskId(taskCandidatePostDTO.getTaskId())
                 .candidateId(taskCandidatePostDTO.getCandidateId())
@@ -58,7 +58,7 @@ public class TaskCandidateService {
         return savedTaskCandidate;
     }
 
-    public TaskCandidate updateTaskCandidate(Long id, TaskCandidatePostDTO taskCandidatePostDTO) {
+    public TaskCandidate updateTaskCandidate(Long id, TaskCandidateDTO taskCandidatePostDTO) {
         Optional<TaskCandidate> optionalTaskCandidate = taskCandidateRepository.findById(id);
         if (optionalTaskCandidate.isPresent()) {
             TaskCandidate taskCandidate = optionalTaskCandidate.get();

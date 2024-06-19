@@ -2,7 +2,7 @@ package tahub.sdapitahub.dto.Task;
 
 import javax.validation.constraints.NotNull;
 
-public class TaskPostDTO {
+public class TaskCreateDTO {
 
     @NotNull
     private long job_id;

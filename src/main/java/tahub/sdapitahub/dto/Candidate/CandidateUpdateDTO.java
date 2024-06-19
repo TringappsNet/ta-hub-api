@@ -1,6 +1,6 @@
 package tahub.sdapitahub.dto.Candidate;
 
-public class CandidatePutDTO {
+public class CandidateUpdateDTO {
     private String candidateName;
     private String candidateEmail;
     private String candidateContact;

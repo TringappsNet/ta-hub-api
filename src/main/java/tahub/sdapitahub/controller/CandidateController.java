@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.CandidatePostDTO;
-import tahub.sdapitahub.dto.Candidate.CandidatePutDTO;
+import tahub.sdapitahub.dto.Candidate.CandidateCreateDTO;
+import tahub.sdapitahub.dto.Candidate.CandidateUpdateDTO;
 import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.service.CandidateService;
 
@@ -44,13 +44,13 @@ public class CandidateController {
     }
 
     @PostMapping("/candidate")
-    public ResponseEntity<Candidate> createCandidate(@RequestBody CandidatePostDTO candidatePostDTO) {
+    public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
         Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
         return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
     }
 
     @PutMapping("/candidate/{id}")
-    public ResponseEntity<Candidate> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidatePutDTO candidatePutDTO) {
+    public ResponseEntity<Candidate> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidateUpdateDTO candidatePutDTO) {
         try {
             Candidate updatedCandidate = candidateService.updateCandidate(id, candidatePutDTO);
             return new ResponseEntity<>(updatedCandidate, HttpStatus.OK);

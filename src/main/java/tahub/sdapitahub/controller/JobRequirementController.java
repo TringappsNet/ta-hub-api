@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.*;
+import tahub.sdapitahub.dto.Job.JobDTO;
+import tahub.sdapitahub.dto.Job.JobRequirementDTO;
+import tahub.sdapitahub.dto.Job.JobRequirementUpdateDTO;
+import tahub.sdapitahub.dto.Job.JobTaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.service.JobRequirementService;
@@ -74,7 +77,7 @@ public class JobRequirementController {
     }
 
     @PutMapping("/requirement/{id}")
-    public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @RequestBody JobRequirementPostDTO jobRequirementPostDTO) {
+    public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @RequestBody JobRequirementUpdateDTO jobRequirementPostDTO) {
         try {
             JobRequirement updatedJobRequirement = jobRequirementService.updateJobRequirement(id, jobRequirementPostDTO);
             return new ResponseEntity<>(updatedJobRequirement, HttpStatus.OK);

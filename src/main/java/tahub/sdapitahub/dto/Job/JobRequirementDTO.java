@@ -1,4 +1,4 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Job;
 
 import tahub.sdapitahub.dto.Task.TaskDTO;
 

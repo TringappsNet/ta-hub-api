@@ -2,7 +2,7 @@
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
-//import tahub.sdapitahub.dto.CandidatePostDTO;
+//import tahub.sdapitahub.dto.Candidate.CandidatePostDTO;
 //import tahub.sdapitahub.entity.Candidate;
 //import tahub.sdapitahub.repository.CandidateRepository;
 //
@@ -70,8 +70,8 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.dto.CandidatePostDTO;
-import tahub.sdapitahub.dto.Candidate.CandidatePutDTO;
+import tahub.sdapitahub.dto.Candidate.CandidateCreateDTO;
+import tahub.sdapitahub.dto.Candidate.CandidateUpdateDTO;
 import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.repository.CandidateRepository;
 
@@ -97,7 +97,7 @@ public class CandidateService {
         return candidateRepository.findById(id);
     }
 
-    public Candidate createCandidate(CandidatePostDTO candidatePostDTO) {
+    public Candidate createCandidate(CandidateCreateDTO candidatePostDTO) {
         Candidate candidate = new Candidate.Builder()
                 .candidateName(candidatePostDTO.getCandidateName())
                 .candidateEmail(candidatePostDTO.getCandidateEmail())
@@ -123,7 +123,7 @@ public class CandidateService {
         return candidateRepository.save(candidate);
     }
 
-    public Candidate updateCandidate(Long id, CandidatePutDTO candidatePutDTO) {
+    public Candidate updateCandidate(Long id, CandidateUpdateDTO candidatePutDTO) {
         Optional<Candidate> existingCandidate = candidateRepository.findById(id);
 
         if (existingCandidate.isPresent()) {

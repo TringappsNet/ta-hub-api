@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.UserCreateDTO; // Ensure this import is correct
+import tahub.sdapitahub.dto.User.UserDTO; // Ensure this import is correct
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.service.UserService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -37,13 +36,13 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<TaUser> createUser(@RequestBody UserCreateDTO userCreateDTO) {
+    public ResponseEntity<TaUser> createUser(@RequestBody UserDTO userCreateDTO) {
         TaUser createdUser = userService.createUser(userCreateDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<TaUser> updateUser(@PathVariable("id") Long id, @RequestBody UserCreateDTO userCreateDTO) {
+    public ResponseEntity<TaUser> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO userCreateDTO) {
         TaUser updatedUser = userService.updateUser(id, userCreateDTO);
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);

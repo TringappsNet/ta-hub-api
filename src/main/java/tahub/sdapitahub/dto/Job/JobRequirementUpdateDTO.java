@@ -1,8 +1,8 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Job;
 
 import java.time.LocalDate;
 
-public class JobRequirementPostDTO {
+public class JobRequirementUpdateDTO {
 
     private LocalDate requirementStartDate;
     private String clientName;

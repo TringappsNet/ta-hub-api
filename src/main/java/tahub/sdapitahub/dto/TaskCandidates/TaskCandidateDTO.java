@@ -1,34 +1,16 @@
 package tahub.sdapitahub.dto.TaskCandidates;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 public class TaskCandidateDTO {
-
-    @NotNull
-    private Long taskCandidatesId;
-    @NotNull
     private Long taskId;
-    @NotNull
     private Long candidateId;
-    @NotNull
     private String taskCandidateStatus;
-    @NotNull
     private String taskCandidateComments;
     @NotNull
-    private LocalDateTime createdAt;
-    @NotNull
-    private LocalDateTime lastUpdated;
+    private Long modifiedBy;
 
     // Getters and Setters
-
-    public Long getTaskCandidatesId() {
-        return taskCandidatesId;
-    }
-
-    public void setTaskCandidatesId(Long taskCandidatesId) {
-        this.taskCandidatesId = this.taskCandidatesId;
-    }
 
     public Long getTaskId() {
         return taskId;
@@ -62,19 +44,11 @@ public class TaskCandidateDTO {
         this.taskCandidateComments = taskCandidateComments;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public Long getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setModifiedBy(Long modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 }

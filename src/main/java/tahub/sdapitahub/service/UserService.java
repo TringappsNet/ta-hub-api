@@ -2,7 +2,7 @@ package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tahub.sdapitahub.dto.UserCreateDTO;
+import tahub.sdapitahub.dto.User.UserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 
@@ -25,7 +25,7 @@ public class UserService {
         return userOptional.orElse(null);
     }
 
-    public TaUser createUser(UserCreateDTO userCreateDTO) {
+    public TaUser createUser(UserDTO userCreateDTO) {
         TaUser taUser = new TaUser.Builder()
                 .firstName(userCreateDTO.getFirstName())
                 .lastName(userCreateDTO.getLastName())
@@ -44,7 +44,7 @@ public class UserService {
         return userRepository.save(taUser);
     }
 
-    public TaUser updateUser(Long id, UserCreateDTO userCreateDTO) {
+    public TaUser updateUser(Long id, UserDTO userCreateDTO) {
         Optional<TaUser> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             TaUser existingUser = userOptional.get();

@@ -12,7 +12,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.config.GoogleSignInConfig;
-import tahub.sdapitahub.dto.GoogleSignInResponseDto;
+import tahub.sdapitahub.dto.google.GoogleSignInResponseDto;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.repository.TaUserRepository;
 

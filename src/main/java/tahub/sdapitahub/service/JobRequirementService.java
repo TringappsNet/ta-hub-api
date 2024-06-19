@@ -5,7 +5,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.Utils.MailUtil;
 import tahub.sdapitahub.Utils.TokenUtil;
-import tahub.sdapitahub.dto.*;
+import tahub.sdapitahub.dto.Job.JobRequirementDTO;
+import tahub.sdapitahub.dto.Job.JobRequirementUpdateDTO;
+import tahub.sdapitahub.dto.Job.JobTaskDTO;
 import tahub.sdapitahub.dto.Task.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.repository.JobRequirementRepository;
@@ -81,7 +83,7 @@ public class JobRequirementService {
         jobRequirementRepository.deleteById(id);
     }
 
-    public JobRequirement updateJobRequirement(Long id, JobRequirementPostDTO jobRequirementPostDTO) {
+    public JobRequirement updateJobRequirement(Long id, JobRequirementUpdateDTO jobRequirementPostDTO) {
         Optional<JobRequirement> existingRequirementOpt = jobRequirementRepository.findById(id);
         if (!existingRequirementOpt.isPresent()) {
             throw new ValidationException("Job requirement not found with ID: " + id);

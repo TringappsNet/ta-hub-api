@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.Task.TaskPostDTO;
+import tahub.sdapitahub.dto.Task.TaskCreateDTO;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.service.TaskService;
 
@@ -39,13 +39,13 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<Task> createTask(@RequestBody TaskPostDTO taskPostDTO) {
+    public ResponseEntity<Task> createTask(@RequestBody TaskCreateDTO taskPostDTO) {
         Task createdTask = taskService.createTask(taskPostDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
 
     @PutMapping("/task/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskPostDTO taskPostDTO) {
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskCreateDTO taskPostDTO) {
         Task updatedTask = taskService.updateTask(id, taskPostDTO);
         if (updatedTask != null) {
             return new ResponseEntity<>(updatedTask, HttpStatus.OK);

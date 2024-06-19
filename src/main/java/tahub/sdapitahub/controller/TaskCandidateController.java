@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.TaskCandidates.TaskCandidatePostDTO;
+import tahub.sdapitahub.dto.TaskCandidates.TaskCandidateDTO;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
 import tahub.sdapitahub.service.TaskCandidateHistoryService;
@@ -60,13 +60,13 @@ public class TaskCandidateController {
     }
 
     @PostMapping("/task-candidate")
-    public ResponseEntity<TaskCandidate> createTaskCandidate(@RequestBody TaskCandidatePostDTO taskCandidatePostDTO) {
+    public ResponseEntity<TaskCandidate> createTaskCandidate(@RequestBody TaskCandidateDTO taskCandidatePostDTO) {
         TaskCandidate createdTaskCandidate = taskCandidateService.createTaskCandidate(taskCandidatePostDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTaskCandidate);
     }
 
     @PutMapping("/task-candidate/{id}")
-    public ResponseEntity<TaskCandidate> updateTaskCandidate(@PathVariable Long id, @RequestBody TaskCandidatePostDTO taskCandidatePostDTO) {
+    public ResponseEntity<TaskCandidate> updateTaskCandidate(@PathVariable Long id, @RequestBody TaskCandidateDTO taskCandidatePostDTO) {
         TaskCandidate updatedTaskCandidate = taskCandidateService.updateTaskCandidate(id, taskCandidatePostDTO);
         if (updatedTaskCandidate != null) {
             return ResponseEntity.ok(updatedTaskCandidate);
