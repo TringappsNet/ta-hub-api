@@ -1,15 +1,15 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Role;
 
 import javax.validation.constraints.NotNull;
 
-public class RoleDTO {
+public class RoleGetDTO {
     @NotNull
     private Long roleId;
     @NotNull
     private String role;
 
     // Constructor
-    public RoleDTO(Long roleId, String role) {
+    public RoleGetDTO(Long roleId, String role) {
         this.roleId = roleId;
         this.role = role;
     }

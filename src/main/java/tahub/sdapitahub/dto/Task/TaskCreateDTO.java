@@ -1,24 +1,25 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Task;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
-public class TaskDTO {
+public class TaskCreateDTO {
 
-    @NotNull
-    private long task_id;
     @NotNull
     private long job_id;
     @NotNull
     private String jobTitle;
-    @NotNull
-    private int noOfOpenings;
     @NotNull
     private String roleType;
     @NotNull
     private String modeOfWork;
     @NotNull
     private String workLocation;
+    @NotNull
+    private int yearsOfExperienceRequired;
+    @NotNull
+    private String primarySkillSet;
+    @NotNull
+    private String secondarySkillSet;
     @NotNull
     private String clientBudget;
     @NotNull
@@ -28,32 +29,17 @@ public class TaskDTO {
     @NotNull
     private String secondaryAssignee;
     @NotNull
-    private int yearsOfExperienceRequired;
-    @NotNull
-    private String primarySkillSet;
-    @NotNull
-    private String secondarySkillSet;
-    @NotNull
     private String taskStatus;
+    @NotNull
+    private boolean approvalStatus;
     @NotNull
     private boolean backlogs;
     @NotNull
     private String description;
     @NotNull
-    private LocalDateTime createdAt;
-    @NotNull
-    private LocalDateTime lastUpdated;
+    private String clientName;
 
-    //Getters and Setters
-
-
-    public long getTask_id() {
-        return task_id;
-    }
-
-    public void setTask_id(long task_id) {
-        this.task_id = task_id;
-    }
+    // Getters and Setters
 
     public long getJob_id() {
         return job_id;
@@ -69,14 +55,6 @@ public class TaskDTO {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
-    }
-
-    public int getNoOfOpenings() {
-        return noOfOpenings;
-    }
-
-    public void setNoOfOpenings(int noOfOpenings) {
-        this.noOfOpenings = noOfOpenings;
     }
 
     public String getRoleType() {
@@ -101,6 +79,30 @@ public class TaskDTO {
 
     public void setWorkLocation(String workLocation) {
         this.workLocation = workLocation;
+    }
+
+    public int getYearsOfExperienceRequired() {
+        return yearsOfExperienceRequired;
+    }
+
+    public void setYearsOfExperienceRequired(int yearsOfExperienceRequired) {
+        this.yearsOfExperienceRequired = yearsOfExperienceRequired;
+    }
+
+    public String getPrimarySkillSet() {
+        return primarySkillSet;
+    }
+
+    public void setPrimarySkillSet(String primarySkillSet) {
+        this.primarySkillSet = primarySkillSet;
+    }
+
+    public String getSecondarySkillSet() {
+        return secondarySkillSet;
+    }
+
+    public void setSecondarySkillSet(String secondarySkillSet) {
+        this.secondarySkillSet = secondarySkillSet;
     }
 
     public String getClientBudget() {
@@ -135,36 +137,20 @@ public class TaskDTO {
         this.secondaryAssignee = secondaryAssignee;
     }
 
-    public int getYearsOfExperienceRequired() {
-        return yearsOfExperienceRequired;
-    }
-
-    public void setYearsOfExperienceRequired(int yearsOfExperienceRequired) {
-        this.yearsOfExperienceRequired = yearsOfExperienceRequired;
-    }
-
-    public String getPrimarySkillSet() {
-        return primarySkillSet;
-    }
-
-    public void setPrimarySkillSet(String primarySkillSet) {
-        this.primarySkillSet = primarySkillSet;
-    }
-
-    public String getSecondarySkillSet() {
-        return secondarySkillSet;
-    }
-
-    public void setSecondarySkillSet(String secondarySkillSet) {
-        this.secondarySkillSet = secondarySkillSet;
-    }
-
     public String getTaskStatus() {
         return taskStatus;
     }
 
     public void setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public boolean isApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(boolean approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 
     public boolean isBacklogs() {
@@ -183,19 +169,11 @@ public class TaskDTO {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 }

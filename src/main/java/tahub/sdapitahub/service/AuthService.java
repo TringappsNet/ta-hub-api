@@ -33,11 +33,11 @@ public class AuthService {
         userRepository.update(taUser);
         return taUser;
     }
-    
+
     public void forgetPassword(String email) {
         TaUser user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new UserNotFoundException("User with email: " + email + "not found");
+            throw new UserNotFoundException("User with email: " + email + " not found");
         }
         String token = TokenUtil.generateRandomString();
         user.setResetToken(token);
@@ -49,7 +49,6 @@ public class AuthService {
         MailUtil.sendMail(user.getEmail(), subject, text);
     }
 
-
     public TaUser sendInvitation(String email, Long roleId) {
 
         TaUser existingUser = userRepository.findByEmail(email);
@@ -59,12 +58,12 @@ public class AuthService {
 
         String inviteToken = TokenUtil.generateRandomString();
         TaUser.Builder builder = new TaUser.Builder();
-            TaUser user = builder
-                    .email(email)
-                    .roleId(roleId)
-                    .inviteToken(inviteToken)
-                    .build();
-            userRepository.create(user);
+        TaUser user = builder
+                .email(email)
+                .roleId(roleId)
+                .inviteToken(inviteToken)
+                .build();
+        userRepository.create(user);
 
         // Send invitation email
         String subject = "Invitation to Register";
@@ -78,7 +77,7 @@ public class AuthService {
     public TaUser resetPassword(TaUser user, String newPassword) {
         user.setPassword(encodePassword(newPassword));
         user.setResetToken(null);
-        return saveUser(user);
+        return updateUser(user);
     }
 
     public TaUser findUserByResetToken(String resetToken) {

@@ -1,4 +1,4 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.google;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

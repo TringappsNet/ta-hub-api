@@ -3,10 +3,16 @@ package tahub.sdapitahub.entity;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(builder = Candidate.Builder.class)
 public class Candidate {
+    @NotNull
+    @NotEmpty
+    @NotBlank(message = "Column must not be blank")
     private Long candidateId;
     private String candidateName;
     private String candidateEmail;
