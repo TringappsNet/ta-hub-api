@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.constants.BoardContMsgs;
 import tahub.sdapitahub.constants.ClientMsgs;
+import tahub.sdapitahub.dto.Candidate.CandidateCreateDTO;
+import tahub.sdapitahub.dto.Candidate.CandidateUpdateDTO;
 import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.entity.Client;
 import tahub.sdapitahub.service.CandidateService;
@@ -46,11 +48,10 @@ public class CandidateController {
         }
     }
 
-    @PostMapping("/candidate")
-    public ResponseEntity<String> createCandidate(@RequestBody Candidate candidate) {
-        Candidate createdCandidate = candidateService.createCandidate(candidate);
-
-        if( createdCandidate!=null) {
+   @PostMapping("/candidate")
+    public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
+    Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
+   if( createdCandidate!=null) {
 //        return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
             return ResponseEntity.status(200).body(CandidateMsgs.CANDIDATE_CREATED.getMessage());
         }
@@ -58,18 +59,16 @@ public class CandidateController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CandidateMsgs.CANDIDATE_NOT_CREATED.getMessage());
 
         }
-
     }
 
     @PutMapping("/candidate/{id}")
-    public ResponseEntity<String> updateCandidate(@PathVariable("id") Long id, @RequestBody Candidate candidate) {
-            if (!id.equals(candidate.getCandidateId())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CandidateMsgs.ID_NOT_MATCHED.getMessage());
-            }
-            else {
-                Candidate updatedCandidate = candidateService.updateCandidate(id, candidate);
-                return ResponseEntity.status(HttpStatus.OK).body(CandidateMsgs.CANDIDATE_UPDATED.getMessage());
-            }
+    public ResponseEntity<Candidate> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidateUpdateDTO candidatePutDTO) {
+        try {
+            Candidate updatedCandidate = candidateService.updateCandidate(id, candidatePutDTO);
+            return new ResponseEntity<>(updatedCandidate, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/candidate/{id}")

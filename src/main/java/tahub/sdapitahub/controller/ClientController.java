@@ -6,11 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.constants.ClientMsgs;
+import tahub.sdapitahub.dto.Client.ClientCreateDTO;
+import tahub.sdapitahub.dto.Client.ClientUpdateDTO;
+import tahub.sdapitahub.dto.Client.ClientDTO;
 import tahub.sdapitahub.entity.Client;
 import tahub.sdapitahub.service.ClientService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Client", description = "Operations related to Clients")
@@ -21,29 +25,74 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Client>> getAllClients() {
+    public ResponseEntity<List<ClientDTO>> getAllClients() {
         List<Client> clients = clientService.getAllClients();
-        return new ResponseEntity<>(clients, HttpStatus.OK);
+        List<ClientDTO> clientDTOs = clients.stream().map(client -> {
+            ClientDTO dto = new ClientDTO();
+            dto.setClientId(client.getClientId());
+            dto.setClientName(client.getClientName());
+            dto.setClientSpocName(client.getClientSpocName());
+            dto.setClientSpocContact(client.getClientSpocContact());
+            dto.setClientLocation(client.getClientLocation());
+            dto.setCreatedAt(client.getCreatedAt());
+            dto.setLastUpdated(client.getLastUpdated());
+            dto.setJobTitle(client.getJobTitle());
+            return dto;
+        }).collect(Collectors.toList());
+        return new ResponseEntity<>(clientDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/clientPositions")
-    public ResponseEntity<List<Client>> getClientViewAll() {
+    public ResponseEntity<List<ClientDTO>> getClientViewAll() {
         List<Client> clients = clientService.getClientViewAll();
-        return new ResponseEntity<>(clients, HttpStatus.OK);
+        List<ClientDTO> clientDTOs = clients.stream().map(client -> {
+            ClientDTO dto = new ClientDTO();
+            dto.setClientId(client.getClientId());
+            dto.setClientName(client.getClientName());
+            dto.setClientSpocName(client.getClientSpocName());
+            dto.setClientSpocContact(client.getClientSpocContact());
+            dto.setClientLocation(client.getClientLocation());
+            dto.setCreatedAt(client.getCreatedAt());
+            dto.setLastUpdated(client.getLastUpdated());
+            dto.setJobTitle(client.getJobTitle());
+            return dto;
+        }).collect(Collectors.toList());
+        return new ResponseEntity<>(clientDTOs, HttpStatus.OK);
     }
 
     @GetMapping("client/{id}")
-    public ResponseEntity<Client> getClientById(@PathVariable("id") Long id) {
+    public ResponseEntity<ClientDTO> getClientById(@PathVariable("id") Long id) {
         Optional<Client> clientOptional = clientService.getClientById(id);
         if (clientOptional.isPresent()) {
-            return new ResponseEntity<>(clientOptional.get(), HttpStatus.OK);
+            Client client = clientOptional.get();
+            ClientDTO dto = new ClientDTO();
+            dto.setClientId(client.getClientId());
+            dto.setClientName(client.getClientName());
+            dto.setClientSpocName(client.getClientSpocName());
+            dto.setClientSpocContact(client.getClientSpocContact());
+            dto.setClientLocation(client.getClientLocation());
+            dto.setCreatedAt(client.getCreatedAt());
+            dto.setLastUpdated(client.getLastUpdated());
+            dto.setJobTitle(client.getJobTitle());
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/client")
-    public ResponseEntity<String> createClient(@RequestBody Client client) {
+
+    public ResponseEntity<Client> createClient(@RequestBody ClientCreateDTO clientCreateDTO) {
+        Client client = new Client.Builder()
+
+                .clientName(clientCreateDTO.getClientName())
+                .jobTitle(clientCreateDTO.getJobTitle())
+                .clientSpocName(clientCreateDTO.getClientSpocName())
+                .clientSpocContact(clientCreateDTO.getClientSpocContact())
+                .clientLocation(clientCreateDTO.getClientLocation())
+                .jobTitle(clientCreateDTO.getJobTitle())
+                .build();
+
         Client createdClient = clientService.createClient(client);
 
         if( createdClient!=null) {
@@ -56,16 +105,24 @@ public class ClientController {
     }
 
     @PutMapping("client/{id}")
-    public ResponseEntity<String> updateClient(@PathVariable("id") Long id, @RequestBody Client client) {
-        if (!id.equals(client.getClientId())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ClientMsgs.ID_NOT_MATCHED.getMessage());
-        }
-        else {
-             Client updatedClient = clientService.updateClient(id, client);
-             return ResponseEntity.status(HttpStatus.OK).body(ClientMsgs.CLIENT_UPDATED.getMessage());
-        }
 
+    public ResponseEntity<Client> updateClient(@PathVariable("id") Long id, @RequestBody ClientUpdateDTO clientUpdateDTO) {
+        Optional<Client> existingClientOptional = clientService.getClientById(id);
+        if (existingClientOptional.isPresent()) {
+            Client existingClient = existingClientOptional.get();
+            existingClient.setClientId(clientUpdateDTO.getClientId());
+            existingClient.setClientName(clientUpdateDTO.getClientName());
+            existingClient.setClientSpocName(clientUpdateDTO.getClientSpocName());
+            existingClient.setClientSpocContact(clientUpdateDTO.getClientSpocContact());
+            existingClient.setClientLocation(clientUpdateDTO.getClientLocation());
+            existingClient.setJobTitle(clientUpdateDTO.getJobTitle());
+            Client updatedClient = clientService.updateClient(id, existingClient);
+            return new ResponseEntity<>(updatedClient, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 
     @DeleteMapping("client/{id}")
     public ResponseEntity<String> deleteClient(@PathVariable("id") Long id) {

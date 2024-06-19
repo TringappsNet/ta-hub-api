@@ -9,8 +9,8 @@ import tahub.sdapitahub.constants.AuthMessages;
 import tahub.sdapitahub.constants.BoardContMsgs;
 import tahub.sdapitahub.constants.CandidateMsgs;
 import tahub.sdapitahub.entity.Board;
-import tahub.sdapitahub.dto.BoardDTO;
 import tahub.sdapitahub.entity.Candidate;
+import tahub.sdapitahub.dto.Board.BoardDTO;
 import tahub.sdapitahub.service.BoardService;
 
 import java.util.List;

@@ -1,55 +1,25 @@
-package tahub.sdapitahub.dto;
+package tahub.sdapitahub.dto.Candidate;
 
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-
-public class CandidateDTO {
-    @NotNull
-    private Long candidateId;
-    @NotNull
+public class CandidateCreateDTO {
     private String candidateName;
-    @NotNull
     private String candidateEmail;
-    @NotNull
     private String candidateContact;
-    @NotNull
     private String technology;
-    @NotNull
     private String totalExperience;
-    @NotNull
     private String currentCtc;
-    @NotNull
     private String expectedCtc;
-    @NotNull
     private String noticePeriod;
-    @NotNull
     private String modeOfWork;
-    @NotNull
     private String currentLocation;
-    @NotNull
     private String candidateStatus;
-    @NotNull
     private String comments;
-    @NotNull
     private String remarks;
-    @NotNull
     private String recruiter;
-    @NotNull
     private String recruitedSource;
-    @NotNull
-    private LocalDateTime createdDate;
-    @NotNull
-    private LocalDateTime lastUpdated;
+    private String clientName;
+    private String taskCandidateStatus;
 
-
-    // Getters and setters for all fields
-    public Long getCandidateId() {
-        return candidateId;
-    }
-
-    public void setCandidateId(Long candidateId) {
-        this.candidateId = candidateId;
-    }
+    // Getters and Setters
 
     public String getCandidateName() {
         return candidateName;
@@ -171,15 +141,19 @@ public class CandidateDTO {
         this.recruitedSource = recruitedSource;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
+    public String getTaskCandidateStatus() {
+        return taskCandidateStatus;
+    }
+
+    public void setTaskCandidateStatus(String taskCandidateStatus) {
+        this.taskCandidateStatus = taskCandidateStatus;
     }
 }

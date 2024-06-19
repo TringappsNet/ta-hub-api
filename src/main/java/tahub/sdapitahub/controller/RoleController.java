@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.constants.RoleMessages;
-import tahub.sdapitahub.dto.RoleDTO;
+import tahub.sdapitahub.dto.Role.RoleDTO;
+import tahub.sdapitahub.dto.Role.RoleGetDTO;
 import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.service.RoleService;
 
@@ -22,8 +22,8 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping("/")
-    public ResponseEntity<List<RoleDTO>> getAllRoles() {
-        List<RoleDTO> roles = roleService.getAllRoles();
+    public ResponseEntity<List<RoleGetDTO>> getAllRoles() {
+        List<RoleGetDTO> roles = roleService.getAllRoles();
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
@@ -38,15 +38,19 @@ public class RoleController {
     }
 
     @PostMapping("/role")
-    public ResponseEntity<String> createRole(@RequestBody Role role) {
-        Role createdRole = roleService.createRole(role);
-        return ResponseEntity.status(HttpStatus.OK).body(RoleMessages.ROLE_CREATED.getMessage());
+    public ResponseEntity<Role> createRole(@RequestBody RoleDTO roleCreateDTO) {
+        Role createdRole = roleService.createRole(roleCreateDTO);
+        return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
     }
 
     @PutMapping("/role/{id}")
-    public ResponseEntity<String> updateRole(@PathVariable("id") Long id, @RequestBody Role role) {
-        Role updatedRole = roleService.updateRole(id, role);
-        return ResponseEntity.status(HttpStatus.OK).body(RoleMessages.ROLE_UPDATED.getMessage());
+    public ResponseEntity<Role> updateRole(@PathVariable("id") Long id, @RequestBody RoleDTO roleCreateDTO) {
+        Role updatedRole = roleService.updateRole(id, roleCreateDTO);
+        if (updatedRole != null) {
+            return new ResponseEntity<>(updatedRole, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/role/{id}")
