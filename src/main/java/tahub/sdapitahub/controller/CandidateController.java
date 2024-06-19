@@ -44,24 +44,43 @@ public class CandidateController {
     }
 
     @PostMapping("/candidate")
-    public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
+    public ResponseEntity<String > createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
         Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
-        return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/candidate/{id}")
-    public ResponseEntity<Candidate> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidateUpdateDTO candidatePutDTO) {
-        try {
-            Candidate updatedCandidate = candidateService.updateCandidate(id, candidatePutDTO);
-            return new ResponseEntity<>(updatedCandidate, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (createdCandidate != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Candidate created successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create candidate.");
         }
     }
 
+    @PutMapping("/candidate/{id}")
+    public ResponseEntity<String> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidateUpdateDTO candidatePutDTO) {
+           Optional<Candidate> existingCandidate = candidateService.getCandidateById(id);
+            if (!existingCandidate.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Candidate not found.");
+            }
+
+            Candidate updatedCandidate = candidateService.updateCandidate(id, candidatePutDTO);
+
+            if (updatedCandidate != null) {
+                return ResponseEntity.status(HttpStatus.OK).body("Candidate updated successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update candidate.");
+            }
+
+    }
+
     @DeleteMapping("/candidate/{id}")
-    public ResponseEntity<Void> deleteCandidate(@PathVariable("id") Long id) {
-        candidateService.deleteCandidate(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteCandidate(@PathVariable("id") Long id) {
+        Optional<Candidate> existingCandidate = candidateService.getCandidateById(id);
+
+        if (!existingCandidate.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Candidate not found.");
+        }
+        else {
+
+            candidateService.deleteCandidate(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Candidate deleted successfully.");
+        }
     }
 }

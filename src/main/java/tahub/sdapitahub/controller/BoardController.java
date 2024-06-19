@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.BoardContMsgs;
 import tahub.sdapitahub.entity.Board;
 import tahub.sdapitahub.dto.Board.BoardDTO;
 import tahub.sdapitahub.service.BoardService;
@@ -33,18 +34,27 @@ public class BoardController {
     }
 
     @PostMapping("/column")
-    public ResponseEntity<Board> createBoard(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<String> createBoard(@RequestBody BoardDTO boardDTO) {
         Board createdBoard = boardService.createBoard(boardDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBoard);
-    }
+        if (createdBoard != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Board created successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Board");
+        }    }
 
     @PutMapping("/column/{id}")
-    public ResponseEntity<Board> updateBoard(@PathVariable Long id, @RequestBody BoardDTO boardDTO) {
-        Board updatedBoard = boardService.updateBoard(id, boardDTO);
-        if (updatedBoard != null) {
-            return new ResponseEntity<>(updatedBoard, HttpStatus.OK);
+    public ResponseEntity<String> updateBoard(@PathVariable Long id, @RequestBody BoardDTO boardDTO) {
+        Optional<Board> existingBoardOptional = boardService.getBoardById(id);
+        if (existingBoardOptional.isPresent()) {
+            Board existingBoard = existingBoardOptional.get();
+            Board updatedBoard = boardService.updateBoard(id, boardDTO);
+            if (updatedBoard != null) {
+                return ResponseEntity.ok("Board updated successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update board.");
+            }
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Board not found.");
         }
     }
 
