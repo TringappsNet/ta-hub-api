@@ -53,7 +53,7 @@ public class AuthController {
         // Create and return the RegisterDTO with the required fields
         RegisterDTO responseDTO = new RegisterDTO();
         responseDTO.setUsername(registeredUser.getUsername());
-        responseDTO.setEmail(registeredUser.getEmail());
+
         responseDTO.setPhone(registeredUser.getPhone());
         responseDTO.setPassword(registerDTO.getPassword());
 

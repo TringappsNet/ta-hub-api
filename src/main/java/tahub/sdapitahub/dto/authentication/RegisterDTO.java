@@ -8,9 +8,7 @@ public class RegisterDTO {
     @NotBlank
     private String username;
 
-    @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
-    private String email;
+
 
     @NotBlank
     @Pattern(regexp = "^\\+(?:[0-9] ?){6,14}[0-9]$")
@@ -29,13 +27,7 @@ public class RegisterDTO {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getPhone() {
         return phone;
