@@ -49,15 +49,11 @@ public class AuthController {
         invitedUser.setInviteToken(null);
 
         TaUser registeredUser = authService.registerUser(invitedUser);
+        if(registeredUser == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register");
+        }
+        return ResponseEntity.ok("Registration successful!");
 
-        // Create and return the RegisterDTO with the required fields
-        RegisterDTO responseDTO = new RegisterDTO();
-        responseDTO.setUsername(registeredUser.getUsername());
-        responseDTO.setEmail(registeredUser.getEmail());
-        responseDTO.setPhone(registeredUser.getPhone());
-        responseDTO.setPassword(registerDTO.getPassword());
-
-        return ResponseEntity.ok(responseDTO);
     }
 
 
