@@ -83,9 +83,15 @@ public class AuthController {
         taUserRepository.update(user);
 
         // Return only email and password
-        Map<String, String> responseData = new HashMap<>();
-        responseData.put("email", loginDTO.getEmail());
-        responseData.put("password", loginDTO.getPassword());
+        Map<String, Object> responseData = new HashMap<>();
+
+        responseData.put("user", user);
+        responseData.put("sessionId", session.getId());
+        responseData.put("sessionCreationTime", session.getCreationTime());
+        responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
+        responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
+        responseData.put("message", "Login success");
+
 
         return ResponseEntity.status(200).body(responseData);
     }
