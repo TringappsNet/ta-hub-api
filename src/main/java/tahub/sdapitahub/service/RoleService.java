@@ -24,7 +24,7 @@ public class RoleService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Role> getRoleById(Long id) {
+    public  Optional<Role> getRoleById(Long id) {
         Role role = roleRepository.findById(id);
         return Optional.ofNullable(role);
     }

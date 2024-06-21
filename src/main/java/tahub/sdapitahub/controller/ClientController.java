@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.CandidateMsgs;
+import tahub.sdapitahub.constants.ClientMsgs;
 import tahub.sdapitahub.dto.Client.ClientCreateDTO;
 import tahub.sdapitahub.dto.Client.ClientUpdateDTO;
 import tahub.sdapitahub.dto.Client.ClientDTO;
+import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.entity.Client;
 import tahub.sdapitahub.service.ClientService;
 
@@ -80,42 +83,62 @@ public class ClientController {
     }
 
     @PostMapping("/client")
-    public ResponseEntity<Client> createClient(@RequestBody ClientCreateDTO clientCreateDTO) {
-        Client client = new Client.Builder()
+    public ResponseEntity<String> createClient(@RequestBody ClientCreateDTO clientCreateDTO) {
+        try {
+            Client client = new Client.Builder()
 
-                .clientName(clientCreateDTO.getClientName())
-                .jobTitle(clientCreateDTO.getJobTitle())
-                .clientSpocName(clientCreateDTO.getClientSpocName())
-                .clientSpocContact(clientCreateDTO.getClientSpocContact())
-                .clientLocation(clientCreateDTO.getClientLocation())
-                .jobTitle(clientCreateDTO.getJobTitle())
-                .build();
-        Client createdClient = clientService.createClient(client);
-        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
+                    .clientName(clientCreateDTO.getClientName())
+                    .jobTitle(clientCreateDTO.getJobTitle())
+                    .clientSpocName(clientCreateDTO.getClientSpocName())
+                    .clientSpocContact(clientCreateDTO.getClientSpocContact())
+                    .clientLocation(clientCreateDTO.getClientLocation())
+                    .jobTitle(clientCreateDTO.getJobTitle())
+                    .build();
+            Client createdClient = clientService.createClient(client);
+            return new ResponseEntity<String>(ClientMsgs.CLIENT_CREATED.getMessage(), HttpStatus.CREATED);
+        }catch(Exception e){
+            return new ResponseEntity<String>(ClientMsgs.ERROR_CREATE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+
     @PutMapping("client/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable("id") Long id, @RequestBody ClientUpdateDTO clientUpdateDTO) {
-        Optional<Client> existingClientOptional = clientService.getClientById(id);
-        if (existingClientOptional.isPresent()) {
-            Client existingClient = existingClientOptional.get();
-            existingClient.setClientId(clientUpdateDTO.getClientId());
-            existingClient.setClientName(clientUpdateDTO.getClientName());
-            existingClient.setClientSpocName(clientUpdateDTO.getClientSpocName());
-            existingClient.setClientSpocContact(clientUpdateDTO.getClientSpocContact());
-            existingClient.setClientLocation(clientUpdateDTO.getClientLocation());
-            existingClient.setJobTitle(clientUpdateDTO.getJobTitle());
-            Client updatedClient = clientService.updateClient(id, existingClient);
-            return new ResponseEntity<>(updatedClient, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> updateClient(@PathVariable("id") Long id, @RequestBody ClientUpdateDTO clientUpdateDTO) {
+        try {
+            Optional<Client> existingClientOptional = clientService.getClientById(id);
+            if (existingClientOptional.isPresent()) {
+                Client existingClient = existingClientOptional.get();
+                existingClient.setClientId(clientUpdateDTO.getClientId());
+                existingClient.setClientName(clientUpdateDTO.getClientName());
+                existingClient.setClientSpocName(clientUpdateDTO.getClientSpocName());
+                existingClient.setClientSpocContact(clientUpdateDTO.getClientSpocContact());
+                existingClient.setClientLocation(clientUpdateDTO.getClientLocation());
+                existingClient.setJobTitle(clientUpdateDTO.getJobTitle());
+                Client updatedClient = clientService.updateClient(id, existingClient);
+                return new ResponseEntity<String>(ClientMsgs.CLIENT_UPDATED.getMessage(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>(ClientMsgs.ERROR_UPDATE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<String>(ClientMsgs.CLIENT_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+
         }
     }
 
 
     @DeleteMapping("client/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) {
-        clientService.deleteClient(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteClient(@PathVariable("id") Long id) {
+        try {
+            Optional<Client> existingClient = clientService.getClientById(id);
+
+            if (existingClient.isPresent()) {
+                clientService.deleteClient(id);
+                return new ResponseEntity<String>(ClientMsgs.CLIENT_DELETED.getMessage(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>(ClientMsgs.ERROR_DELETE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<String>(ClientMsgs.CLIENT_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }

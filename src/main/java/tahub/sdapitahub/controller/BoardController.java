@@ -37,10 +37,11 @@ public class BoardController {
     public ResponseEntity<String> createBoard(@RequestBody BoardDTO boardDTO) {
         Board createdBoard = boardService.createBoard(boardDTO);
         if (createdBoard != null) {
-            return ResponseEntity.status(HttpStatus.OK).body("Board created successfully.");
+            return ResponseEntity.status(HttpStatus.OK).body(BoardContMsgs.BOARD_CREATED.getMessage());
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create Board");
-        }    }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BoardContMsgs.ERROR_CREATE.getMessage());
+        }
+    }
 
     @PutMapping("/column/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable Long id, @RequestBody BoardDTO boardDTO) {
@@ -49,18 +50,24 @@ public class BoardController {
             Board existingBoard = existingBoardOptional.get();
             Board updatedBoard = boardService.updateBoard(id, boardDTO);
             if (updatedBoard != null) {
-                return ResponseEntity.ok("Board updated successfully.");
+                return ResponseEntity.status(HttpStatus.OK).body(BoardContMsgs.BOARD_UPDATED.getMessage());
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update board.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BoardContMsgs.ERROR_UPDATE.getMessage());
             }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Board not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BoardContMsgs.BOARD_NOT_FOUND.getMessage());
         }
     }
 
     @DeleteMapping("/column/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
-        boardService.deleteBoard(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteBoard(@PathVariable Long id) {
+        Optional<Board> existingBoard = boardService.getBoardById(id);
+
+        if (!existingBoard.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BoardContMsgs.BOARD_NOT_FOUND.getMessage());
+        } else {
+            boardService.deleteBoard(id);
+            return ResponseEntity.status(HttpStatus.OK).body(BoardContMsgs.BOARD_DELETED.getMessage());
+        }
     }
 }
