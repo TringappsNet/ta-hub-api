@@ -5,11 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.CandidateMsgs;
+import tahub.sdapitahub.constants.UserMsgs;
 import tahub.sdapitahub.dto.User.UserDTO; // Ensure this import is correct
+import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Tag(name = "User", description = "Operations related to User")
@@ -36,24 +40,40 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<TaUser> createUser(@RequestBody UserDTO userCreateDTO) {
-        TaUser createdUser = userService.createUser(userCreateDTO);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    public ResponseEntity<String> createUser(@RequestBody UserDTO userCreateDTO) {
+        try {
+            TaUser createdUser = userService.createUser(userCreateDTO);
+            return new ResponseEntity<>(UserMsgs.USER_CREATED.getMessage(), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(UserMsgs.ERROR_USER_CREATE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<TaUser> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO userCreateDTO) {
-        TaUser updatedUser = userService.updateUser(id, userCreateDTO);
-        if (updatedUser != null) {
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO userCreateDTO) {
+        try {
+            TaUser updatedUser = userService.updateUser(id, userCreateDTO);
+            if (updatedUser != null) {
+                return new ResponseEntity<>(UserMsgs.USER_UPDATED.getMessage(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(UserMsgs.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(UserMsgs.ERROR_USER_UPDATE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
+        Optional<TaUser> userOptional = Optional.ofNullable(userService.getUserById(id));
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(UserMsgs.USER_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+
+        } else {
+            userService.deleteUser(id);
+            return new ResponseEntity<>(UserMsgs.USER_DELETED.getMessage(),HttpStatus.OK);
+        }
     }
 }
+
+

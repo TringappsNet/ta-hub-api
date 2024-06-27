@@ -1,6 +1,7 @@
 package tahub.sdapitahub.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.Utils.MailUtil;
@@ -12,6 +13,7 @@ import tahub.sdapitahub.dto.Task.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.repository.TaUserRepository;
+
 
 import javax.validation.ValidationException;
 import java.time.LocalDate;
@@ -31,6 +33,8 @@ public class JobRequirementService {
 
     @Autowired
     private TaUserRepository taUserRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<JobTaskDTO> positions) {
         JobRequirement jobRequirement = jobRequirementRepository.findByApprovedBy(email);
@@ -80,6 +84,8 @@ public class JobRequirementService {
     }
 
     public void deleteJobRequirement(Long id) {
+
+        jdbcTemplate.update("DELETE FROM ta_tasks WHERE job_id = ?", id);
         jobRequirementRepository.deleteById(id);
     }
 
@@ -124,9 +130,9 @@ public class JobRequirementService {
                 int noOfOpenings = taskDTOs.get(0).getNoOfOpenings();
                 taskService.createTasksForJobRequirement(jobRequirement, taskDTOs, noOfOpenings);
             }
+        } else {
         }
     }
-
     private JobRequirement convertToEntity(JobRequirementDTO jobRequirementDTO) {
         return new JobRequirement.Builder()
                 .requirementStartDate(jobRequirementDTO.getRequirementStartDate())

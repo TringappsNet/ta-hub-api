@@ -125,7 +125,6 @@ public class CandidateService {
 
     public Candidate updateCandidate(Long id, CandidateUpdateDTO candidatePutDTO) {
         Optional<Candidate> existingCandidate = candidateRepository.findById(id);
-
         if (existingCandidate.isPresent()) {
             Candidate candidate = new Candidate.Builder()
                     .candidateId(id)
@@ -150,7 +149,7 @@ public class CandidateService {
                     .lastUpdated(LocalDateTime.now())
                     .build();
 
-            return candidateRepository.save(candidate);
+            return candidateRepository.update(candidate);
         } else {
             throw new RuntimeException("Candidate not found with id " + id);
         }

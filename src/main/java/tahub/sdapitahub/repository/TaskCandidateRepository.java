@@ -72,6 +72,11 @@ public class TaskCandidateRepository {
             queryParams.add(taskCandidate.getTaskCandidateStatus());
             fieldsUpdated = true;
         }
+        if (taskCandidate.getTaskCandidateComments() != null) {
+            queryBuilder.append("task_candidate_comments = ?, ");
+            queryParams.add(taskCandidate.getTaskCandidateComments());
+            fieldsUpdated = true;
+        }
         if (taskCandidate.getModifiedBy() != null) {
             queryBuilder.append("modified_by = ?, ");
             queryParams.add(taskCandidate.getModifiedBy());

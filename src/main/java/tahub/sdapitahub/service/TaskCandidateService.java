@@ -69,7 +69,7 @@ public class TaskCandidateService {
             taskCandidate.setModifiedBy(taskCandidatePostDTO.getModifiedBy());
             taskCandidate.setLastUpdated(LocalDateTime.now());
 
-            TaskCandidate updatedTaskCandidate = taskCandidateRepository.save(taskCandidate);
+            TaskCandidate updatedTaskCandidate = taskCandidateRepository.update(taskCandidate);
 
             saveTaskCandidateStatusHistory(updatedTaskCandidate);
 

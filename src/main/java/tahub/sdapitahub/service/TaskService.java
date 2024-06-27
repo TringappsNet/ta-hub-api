@@ -43,7 +43,6 @@ public class TaskService {
         return tasks;
     }
 
-
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
@@ -80,6 +79,8 @@ public class TaskService {
                 .approvalStatus(taskPostDTO.isApprovalStatus())
                 .backlogs(taskPostDTO.isBacklogs())
                 .description(taskPostDTO.getDescription())
+                .createdAt(LocalDateTime.now())
+                .lastUpdated(LocalDateTime.now())
 
                 .clientName(taskPostDTO.getClientName())
                 .build();

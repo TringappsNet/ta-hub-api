@@ -1,21 +1,23 @@
 package tahub.sdapitahub.dto.Client;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+
 
 
 public class ClientCreateDTO {
 
-    @NotNull
+    @NotBlank
     private String clientName;
-    @NotNull
+    @NotBlank
     private String clientSpocName;
-    @NotNull
+    @NotBlank
     private String clientSpocContact;
-    @NotNull
+    @NotBlank
     private String clientLocation;
-    @NotNull
 
-    @NotNull
+
+    @NotBlank
     private String jobTitle;
 
     // Getters and setters
