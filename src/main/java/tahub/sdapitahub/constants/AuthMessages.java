@@ -1,9 +1,9 @@
 package tahub.sdapitahub.constants;
 public enum AuthMessages {
-    INVALID_CREDENTIALS("Invalid credentials"),
+    INVALID_CREDENTIALS("Invalid Credentials"),
     INVALID_INVITE_TOKEN("Invalid invite token"),
     RESET_PASSWORD("Password reset successfully"),
-    FORGOT_PASSWORD("Password reset link sent to email"),
+    FORGOT_PASSWORD("Password reset link sent to email successfully"),
     RESET_PASS_SUCCESS("Password reset successfully"),
     LOGOUT("Logged out successfully"),
     SERVER_ERROR("Failed to register"),

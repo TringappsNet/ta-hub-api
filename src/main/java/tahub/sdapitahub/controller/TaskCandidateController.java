@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.RoleMsgs;
+import tahub.sdapitahub.constants.TaskCandidateMsgs;
 import tahub.sdapitahub.dto.TaskCandidates.TaskCandidateDTO;
+import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
 import tahub.sdapitahub.service.TaskCandidateHistoryService;
@@ -60,24 +63,48 @@ public class TaskCandidateController {
     }
 
     @PostMapping("/task-candidate")
-    public ResponseEntity<TaskCandidate> createTaskCandidate(@RequestBody TaskCandidateDTO taskCandidatePostDTO) {
-        TaskCandidate createdTaskCandidate = taskCandidateService.createTaskCandidate(taskCandidatePostDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTaskCandidate);
+    public ResponseEntity<String> createTaskCandidate(@RequestBody TaskCandidateDTO taskCandidatePostDTO) {
+            TaskCandidate createdTaskCandidate = taskCandidateService.createTaskCandidate(taskCandidatePostDTO);
+            if(createdTaskCandidate!=null){
+            return new ResponseEntity<String>(TaskCandidateMsgs.TASK_CANDIDATE_CREATED.getMessage(), HttpStatus.OK);
+            }else{
+            return new ResponseEntity<String>(TaskCandidateMsgs.ERROR_TASK_CANDIDATE_CREATE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
+
+
     @PutMapping("/task-candidate/{id}")
-    public ResponseEntity<TaskCandidate> updateTaskCandidate(@PathVariable Long id, @RequestBody TaskCandidateDTO taskCandidatePostDTO) {
-        TaskCandidate updatedTaskCandidate = taskCandidateService.updateTaskCandidate(id, taskCandidatePostDTO);
-        if (updatedTaskCandidate != null) {
-            return ResponseEntity.ok(updatedTaskCandidate);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<String> updateTaskCandidate(@PathVariable Long id, @RequestBody TaskCandidateDTO taskCandidatePostDTO) {
+try {
+    TaskCandidate updatedTaskCandidate = taskCandidateService.updateTaskCandidate(id, taskCandidatePostDTO);
+    if (updatedTaskCandidate != null) {
+        return new ResponseEntity<String>(TaskCandidateMsgs.TASK_CANDIDATE_UPDATED.getMessage(), HttpStatus.OK);
+    } else {
+        return new ResponseEntity<>(TaskCandidateMsgs.TASK_CANDIDATE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}catch (Exception e){
+    return new ResponseEntity<String>(TaskCandidateMsgs.ERROR_TASK_CANDIDATE_UPDATE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+
+}
+
     }
 
     @DeleteMapping("/task-candidate/{id}")
-    public ResponseEntity<Void> deleteTaskCandidate(@PathVariable Long id) {
-        taskCandidateService.deleteTaskCandidate(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteTaskCandidate(@PathVariable Long id) {
+        try {
+            Optional<TaskCandidate> optionalTaskCandidate = taskCandidateService.getTaskCandidateById(id);
+            if (optionalTaskCandidate.isPresent()) {
+                taskCandidateService.deleteTaskCandidate(id);
+                return new ResponseEntity<String>(TaskCandidateMsgs.TASK_CANDIDATE_DELETED.getMessage(), HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(TaskCandidateMsgs.TASK_CANDIDATE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<String>(TaskCandidateMsgs.ERROR_TASK_CANDIDATE_DELETE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
     }
 }

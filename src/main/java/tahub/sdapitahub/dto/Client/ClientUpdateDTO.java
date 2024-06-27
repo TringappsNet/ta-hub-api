@@ -3,8 +3,6 @@ package tahub.sdapitahub.dto.Client;
 import javax.validation.constraints.NotNull;
 
 public class ClientUpdateDTO {
-    @NotNull
-    private long clientId;
     private String clientName;
     private String clientSpocName;
     private String clientSpocContact;
@@ -12,13 +10,6 @@ public class ClientUpdateDTO {
     private String jobTitle;
 
     // Getters and Setters
-    public long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(long clientId) {
-        this.clientId = clientId;
-    }
 
     public String getClientName() {
         return clientName;

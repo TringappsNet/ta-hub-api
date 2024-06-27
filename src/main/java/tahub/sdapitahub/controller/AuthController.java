@@ -84,7 +84,7 @@ public class AuthController {
         responseData.put("sessionCreationTime", session.getCreationTime());
         responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
         responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
-        responseData.put("message", "Login success");
+        responseData.put("message", "Login successfully");
 
         return ResponseEntity.status(200).body(responseData);
     }

@@ -2,9 +2,11 @@ package tahub.sdapitahub.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.ClientMsgs;
 import tahub.sdapitahub.constants.RoleMsgs;
 import tahub.sdapitahub.dto.Role.RoleDTO;
 import tahub.sdapitahub.dto.Role.RoleGetDTO;
@@ -41,41 +43,39 @@ public class RoleController {
 
     @PostMapping("/role")
     public ResponseEntity<String> createRole(@RequestBody RoleDTO roleCreateDTO) {
-        try {
             Role createdRole = roleService.createRole(roleCreateDTO);
+            if(createdRole!=null){
             return new ResponseEntity<String>(RoleMsgs.ROLE_CREATED.getMessage(), HttpStatus.CREATED);
-        } catch (Exception e) {
+        }else {
             return new ResponseEntity<String>(RoleMsgs.ERROR_CREATE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/role/{id}")
     public ResponseEntity<String> updateRole(@PathVariable("id") Long id, @RequestBody RoleDTO roleCreateDTO) {
-        try {
+       try{
             Role updatedRole = roleService.updateRole(id, roleCreateDTO);
             if (updatedRole != null) {
                 return new ResponseEntity<String>(RoleMsgs.ROLE_UPDATED.getMessage(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<String>(RoleMsgs.ERROR_UPDATE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<String>(RoleMsgs.ROLE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+       } catch (EmptyResultDataAccessException ex) {
+           return new ResponseEntity<>(RoleMsgs.ROLE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+       }
+        return new ResponseEntity<>(RoleMsgs.ERROR_UPDATE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
-        }
+
     }
     @DeleteMapping("/role/{id}")
     public ResponseEntity<String> deleteRole(@PathVariable("id") Long id) {
-     try{
-         Optional<Role>existingRole = roleService.getRoleById(id);
-         if(existingRole.isPresent()){
-             roleService.deleteRole(id);
-             return new ResponseEntity<String>(RoleMsgs.ROLE_DELETED.getMessage(), HttpStatus.OK);
-         }else{
-           return new ResponseEntity<String>(RoleMsgs.ERROR_DELETE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-         }
-     }catch (Exception e) {
-         return new ResponseEntity<String>(RoleMsgs.ROLE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+    try {
+        Optional<Role> existingRole = roleService.getRoleById(id);
+        if (existingRole.isPresent()) {
+            roleService.deleteRole(id);
+            return new ResponseEntity<String>(RoleMsgs.ROLE_DELETED.getMessage(), HttpStatus.OK);
         }
-
+    } catch (EmptyResultDataAccessException ex) {
+        return new ResponseEntity<>(RoleMsgs.ROLE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+    }
+        return new ResponseEntity<>(RoleMsgs.ERROR_DELETE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
