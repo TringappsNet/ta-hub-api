@@ -23,7 +23,7 @@ public class TaskService {
     public List<Task>  createTasksForJobRequirement(JobRequirement jobRequirement, List<TaskDTO> taskDTOs, int noOfOpenings) {
         List<Task> tasks = new ArrayList<>();
         for (TaskDTO taskDTO : taskDTOs) {
-            for (int i = 0; i < noOfOpenings; i++) {
+
                 Task task = new Task.Builder()
                         .jobId(jobRequirement.getJobId())
                         .jobTitle(taskDTO.getJobTitle())
@@ -39,7 +39,7 @@ public class TaskService {
                         .build();
                 tasks.add(taskRepository.save(task));
             }
-        }
+
         return tasks;
     }
 
@@ -80,6 +80,8 @@ public class TaskService {
                 .approvalStatus(taskPostDTO.isApprovalStatus())
                 .backlogs(taskPostDTO.isBacklogs())
                 .description(taskPostDTO.getDescription())
+                .createdAt(LocalDateTime.now())
+                .lastUpdated(LocalDateTime.now())
 
                 .clientName(taskPostDTO.getClientName())
                 .build();

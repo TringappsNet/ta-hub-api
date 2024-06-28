@@ -1,21 +1,20 @@
 package tahub.sdapitahub.dto.authentication;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class RegisterDTO {
-    @NotBlank
+
+    @NotBlank(message = "Username is required")
     private String username;
 
-
-
-    @NotBlank
-    @Pattern(regexp = "^\\+(?:[0-9] ?){6,14}[0-9]$")
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^\\+(?:[0-9] ?){6,14}[0-9]$", message = "Phone number must be valid")
     private String phone;
 
-    @NotBlank
-    @Size(min = 6, max = 20)
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
     // Getters and Setters
@@ -26,8 +25,6 @@ public class RegisterDTO {
     public void setUsername(String username) {
         this.username = username;
     }
-
-
 
     public String getPhone() {
         return phone;

@@ -4,13 +4,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.Client.ClientCreateDTO;
-import tahub.sdapitahub.dto.Client.ClientUpdateDTO;
 import tahub.sdapitahub.dto.Client.ClientDTO;
+import tahub.sdapitahub.dto.Client.ClientUpdateDTO;
 import tahub.sdapitahub.entity.Client;
 import tahub.sdapitahub.service.ClientService;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @Tag(name = "Client", description = "Operations related to Clients")
 @RequestMapping("/api/clients")
+
 public class ClientController {
 
     @Autowired
@@ -80,11 +83,9 @@ public class ClientController {
     }
 
     @PostMapping("/client")
-    public ResponseEntity<Client> createClient(@RequestBody ClientCreateDTO clientCreateDTO) {
+    public ResponseEntity<Client> createClient(@Valid @RequestBody ClientCreateDTO clientCreateDTO) {
         Client client = new Client.Builder()
-
                 .clientName(clientCreateDTO.getClientName())
-                .jobTitle(clientCreateDTO.getJobTitle())
                 .clientSpocName(clientCreateDTO.getClientSpocName())
                 .clientSpocContact(clientCreateDTO.getClientSpocContact())
                 .clientLocation(clientCreateDTO.getClientLocation())
@@ -95,23 +96,21 @@ public class ClientController {
     }
 
     @PutMapping("client/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable("id") Long id, @RequestBody ClientUpdateDTO clientUpdateDTO) {
+    public ResponseEntity<String> updateClient(@PathVariable("id") Long id, @RequestBody ClientUpdateDTO clientUpdateDTO) {
         Optional<Client> existingClientOptional = clientService.getClientById(id);
         if (existingClientOptional.isPresent()) {
             Client existingClient = existingClientOptional.get();
-            existingClient.setClientId(clientUpdateDTO.getClientId());
             existingClient.setClientName(clientUpdateDTO.getClientName());
             existingClient.setClientSpocName(clientUpdateDTO.getClientSpocName());
             existingClient.setClientSpocContact(clientUpdateDTO.getClientSpocContact());
             existingClient.setClientLocation(clientUpdateDTO.getClientLocation());
             existingClient.setJobTitle(clientUpdateDTO.getJobTitle());
             Client updatedClient = clientService.updateClient(id, existingClient);
-            return new ResponseEntity<>(updatedClient, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body("Client updated successfully");
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Client ID not found");
         }
     }
-
 
     @DeleteMapping("client/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) {

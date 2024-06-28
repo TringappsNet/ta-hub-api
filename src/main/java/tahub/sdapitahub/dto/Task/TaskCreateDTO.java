@@ -1,43 +1,62 @@
 package tahub.sdapitahub.dto.Task;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class TaskCreateDTO {
 
-    @NotNull
+
     private long job_id;
-    @NotNull
+
+    @NotBlank(message = "Job title is required")
     private String jobTitle;
-    @NotNull
-    private String roleType;
-    @NotNull
-    private String modeOfWork;
-    @NotNull
-    private String workLocation;
-    @NotNull
-    private int yearsOfExperienceRequired;
-    @NotNull
-    private String primarySkillSet;
-    @NotNull
-    private String secondarySkillSet;
-    @NotNull
-    private String clientBudget;
-    @NotNull
-    private String assignedBudget;
-    @NotNull
-    private String primaryAssignee;
-    @NotNull
-    private String secondaryAssignee;
-    @NotNull
-    private String taskStatus;
-    @NotNull
-    private boolean approvalStatus;
-    @NotNull
-    private boolean backlogs;
-    @NotNull
-    private String description;
-    @NotNull
+
+    @NotBlank(message = "Client name is required")
     private String clientName;
+
+    @NotBlank(message = "Role type is required")
+    private String roleType;
+
+    @NotBlank(message = "Mode of work is required")
+    private String modeOfWork;
+
+    @NotBlank(message = "Work location is required")
+    private String workLocation;
+
+    @NotNull(message = "Years of experience required is required")
+    private int yearsOfExperienceRequired;
+
+    @NotBlank(message = "Primary skill set is required")
+    private String primarySkillSet;
+
+    @NotBlank(message = "Secondary skill set is required")
+    private String secondarySkillSet;
+
+    @NotBlank(message = "Client budget is required")
+    private String clientBudget;
+
+    @NotBlank(message = "Assigned budget is required")
+    private String assignedBudget;
+
+    @NotBlank(message = "Primary assignee is required")
+    private String primaryAssignee;
+
+    @NotBlank(message = "Secondary assignee is required")
+    private String secondaryAssignee;
+
+    @NotBlank(message = "Task status is required")
+    private String taskStatus;
+
+    @NotNull(message = "approvalStatus is required")
+    private boolean approvalStatus;
+
+    @NotNull(message = "backlogs is required")
+    private boolean backlogs;
+
+    @NotBlank(message = "Description is required")
+    private String description;
+
+
 
     // Getters and Setters
 

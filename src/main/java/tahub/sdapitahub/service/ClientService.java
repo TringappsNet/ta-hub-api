@@ -1,5 +1,6 @@
 package tahub.sdapitahub.service;
 
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tahub.sdapitahub.entity.Client;
@@ -32,6 +33,10 @@ public class ClientService {
     }
 
     public Client createClient(Client client) {
+
+//        if (StringUtils.isBlank(client.getClientSpocName())) {
+//            throw new IllegalArgumentException("Client SPOC Name cannot be null or empty");
+//        }
         client.setCreatedAt(LocalDateTime.now());
         client.setLastUpdated(LocalDateTime.now());
         return clientRepository.save(client);

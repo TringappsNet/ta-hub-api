@@ -43,7 +43,7 @@ public class RoleService {
             role.setRole(roleCreateDTO.getRole());
             return roleRepository.update(role);
         } else {
-            return null; // Or throw an exception, depending on your requirements
+            return null;
         }
     }
 

@@ -1,25 +1,26 @@
 package tahub.sdapitahub.dto.Client;
+import jakarta.validation.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
 
 
 public class ClientCreateDTO {
 
-    @NotNull
+    @NotBlank(message = "Client name is required")
     private String clientName;
-    @NotNull
-    private String clientSpocName;
-    @NotNull
-    private String clientSpocContact;
-    @NotNull
-    private String clientLocation;
-    @NotNull
 
-    @NotNull
+    @NotBlank(message = "Client name is required")
+    private String clientSpocName;
+
+    @NotBlank(message = "Client SPOC Contact is required")
+    private String clientSpocContact;
+
+    @NotBlank(message = "Client Location is required")
+    private String clientLocation;
+
+    @NotBlank(message = "Job Title is required")
     private String jobTitle;
 
     // Getters and setters
-
 
 
     public String getClientName() {
@@ -29,6 +30,7 @@ public class ClientCreateDTO {
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
+
 
     public String getClientSpocName() {
         return clientSpocName;

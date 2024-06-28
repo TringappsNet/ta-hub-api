@@ -1,22 +1,59 @@
 package tahub.sdapitahub.dto.Candidate;
 
+
+import jakarta.validation.constraints.NotBlank;
+
 public class CandidateCreateDTO {
+
+    @NotBlank(message = "Candidate name is required")
     private String candidateName;
+
+    @NotBlank(message = "Candidate email is required")
     private String candidateEmail;
+
+    @NotBlank(message = "Candidate contact is required")
     private String candidateContact;
+
+    @NotBlank(message = "Technology is required")
     private String technology;
+
+    @NotBlank(message = "Total experience is required")
     private String totalExperience;
+
+    @NotBlank(message = "Current CTC is required")
     private String currentCtc;
+
+    @NotBlank(message = "Expected CTC is required")
     private String expectedCtc;
+
+    @NotBlank(message = "Notice period is required")
     private String noticePeriod;
+
+    @NotBlank(message = "Mode of work is required")
     private String modeOfWork;
+
+    @NotBlank(message = "Current location is required")
     private String currentLocation;
+
+    @NotBlank(message = "Candidate status is required")
     private String candidateStatus;
+
+    @NotBlank(message = "Comments are required")
     private String comments;
+
+    @NotBlank(message = "Remarks are required")
     private String remarks;
+
+    @NotBlank(message = "Recruiter is required")
     private String recruiter;
+
+    @NotBlank(message = "Recruited source is required")
     private String recruitedSource;
+
+    @NotBlank(message = "Client name is required")
     private String clientName;
+
+    @NotBlank(message = "Task candidate status is required")
     private String taskCandidateStatus;
 
     // Getters and Setters

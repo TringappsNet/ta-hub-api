@@ -34,9 +34,7 @@ public class UserService {
                 .phone(userCreateDTO.getPhone())
                 .resetToken(userCreateDTO.getResetToken())
                 .password(userCreateDTO.getPassword())
-                .isActive(userCreateDTO.getIsActive())
-                .currentSessionId(userCreateDTO.getCurrentSessionId())
-                .lastLoginTime(userCreateDTO.getLastLoginTime())
+
                 .createdAt(LocalDateTime.now())
                 .lastUpdated(LocalDateTime.now())
                 .build();
@@ -55,14 +53,12 @@ public class UserService {
             existingUser.setPhone(userCreateDTO.getPhone());
             existingUser.setResetToken(userCreateDTO.getResetToken());
             existingUser.setPassword(userCreateDTO.getPassword());
-            existingUser.setIsActive(userCreateDTO.getIsActive());
-            existingUser.setCurrentSessionId(userCreateDTO.getCurrentSessionId());
-            existingUser.setLastLoginTime(userCreateDTO.getLastLoginTime());
+
             existingUser.setLastUpdated(LocalDateTime.now());
 
             return userRepository.update(existingUser);
         } else {
-            return null; // Or throw an exception, depending on your requirements
+            return null; // Or throw an exception, depending on your requirements/
         }
     }
 
