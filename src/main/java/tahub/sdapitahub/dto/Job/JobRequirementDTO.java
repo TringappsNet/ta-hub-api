@@ -1,105 +1,159 @@
 package tahub.sdapitahub.dto.Job;
 
+import jakarta.validation.Valid;
 import tahub.sdapitahub.dto.Task.TaskDTO;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
 public class JobRequirementDTO {
-    @NotNull
-    private long jobId;
-    @NotNull
-    private long clientId;
-    @NotNull
+
+
     private LocalDate requirementStartDate;
-    @NotNull
+
+    @NotBlank(message = "Client name is required")
     private String clientName;
-    @NotNull
+
+    @NotBlank(message = "Client SPOC name is required")
     private String clientSpocName;
-    @NotNull
+
+    @NotBlank(message = "Client SPOC contact is required")
     private String clientSpocContact;
-    @NotNull
+
+    @NotBlank(message = "Account manager is must")
     private String accountManager;
-    @NotNull
+
+    @NotBlank(message = "Account manager email is required")
     private String accountManagerEmail;
-    @NotNull
+
     private String totalNoOfOpenings;
-    @NotNull
+
+    @NotNull(message = "Positions are required")
+    @Valid
     private List<TaskDTO> positions;
-    @NotNull
+
+    @NotNull(message = "Salary budget is required")
     private float salaryBudget;
-    @NotNull
+
+    @NotBlank(message = "Mode of interviews is required")
     private String modeOfInterviews;
-    @NotNull
+
+    @NotNull(message = "Tentative start date is required")
     private LocalDate tentativeStartDate;
-    @NotNull
+
+    @NotBlank(message = "Tentative duration is required")
     private String tentativeDuration;
-    @NotNull
+
+    @NotBlank(message = "Approved by is required")
     private String approvedBy;
-    @NotNull
-    private String approvalToken;
-    @NotNull
-    private Boolean approvalStatus;
 
 
+    // Getters and Setters
 
-    //getters and setters
 
     public LocalDate getRequirementStartDate() {
         return requirementStartDate;
+    }
+
+    public void setRequirementStartDate(LocalDate requirementStartDate) {
+        this.requirementStartDate = requirementStartDate;
     }
 
     public String getClientName() {
         return clientName;
     }
 
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
     public String getClientSpocName() {
         return clientSpocName;
+    }
+
+    public void setClientSpocName(String clientSpocName) {
+        this.clientSpocName = clientSpocName;
     }
 
     public String getClientSpocContact() {
         return clientSpocContact;
     }
 
+    public void setClientSpocContact(String clientSpocContact) {
+        this.clientSpocContact = clientSpocContact;
+    }
+
     public String getAccountManager() {
         return accountManager;
+    }
+
+    public void setAccountManager(String accountManager) {
+        this.accountManager = accountManager;
     }
 
     public String getAccountManagerEmail() {
         return accountManagerEmail;
     }
 
+    public void setAccountManagerEmail(String accountManagerEmail) {
+        this.accountManagerEmail = accountManagerEmail;
+    }
+
     public String getTotalNoOfOpenings() {
         return totalNoOfOpenings;
+    }
+
+    public void setTotalNoOfOpenings(String totalNoOfOpenings) {
+        this.totalNoOfOpenings = totalNoOfOpenings;
     }
 
     public List<TaskDTO> getPositions() {
         return positions;
     }
 
+    public void setPositions(List<TaskDTO> positions) {
+        this.positions = positions;
+    }
+
     public float getSalaryBudget() {
         return salaryBudget;
+    }
+
+    public void setSalaryBudget(float salaryBudget) {
+        this.salaryBudget = salaryBudget;
     }
 
     public String getModeOfInterviews() {
         return modeOfInterviews;
     }
 
+    public void setModeOfInterviews(String modeOfInterviews) {
+        this.modeOfInterviews = modeOfInterviews;
+    }
+
     public LocalDate getTentativeStartDate() {
         return tentativeStartDate;
+    }
+
+    public void setTentativeStartDate(LocalDate tentativeStartDate) {
+        this.tentativeStartDate = tentativeStartDate;
     }
 
     public String getTentativeDuration() {
         return tentativeDuration;
     }
 
+    public void setTentativeDuration(String tentativeDuration) {
+        this.tentativeDuration = tentativeDuration;
+    }
+
     public String getApprovedBy() {
         return approvedBy;
     }
 
-
-
-
-
+    public void setApprovedBy(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
 }

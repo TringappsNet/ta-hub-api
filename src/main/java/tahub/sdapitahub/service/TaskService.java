@@ -93,7 +93,7 @@ public class TaskService {
     public Task updateTask(Long id, TaskCreateDTO taskPostDTO) {
         Task task = new Task.Builder()
                 .taskId(id)
-                .jobId(taskPostDTO.getJob_id())
+
                 .jobTitle(taskPostDTO.getJobTitle())
                 .roleType(taskPostDTO.getRoleType())
                 .modeOfWork(taskPostDTO.getModeOfWork())
@@ -106,7 +106,7 @@ public class TaskService {
                 .primaryAssignee(taskPostDTO.getPrimaryAssignee())
                 .secondaryAssignee(taskPostDTO.getSecondaryAssignee())
                 .taskStatus(taskPostDTO.getTaskStatus())
-                .approvalStatus(taskPostDTO.isApprovalStatus())
+
                 .backlogs(taskPostDTO.isBacklogs())
                 .description(taskPostDTO.getDescription())
                 .createdAt(taskRepository.findById(id).get().getCreatedAt()) // retain original creation date
