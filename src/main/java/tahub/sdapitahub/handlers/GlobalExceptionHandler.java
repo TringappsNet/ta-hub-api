@@ -52,6 +52,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
-        return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        String errorMessage = "Oops! Something went wrong on our end. Please try again later.";
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+    }
+
+    public static class ErrorResponse {
+        private String message1;
+
+        public ErrorResponse(String message1) {
+            this.message1 = message1;
+        }
+
+        public String getMessage() {
+            return message1;
+        }
+
+
     }
 }
