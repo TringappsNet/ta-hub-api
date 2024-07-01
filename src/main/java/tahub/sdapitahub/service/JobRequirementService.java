@@ -117,16 +117,6 @@ public class JobRequirementService {
         }
     }
 
-//    public void createTasksPositions(JobRequirementDTO jobRequirementDTO) {
-//        List<JobRequirement> jobRequirements = jobRequirementRepository.findByClientName();
-//        if (!jobRequirements.isEmpty()) {
-//            for (JobRequirement jobRequirement : jobRequirements) {
-//                List<TaskDTO> taskDTOs = jobRequirementDTO.getPositions();
-//                int noOfOpenings = taskDTOs.get(0).getNoOfOpenings();
-//                taskService.createTasksForJobRequirement(jobRequirement, taskDTOs, noOfOpenings);
-//            }
-//        }
-//    }
 
 
 
