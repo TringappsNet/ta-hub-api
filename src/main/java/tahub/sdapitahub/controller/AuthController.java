@@ -3,7 +3,7 @@ package tahub.sdapitahub.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid; // Ensure this import is added
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,11 +49,19 @@ public class AuthController {
         invitedUser.setInviteToken(null);
 
         TaUser registeredUser = authService.registerUser(invitedUser);
+      
+        RegisterDTO responseDTO = new RegisterDTO();
+        responseDTO.setUsername(registeredUser.getUsername());
+
+        responseDTO.setPhone(registeredUser.getPhone());
+        responseDTO.setPassword(registerDTO.getPassword());
+      
         if(registeredUser == null){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register");
         }
         return ResponseEntity.ok("Registration successful!");
 
+ 
     }
 
 

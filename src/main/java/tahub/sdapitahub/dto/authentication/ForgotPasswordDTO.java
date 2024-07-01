@@ -1,20 +1,15 @@
 package tahub.sdapitahub.dto.authentication;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 public class ForgotPasswordDTO {
 
-
-
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
     private String email;
 
     // Getters and Setters
-
-
     public String getEmail() {
         return email;
     }

@@ -5,15 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tahub.sdapitahub.dto.User.UserDTO; // Ensure this import is correct
+
+import tahub.sdapitahub.dto.User.UserDTO;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.service.UserService;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
 @RestController
 @Tag(name = "User", description = "Operations related to User")
 @RequestMapping("/api/users")
+
 public class UserController {
 
     @Autowired
@@ -36,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<TaUser> createUser(@RequestBody UserDTO userCreateDTO) {
+    public ResponseEntity<TaUser> createUser(@Valid @RequestBody UserDTO userCreateDTO) {
         TaUser createdUser = userService.createUser(userCreateDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }

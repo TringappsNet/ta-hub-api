@@ -1,6 +1,7 @@
 package tahub.sdapitahub.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class CandidateController {
     }
 
     @PostMapping("/candidate")
-    public ResponseEntity<Candidate> createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
+    public ResponseEntity<Candidate> createCandidate( @Valid @RequestBody CandidateCreateDTO candidatePostDTO) {
         Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
         return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
     }

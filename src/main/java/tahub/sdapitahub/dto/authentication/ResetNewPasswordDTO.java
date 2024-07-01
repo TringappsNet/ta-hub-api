@@ -1,7 +1,7 @@
 package tahub.sdapitahub.dto.authentication;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
 
 public class ResetNewPasswordDTO {
 

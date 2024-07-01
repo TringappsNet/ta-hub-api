@@ -2,13 +2,20 @@ package tahub.sdapitahub.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import jakarta.persistence.*;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(builder = Client.Builder.class)
+@Entity
 public class Client {
+    @Id
     private Long clientId;
     private String clientName;
+
+
+    @Column(nullable=false)
     private String clientSpocName;
     private String clientSpocContact;
     private String clientLocation;
@@ -104,6 +111,8 @@ public class Client {
     public static class Builder {
         private Long clientId;
         private String clientName;
+
+        @Column(nullable=false)
         private String clientSpocName;
         private String clientSpocContact;
         private String clientLocation;

@@ -1,13 +1,22 @@
 package tahub.sdapitahub.dto.TaskCandidates;
+import jakarta.validation.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
 
 public class TaskCandidateDTO {
+
+
     private Long taskId;
+
+
     private Long candidateId;
+
+    @NotBlank(message = "Task candidate status is required")
     private String taskCandidateStatus;
+
+    @NotBlank(message = "Task candidate comments are required")
     private String taskCandidateComments;
-    @NotNull
+
+
     private Long modifiedBy;
 
     // Getters and Setters

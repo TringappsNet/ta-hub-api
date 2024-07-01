@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class ClientRepository {
     public Client save(Client client) {
         jdbcTemplate.update(ClientQuery.SAVE.getQuery(),
                 client.getClientName(),
+
                 client.getClientSpocName(),
                 client.getClientSpocContact(),
                 client.getClientLocation(),
@@ -51,7 +53,7 @@ public class ClientRepository {
         // Initialize a flag to track if any fields are updated
         boolean fieldsUpdated = false;
 
-        if (client.getClientName() != null) {
+        if (client.getClientName() != null){
             queryBuilder.append("client_name = ?, ");
             queryParams.add(client.getClientName());
             fieldsUpdated = true;

@@ -1,49 +1,48 @@
 package tahub.sdapitahub.dto.Task;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+
+
+import java.time.LocalDateTime;
 
 public class TaskDTO {
 
-
-    @NotNull
     private long job_id;
-    @NotNull
+
+    @NotBlank(message = "Job title must not be blank")
     private String jobTitle;
-    @NotNull
+
+    @NotBlank(message = "Number of openings must not be blank")
     private int noOfOpenings;
-    @NotNull
+
+    @NotBlank(message = "Role type must not be blank")
     private String roleType;
-    @NotNull
+
+    @NotBlank(message = "Mode of work must not be blank")
     private String modeOfWork;
-    @NotNull
+
+    @NotBlank(message = "Work location must not be blank")
     private String workLocation;
-    @NotNull
+
     private String clientBudget;
-    @NotNull
     private String assignedBudget;
-    @NotNull
     private String primaryAssignee;
-    @NotNull
     private String secondaryAssignee;
-    @NotNull
+
+    @NotBlank(message = "Years of experience required must not be blank")
     private int yearsOfExperienceRequired;
-    @NotNull
+
+    @NotBlank(message = "Primary skill set must not be blank")
     private String primarySkillSet;
-    @NotNull
+
+    @NotBlank(message = "Secondary skill set must not be blank")
     private String secondarySkillSet;
-    @NotNull
+
     private String taskStatus;
-    @NotNull
     private boolean backlogs;
-    @NotNull
     private String description;
 
-    //Getters and Setters
-
-
-
-
-
+    // Getters and Setters...
 
     public String getJobTitle() {
         return jobTitle;
@@ -85,12 +84,6 @@ public class TaskDTO {
         this.workLocation = workLocation;
     }
 
-
-
-
-
-
-
     public int getYearsOfExperienceRequired() {
         return yearsOfExperienceRequired;
     }
@@ -115,7 +108,5 @@ public class TaskDTO {
         this.secondarySkillSet = secondarySkillSet;
     }
 
-
-
-
+    // Other getters and setters...
 }

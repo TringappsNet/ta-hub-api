@@ -7,7 +7,7 @@ import tahub.sdapitahub.Utils.MailUtil;
 import tahub.sdapitahub.Utils.TokenUtil;
 import tahub.sdapitahub.dto.Job.JobRequirementDTO;
 import tahub.sdapitahub.dto.Job.JobRequirementUpdateDTO;
-import tahub.sdapitahub.dto.Job.JobTaskDTO;
+import tahub.sdapitahub.dto.Job.JobApprovalTaskDTO;
 import tahub.sdapitahub.dto.Task.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.repository.JobRequirementRepository;
@@ -32,7 +32,7 @@ public class JobRequirementService {
     @Autowired
     private TaUserRepository taUserRepository;
 
-    public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<JobTaskDTO> positions) {
+    public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<JobApprovalTaskDTO> positions) {
         JobRequirement jobRequirement = jobRequirementRepository.findByApprovedBy(email);
         if (jobRequirement == null) {
             throw new UsernameNotFoundException("User not found");
@@ -67,6 +67,7 @@ public class JobRequirementService {
         jobRequirement.setApprovalStatus(true);
         jobRequirement.setLastUpdated(LocalDateTime.now());
         jobRequirementRepository.update(jobRequirement);
+
 
 
     }
@@ -116,6 +117,8 @@ public class JobRequirementService {
         }
     }
 
+ 
+
     public void createTasksPositions(JobRequirementDTO jobRequirementDTO) {
         List<JobRequirement> jobRequirements = jobRequirementRepository.findByClientName(jobRequirementDTO.getClientName());
         if (!jobRequirements.isEmpty()) {
@@ -125,8 +128,8 @@ public class JobRequirementService {
                 taskService.createTasksForJobRequirement(jobRequirement, taskDTOs, noOfOpenings);
             }
         }
-    }
 
+    }
     private JobRequirement convertToEntity(JobRequirementDTO jobRequirementDTO) {
         return new JobRequirement.Builder()
                 .requirementStartDate(jobRequirementDTO.getRequirementStartDate())
@@ -146,3 +149,6 @@ public class JobRequirementService {
                 .build();
     }
 }
+
+
+

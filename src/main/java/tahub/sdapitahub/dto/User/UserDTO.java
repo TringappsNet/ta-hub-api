@@ -1,19 +1,32 @@
 package tahub.sdapitahub.dto.User;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
 public class UserDTO {
 
+    @NotBlank(message = "First name must not be blank")
     private String firstName;
+
+    @NotBlank(message = "Last name must not be blank")
     private String lastName;
+
+    @NotBlank(message = "Username must not be blank")
     private String username;
+
+    @NotBlank(message = "Email must not be blank")
     private String email;
+
+    @NotBlank(message = "Phone must not be blank")
     private String phone;
+
+    @NotBlank(message = "Reset token must not be blank")
     private String resetToken;
+
+    @NotBlank(message = "Password must not be blank")
     private String password;
-    private boolean isActive;
-    private String currentSessionId;
-    private LocalDateTime lastLoginTime;
+
+
 
     //specific fields
     // Getters and Setters
@@ -76,29 +89,7 @@ public class UserDTO {
         this.password = password;
     }
 
-    public boolean getIsActive() {
-        return isActive;
-    }
 
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public String getCurrentSessionId() {
-        return currentSessionId;
-    }
-
-    public void setCurrentSessionId(String currentSessionId) {
-        this.currentSessionId = currentSessionId;
-    }
-
-    public LocalDateTime getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(LocalDateTime lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
 
 
 }
