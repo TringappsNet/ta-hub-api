@@ -37,5 +37,7 @@ dependencies {
 	implementation 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
+	implementation 'org.hibernate.validator:hibernate-validator:7.0.0.Final'
 
 }

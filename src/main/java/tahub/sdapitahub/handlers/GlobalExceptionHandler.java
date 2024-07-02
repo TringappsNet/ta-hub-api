@@ -39,14 +39,6 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        // Return only the first error in the list
-        if (!errors.isEmpty()) {
-            Map<String, String> firstError = new HashMap<>();
-            String firstFieldName = errors.keySet().iterator().next();
-            firstError.put(firstFieldName, errors.get(firstFieldName));
-            return new ResponseEntity<>(firstError, HttpStatus.BAD_REQUEST);
-        }
-
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
