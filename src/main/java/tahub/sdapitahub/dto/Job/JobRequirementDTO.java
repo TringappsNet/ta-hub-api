@@ -1,15 +1,14 @@
 package tahub.sdapitahub.dto.Job;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import tahub.sdapitahub.dto.Task.TaskDTO;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
 public class JobRequirementDTO {
-
 
     private LocalDate requirementStartDate;
 
@@ -30,7 +29,7 @@ public class JobRequirementDTO {
 
     private String totalNoOfOpenings;
 
-    @NotNull(message = "Positions are required")
+    @NotEmpty(message = "Positions are required")
     @Valid
     private List<TaskDTO> positions;
 
@@ -49,9 +48,7 @@ public class JobRequirementDTO {
     @NotBlank(message = "Approved by is required")
     private String approvedBy;
 
-
     // Getters and Setters
-
 
     public LocalDate getRequirementStartDate() {
         return requirementStartDate;

@@ -1,9 +1,8 @@
 package tahub.sdapitahub.dto.Task;
 
 import jakarta.validation.constraints.NotBlank;
-
-
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
 
 public class TaskDTO {
 
@@ -12,7 +11,7 @@ public class TaskDTO {
     @NotBlank(message = "Job title must not be blank")
     private String jobTitle;
 
-    @NotBlank(message = "Number of openings must not be blank")
+    @Min(value = 1, message = "Number of openings must be at least 1")
     private int noOfOpenings;
 
     @NotBlank(message = "Role type must not be blank")
@@ -29,7 +28,7 @@ public class TaskDTO {
     private String primaryAssignee;
     private String secondaryAssignee;
 
-    @NotBlank(message = "Years of experience required must not be blank")
+    @Min(value = 0, message = "Years of experience required must be at least 0")
     private int yearsOfExperienceRequired;
 
     @NotBlank(message = "Primary skill set must not be blank")
@@ -43,6 +42,14 @@ public class TaskDTO {
     private String description;
 
     // Getters and Setters...
+
+    public long getJob_id() {
+        return job_id;
+    }
+
+    public void setJob_id(long job_id) {
+        this.job_id = job_id;
+    }
 
     public String getJobTitle() {
         return jobTitle;
@@ -84,6 +91,38 @@ public class TaskDTO {
         this.workLocation = workLocation;
     }
 
+    public String getClientBudget() {
+        return clientBudget;
+    }
+
+    public void setClientBudget(String clientBudget) {
+        this.clientBudget = clientBudget;
+    }
+
+    public String getAssignedBudget() {
+        return assignedBudget;
+    }
+
+    public void setAssignedBudget(String assignedBudget) {
+        this.assignedBudget = assignedBudget;
+    }
+
+    public String getPrimaryAssignee() {
+        return primaryAssignee;
+    }
+
+    public void setPrimaryAssignee(String primaryAssignee) {
+        this.primaryAssignee = primaryAssignee;
+    }
+
+    public String getSecondaryAssignee() {
+        return secondaryAssignee;
+    }
+
+    public void setSecondaryAssignee(String secondaryAssignee) {
+        this.secondaryAssignee = secondaryAssignee;
+    }
+
     public int getYearsOfExperienceRequired() {
         return yearsOfExperienceRequired;
     }
@@ -108,5 +147,27 @@ public class TaskDTO {
         this.secondarySkillSet = secondarySkillSet;
     }
 
-    // Other getters and setters...
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public boolean isBacklogs() {
+        return backlogs;
+    }
+
+    public void setBacklogs(boolean backlogs) {
+        this.backlogs = backlogs;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
