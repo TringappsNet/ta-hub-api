@@ -82,7 +82,7 @@ public class CandidateService {
                     .lastUpdated(LocalDateTime.now())
                     .build();
 
-            return candidateRepository.save(candidate);
+            return candidateRepository.update(candidate);
         } else {
             throw new RuntimeException("Candidate not found with id " + id);
         }

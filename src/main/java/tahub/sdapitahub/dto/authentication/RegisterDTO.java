@@ -1,7 +1,7 @@
 package tahub.sdapitahub.dto.authentication;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+
 import jakarta.validation.constraints.Size;
 
 public class RegisterDTO {
@@ -10,7 +10,7 @@ public class RegisterDTO {
     private String username;
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^\\+(?:[0-9] ?){6,14}[0-9]$", message = "Phone number must be valid")
+
     private String phone;
 
     @NotBlank(message = "Password is required")

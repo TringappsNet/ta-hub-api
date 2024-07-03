@@ -20,7 +20,8 @@ import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.service.JobRequirementService;
 import tahub.sdapitahub.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
+import org.springframework.dao.EmptyResultDataAccessException;
+import tahub.sdapitahub.constants.JobreqMsgs;
 import javax.validation.ValidationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,14 +52,19 @@ public class JobRequirementController {
                     .collect(Collectors.toList());
             return ResponseEntity.badRequest().body(errors);
         }
-
+        try {
         List<JobRequirement> createdRequirements = new ArrayList<>();
         for (JobRequirementDTO jobRequirementDTO : jobRequirementDTOList) {
             JobRequirement createdRequirement = jobRequirementService.createJobRequirement(jobRequirementDTO);
             createdRequirements.add(createdRequirement);
             jobRequirementService.createTasksPositions(jobRequirementDTO);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRequirements);
+            return ResponseEntity.status(HttpStatus.CREATED).body(JobreqMsgs.JOB_REQ_CREATED.getMessage());
+    } catch (ValidationException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        } catch (ServiceException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(JobreqMsgs.ERROR_JOB_REQ_CREATE.getMessage());
+        }
     }
 
 
@@ -99,44 +105,52 @@ public class JobRequirementController {
     }
 
     @PutMapping("/requirement/{id}")
-    public ResponseEntity<JobRequirement> updateJobRequirement(@PathVariable Long id, @Valid @RequestBody JobRequirementUpdateDTO jobRequirementPostDTO) {
+    public ResponseEntity<String> updateJobRequirement(@PathVariable Long id, @Valid @RequestBody JobRequirementUpdateDTO jobRequirementPostDTO) {
         try {
             JobRequirement updatedJobRequirement = jobRequirementService.updateJobRequirement(id, jobRequirementPostDTO);
-            return new ResponseEntity<>(updatedJobRequirement, HttpStatus.OK);
+            return new ResponseEntity<>(JobreqMsgs.JOB_REQ_UPDATED.getMessage(), HttpStatus.OK);
         } catch (ValidationException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(JobreqMsgs.JOB_REQ_NOT_FOUND.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/requirement/{id}")
-    public ResponseEntity<Void> deleteJobRequirement(@PathVariable Long id) {
+    public ResponseEntity<String> deleteJobRequirement(@PathVariable Long id) {
+        JobRequirement existingRequirement = jobRequirementRepository.findById(id)
+                .orElse(null);
+
+        if (existingRequirement == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(JobreqMsgs.JOB_REQ_NOT_FOUND.getMessage());
+        }
         jobRequirementService.deleteJobRequirement(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body(JobreqMsgs.JOB_REQ_DELETE.getMessage());
     }
 
     @PostMapping("/job-approval")
     public ResponseEntity<Object> jobApproval(@Valid @RequestBody JobApprovalDTO jobDTO) {
-        String email = jobDTO.getApprovedBy();
-        String clientName = jobDTO.getClientName();
-        LocalDate requirementStartDate = jobDTO.getRequirementStartDate();
-        List<JobApprovalTaskDTO> position = jobDTO.getPosition();
+        try {
+            String email = jobDTO.getApprovedBy();
+            String clientName = jobDTO.getClientName();
+            LocalDate requirementStartDate = jobDTO.getRequirementStartDate();
+            List<JobApprovalTaskDTO> position = jobDTO.getPosition();
 
-        jobRequirementService.jobApproval(email, clientName, requirementStartDate, position);
-        return ResponseEntity.status(HttpStatus.OK).body("Job approval request sent!");
+            jobRequirementService.jobApproval(email, clientName, requirementStartDate, position);
+            return ResponseEntity.status(HttpStatus.OK).body(JobreqMsgs.JOB_APPROVAL.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JobreqMsgs.JOB_APPROVAL_UNAUTH.getMessage());
+        }
     }
-
     @PostMapping("/approve-requirement")
     public ResponseEntity<?> validateTokenAndApprove(@RequestParam String token) {
         try {
             jobRequirementService.approveRequirement(token);
-            return ResponseEntity.status(HttpStatus.OK).body("Job requirement approved successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body(JobreqMsgs.APPROVE_REQ.getMessage());
         } catch (ValidationException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (UsernameNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (ServiceException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while approving job requirement.");
-        }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(JobreqMsgs.APPROVE_REQ_ERR.getMessage());        }
     }
 }
 

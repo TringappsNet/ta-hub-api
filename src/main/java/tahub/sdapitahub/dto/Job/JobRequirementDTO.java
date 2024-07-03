@@ -29,7 +29,7 @@ public class JobRequirementDTO {
 
     private String totalNoOfOpenings;
 
-    @NotEmpty(message = "Positions are required")
+
     @Valid
     private List<TaskDTO> positions;
 
@@ -39,8 +39,6 @@ public class JobRequirementDTO {
     @NotBlank(message = "Mode of interviews is required")
     private String modeOfInterviews;
 
-    @NotNull(message = "Tentative start date is required")
-    private LocalDate tentativeStartDate;
 
     @NotBlank(message = "Tentative duration is required")
     private String tentativeDuration;
@@ -130,13 +128,7 @@ public class JobRequirementDTO {
         this.modeOfInterviews = modeOfInterviews;
     }
 
-    public LocalDate getTentativeStartDate() {
-        return tentativeStartDate;
-    }
 
-    public void setTentativeStartDate(LocalDate tentativeStartDate) {
-        this.tentativeStartDate = tentativeStartDate;
-    }
 
     public String getTentativeDuration() {
         return tentativeDuration;

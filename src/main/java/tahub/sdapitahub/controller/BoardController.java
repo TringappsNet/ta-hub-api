@@ -1,5 +1,5 @@
 package tahub.sdapitahub.controller;
-
+import tahub.sdapitahub.constants.BoardContMsgs;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,24 +33,39 @@ public class BoardController {
     }
 
     @PostMapping("/column")
-    public ResponseEntity<Board> createBoard(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<String> createBoard(@RequestBody BoardDTO boardDTO) {
         Board createdBoard = boardService.createBoard(boardDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBoard);
+        if (createdBoard != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(BoardContMsgs.BOARD_CREATED.getMessage());
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BoardContMsgs.ERROR_CREATE.getMessage());
+        }
     }
 
     @PutMapping("/column/{id}")
-    public ResponseEntity<Board> updateBoard(@PathVariable Long id, @RequestBody BoardDTO boardDTO) {
-        Board updatedBoard = boardService.updateBoard(id, boardDTO);
-        if (updatedBoard != null) {
-            return new ResponseEntity<>(updatedBoard, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> updateBoard(@PathVariable Long id, @RequestBody BoardDTO boardDTO) {
+        Optional<Board> existingBoardOptional = boardService.getBoardById(id);
+        if (existingBoardOptional.isPresent()) {
+            Board existingBoard = existingBoardOptional.get();
+            Board updatedBoard = boardService.updateBoard(id, boardDTO);
+            if (updatedBoard != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(BoardContMsgs.BOARD_UPDATED.getMessage());
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BoardContMsgs.ERROR_UPDATE.getMessage());
+            }
+    } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BoardContMsgs.BOARD_NOT_FOUND.getMessage());
         }
     }
 
     @DeleteMapping("/column/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
-        boardService.deleteBoard(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteBoard(@PathVariable Long id) {
+        Optional<Board> existingBoard = boardService.getBoardById(id);
+        if (!existingBoard.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BoardContMsgs.BOARD_NOT_FOUND.getMessage());
+        } else {
+            boardService.deleteBoard(id);
+            return ResponseEntity.status(HttpStatus.OK).body(BoardContMsgs.BOARD_DELETED.getMessage());
+        }
     }
 }
