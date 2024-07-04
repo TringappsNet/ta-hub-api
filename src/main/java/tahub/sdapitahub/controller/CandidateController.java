@@ -10,6 +10,7 @@ import tahub.sdapitahub.dto.Candidate.CandidateCreateDTO;
 import tahub.sdapitahub.dto.Candidate.CandidateUpdateDTO;
 import tahub.sdapitahub.entity.Candidate;
 import tahub.sdapitahub.service.CandidateService;
+import tahub.sdapitahub.constants.CandidateMsgs;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,24 +46,39 @@ public class CandidateController {
     }
 
     @PostMapping("/candidate")
-    public ResponseEntity<Candidate> createCandidate( @Valid @RequestBody CandidateCreateDTO candidatePostDTO) {
+    public ResponseEntity<String > createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {
         Candidate createdCandidate = candidateService.createCandidate(candidatePostDTO);
-        return new ResponseEntity<>(createdCandidate, HttpStatus.CREATED);
+        if (createdCandidate != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(CandidateMsgs.CANDIDATE_CREATED.getMessage());
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CandidateMsgs.ERROR_CREATE.getMessage());
+        }
     }
 
     @PutMapping("/candidate/{id}")
-    public ResponseEntity<Candidate> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidateUpdateDTO candidatePutDTO) {
-        try {
+    public ResponseEntity<String> updateCandidate(@PathVariable("id") Long id, @RequestBody CandidateUpdateDTO candidatePutDTO) {
+        Optional<Candidate> existingCandidate = candidateService.getCandidateById(id);
+        if (!existingCandidate.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CandidateMsgs.CANDIDATE_NOT_FOUND.getMessage());
+        }
             Candidate updatedCandidate = candidateService.updateCandidate(id, candidatePutDTO);
-            return new ResponseEntity<>(updatedCandidate, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (updatedCandidate != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(CandidateMsgs.CANDIDATE_UPDATED.getMessage());
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CandidateMsgs.ERROR_UPDATE.getMessage());
         }
     }
 
     @DeleteMapping("/candidate/{id}")
-    public ResponseEntity<Void> deleteCandidate(@PathVariable("id") Long id) {
-        candidateService.deleteCandidate(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteCandidate(@PathVariable("id") Long id) {
+        Optional<Candidate> existingCandidate = candidateService.getCandidateById(id);
+
+        if (!existingCandidate.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CandidateMsgs.CANDIDATE_NOT_FOUND.getMessage());
+        } else {
+
+            candidateService.deleteCandidate(id);
+            return ResponseEntity.status(HttpStatus.OK).body(CandidateMsgs.CANDIDATE_DELETED.getMessage());
+        }
     }
 }

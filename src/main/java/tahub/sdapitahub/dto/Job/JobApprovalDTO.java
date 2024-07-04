@@ -20,7 +20,7 @@ public class JobApprovalDTO {
     @NotBlank(message = "Client name is mandatory")
     private String clientName;
 
-    @NotEmpty(message = "Positions must not be empty")
+
     @Valid
     private List<JobApprovalTaskDTO> position;
 

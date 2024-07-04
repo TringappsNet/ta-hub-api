@@ -10,6 +10,9 @@ import tahub.sdapitahub.dto.Role.RoleDTO;
 import tahub.sdapitahub.dto.Role.RoleGetDTO;
 import tahub.sdapitahub.entity.Role;
 import tahub.sdapitahub.service.RoleService;
+import org.springframework.dao.EmptyResultDataAccessException;
+import tahub.sdapitahub.constants.RoleMsgs;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -39,24 +42,40 @@ public class RoleController {
     }
 
     @PostMapping("/role")
-    public ResponseEntity<Role> createRole( @Valid @RequestBody RoleDTO roleCreateDTO) {
+    public ResponseEntity<String> createRole(@RequestBody RoleDTO roleCreateDTO) {
         Role createdRole = roleService.createRole(roleCreateDTO);
-        return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/role/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable("id") Long id, @RequestBody RoleDTO roleCreateDTO) {
-        Role updatedRole = roleService.updateRole(id, roleCreateDTO);
-        if (updatedRole != null) {
-            return new ResponseEntity<>(updatedRole, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(createdRole!=null){
+            return new ResponseEntity<String>(RoleMsgs.ROLE_CREATED.getMessage(), HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<String>(RoleMsgs.ERROR_CREATE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @PutMapping("/role/{id}")
+    public ResponseEntity<String> updateRole(@PathVariable("id") Long id, @RequestBody RoleDTO roleCreateDTO) {
+        try{
+            Role updatedRole = roleService.updateRole(id, roleCreateDTO);
+            if (updatedRole != null) {
+                return new ResponseEntity<String>(RoleMsgs.ROLE_UPDATED.getMessage(), HttpStatus.OK);
+            }
+        } catch (EmptyResultDataAccessException ex) {
+            return new ResponseEntity<>(RoleMsgs.ROLE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(RoleMsgs.ERROR_UPDATE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+    }
     @DeleteMapping("/role/{id}")
-    public ResponseEntity<Void> deleteRole(@PathVariable("id") Long id) {
-        roleService.deleteRole(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteRole(@PathVariable("id") Long id) {
+        try {
+            Optional<Role> existingRole = roleService.getRoleById(id);
+            if (existingRole.isPresent()) {
+                roleService.deleteRole(id);
+                return new ResponseEntity<String>(RoleMsgs.ROLE_DELETED.getMessage(), HttpStatus.OK);
+            }
+        } catch (EmptyResultDataAccessException ex) {
+            return new ResponseEntity<>(RoleMsgs.ROLE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(RoleMsgs.ERROR_DELETE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
