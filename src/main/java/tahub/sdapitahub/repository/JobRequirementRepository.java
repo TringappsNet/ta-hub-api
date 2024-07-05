@@ -47,6 +47,7 @@ public class JobRequirementRepository {
         jdbcTemplate.update(
                 JobRequirementQuery.SAVE.getQuery(),
                 jobRequirement.getRequirementStartDate(),
+                jobRequirement.getClientId(),
                 jobRequirement.getClientName(),
                 jobRequirement.getClientSpocName(),
                 jobRequirement.getClientSpocContact(),

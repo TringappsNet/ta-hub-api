@@ -137,7 +137,9 @@ public class JobRequirementController {
             jobRequirementService.jobApproval(email, clientName, requirementStartDate, position);
             return ResponseEntity.status(HttpStatus.OK).body(JobreqMsgs.JOB_APPROVAL.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(JobreqMsgs.JOB_APPROVAL_UNAUTH.getMessage());
+            // Log the exception
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(JobreqMsgs.JOB_REQ_ERR.getMessage());
         }
     }
     @PostMapping("/approve-requirement")

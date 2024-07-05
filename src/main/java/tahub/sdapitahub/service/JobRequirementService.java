@@ -139,6 +139,7 @@ public class JobRequirementService {
     private JobRequirement convertToEntity(JobRequirementDTO jobRequirementDTO) {
         return new JobRequirement.Builder()
                 .requirementStartDate(jobRequirementDTO.getRequirementStartDate())
+                .clientId(jobRequirementDTO.getClientId())
                 .clientName(jobRequirementDTO.getClientName())
                 .clientSpocName(jobRequirementDTO.getClientSpocName())
                 .clientSpocContact(jobRequirementDTO.getClientSpocContact())

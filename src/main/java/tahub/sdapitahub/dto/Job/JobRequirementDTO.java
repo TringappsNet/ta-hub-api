@@ -1,7 +1,6 @@
 package tahub.sdapitahub.dto.Job;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import tahub.sdapitahub.dto.Task.TaskDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +10,8 @@ import java.util.List;
 public class JobRequirementDTO {
 
     private LocalDate requirementStartDate;
+    @NotNull(message = "Client Id is required")
+    private long clientId;
 
     @NotBlank(message = "Client name is required")
     private String clientName;
@@ -28,6 +29,7 @@ public class JobRequirementDTO {
     private String accountManagerEmail;
 
     private String totalNoOfOpenings;
+    private Boolean approvalStatus;
 
 
     @Valid
@@ -47,6 +49,18 @@ public class JobRequirementDTO {
     private String approvedBy;
 
     // Getters and Setters
+
+
+    @NotNull
+    public long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(@NotNull long clientId) {
+        this.clientId = clientId;
+    }
+
+
 
     public LocalDate getRequirementStartDate() {
         return requirementStartDate;
