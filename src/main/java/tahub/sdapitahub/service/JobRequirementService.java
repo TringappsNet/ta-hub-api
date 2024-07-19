@@ -12,6 +12,7 @@ import tahub.sdapitahub.dto.Task.TaskDTO;
 import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.repository.JobRequirementRepository;
 import tahub.sdapitahub.repository.TaUserRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.validation.ValidationException;
 import java.time.LocalDate;
@@ -31,6 +32,9 @@ public class JobRequirementService {
 
     @Autowired
     private TaUserRepository taUserRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public void jobApproval(String email, String clientName, LocalDate requirementStartDate, List<JobApprovalTaskDTO> positions) {
         JobRequirement jobRequirement = jobRequirementRepository.findByApprovedBy(email);
@@ -81,6 +85,8 @@ public class JobRequirementService {
     }
 
     public void deleteJobRequirement(Long id) {
+
+        jdbcTemplate.update("DELETE FROM ta_tasks WHERE job_id = ?", id);
         jobRequirementRepository.deleteById(id);
     }
 
@@ -141,7 +147,7 @@ public class JobRequirementService {
                 .totalNoOfOpenings(jobRequirementDTO.getTotalNoOfOpenings())
                 .salaryBudget(jobRequirementDTO.getSalaryBudget())
                 .modeOfInterviews(jobRequirementDTO.getModeOfInterviews())
-                .tentativeStartDate(jobRequirementDTO.getTentativeStartDate())
+
                 .tentativeDuration(jobRequirementDTO.getTentativeDuration())
                 .approvedBy(jobRequirementDTO.getApprovedBy())
                 .createdAt(LocalDateTime.now())

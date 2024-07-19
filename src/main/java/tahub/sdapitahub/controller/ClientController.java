@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import jakarta.validation.Valid;
+import org.springframework.dao.EmptyResultDataAccessException;
+import tahub.sdapitahub.constants.ClientMsgs;
 import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.Client.ClientCreateDTO;
 import tahub.sdapitahub.dto.Client.ClientDTO;
@@ -83,38 +85,60 @@ public class ClientController {
     }
 
     @PostMapping("/client")
-    public ResponseEntity<Client> createClient(@Valid @RequestBody ClientCreateDTO clientCreateDTO) {
+    public ResponseEntity<String> createClient(@Valid @RequestBody ClientCreateDTO clientCreateDTO) {
         Client client = new Client.Builder()
                 .clientName(clientCreateDTO.getClientName())
+                .jobTitle(clientCreateDTO.getJobTitle())
                 .clientSpocName(clientCreateDTO.getClientSpocName())
                 .clientSpocContact(clientCreateDTO.getClientSpocContact())
                 .clientLocation(clientCreateDTO.getClientLocation())
                 .jobTitle(clientCreateDTO.getJobTitle())
                 .build();
         Client createdClient = clientService.createClient(client);
-        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
+        if (createdClient != null) {
+            return new ResponseEntity<String>(ClientMsgs.CLIENT_CREATED.getMessage(), HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<String>(ClientMsgs.ERROR_CREATE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("client/{id}")
     public ResponseEntity<String> updateClient(@PathVariable("id") Long id, @RequestBody ClientUpdateDTO clientUpdateDTO) {
-        Optional<Client> existingClientOptional = clientService.getClientById(id);
-        if (existingClientOptional.isPresent()) {
-            Client existingClient = existingClientOptional.get();
-            existingClient.setClientName(clientUpdateDTO.getClientName());
-            existingClient.setClientSpocName(clientUpdateDTO.getClientSpocName());
-            existingClient.setClientSpocContact(clientUpdateDTO.getClientSpocContact());
-            existingClient.setClientLocation(clientUpdateDTO.getClientLocation());
-            existingClient.setJobTitle(clientUpdateDTO.getJobTitle());
-            Client updatedClient = clientService.updateClient(id, existingClient);
-            return ResponseEntity.status(HttpStatus.OK).body("Client updated successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Client ID not found");
+        try{
+            Optional<Client> existingClientOptional = clientService.getClientById(id);
+            if (existingClientOptional.isPresent()) {
+                Client existingClient = existingClientOptional.get();
+                existingClient.setClientName(clientUpdateDTO.getClientName());
+                existingClient.setClientSpocName(clientUpdateDTO.getClientSpocName());
+                existingClient.setClientSpocContact(clientUpdateDTO.getClientSpocContact());
+                existingClient.setClientLocation(clientUpdateDTO.getClientLocation());
+                existingClient.setJobTitle(clientUpdateDTO.getJobTitle());
+                Client updatedClient = clientService.updateClient(id, existingClient);
+                return new ResponseEntity<String>(ClientMsgs.CLIENT_UPDATED.getMessage(), HttpStatus.OK);
+            }
+        }catch (EmptyResultDataAccessException ex) {
+            return new ResponseEntity<>(ClientMsgs.CLIENT_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(ClientMsgs.ERROR_UPDATE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+
     }
 
     @DeleteMapping("client/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) {
-        clientService.deleteClient(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteClient(@PathVariable Long id) {
+        try{
+            Optional<Client> existingClient = clientService.getClientById(id);
+            if (existingClient.isPresent()) {
+                clientService.deleteClient(id);
+                return new ResponseEntity<>(ClientMsgs.CLIENT_DELETED.getMessage(), HttpStatus.OK);
+            }
+        } catch (EmptyResultDataAccessException ex) {
+            return new ResponseEntity<>(ClientMsgs.CLIENT_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(ClientMsgs.ERROR_DELETE.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+
     }
 }

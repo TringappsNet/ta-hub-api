@@ -59,9 +59,9 @@ public class AuthController {
         responseDTO.setPassword(registerDTO.getPassword());
       
         if(registeredUser == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(AuthMessages.SERVER_ERROR.getMessage());
         }
-        return ResponseEntity.ok("Registration successful!");
+        return ResponseEntity.status(HttpStatus.OK).body(AuthMessages.REGISTRATION_SUCCESSFUL.getMessage());
 
  
     }
@@ -70,10 +70,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request) {
         TaUser user = authService.findUserByEmail(loginDTO.getEmail());
-      
-         if (user == null || !authService.checkPasswordMatch(loginDTO.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"" + AuthMessages.INVALID_CREDENTIALS.getMessage() + "\"}");
 
+        if (user == null || !authService.checkPasswordMatch(loginDTO.getPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthMessages.INVALID_CREDENTIALS.getMessage());
         }
 
         // Create session
@@ -94,7 +93,7 @@ public class AuthController {
         responseData.put("sessionCreationTime", session.getCreationTime());
         responseData.put("sessionLastAccessedTime", session.getLastAccessedTime());
         responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
-        responseData.put("message", "Login success");
+        responseData.put("message", "Login successfully");
 
         return ResponseEntity.status(200).body(responseData);
     }
@@ -125,12 +124,12 @@ public class AuthController {
     public ResponseEntity<Object> resetPassword(@Valid @RequestBody ResetNewPasswordDTO resetNewPasswordDTO, @RequestHeader("Session-Id") String sessionId, @RequestHeader("Email") String email) {
         TaUser user = authService.findUserByEmail(resetNewPasswordDTO.getEmail());
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(AuthMessages.USER_NOT_FOUND.getMessage());
         }
 
         boolean oldPasswordMatches = authService.checkPasswordMatch(resetNewPasswordDTO.getOldPassword(), user.getPassword());
         if (!oldPasswordMatches) {
-            throw new BadCredentialsException("Invalid old password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthMessages.INVALID_OLD_PASS.getMessage());
         }
 
         user.setPassword(authService.encodePassword(resetNewPasswordDTO.getNewPassword()));
@@ -152,11 +151,11 @@ public class AuthController {
     public ResponseEntity<Object> resetPassword(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
         TaUser user = authService.findUserByResetToken(token);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(AuthMessages.USER_NOT_FOUND.getMessage());
         }
 
         if (!TokenUtil.isResetTokenValid(user, token)) {
-            throw new BadCredentialsException("Invalid token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthMessages.INVALID_TOKEN.getMessage());
         }
 
         authService.resetPassword(user, newPassword);

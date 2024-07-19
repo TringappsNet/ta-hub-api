@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import tahub.sdapitahub.dto.Task.TaskCreateDTO;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.service.TaskService;
+import tahub.sdapitahub.constants.TaskMsgs;
+import java.util.NoSuchElementException;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,24 +42,38 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskCreateDTO taskPostDTO) {
+    public ResponseEntity<String> createTask(@Valid @RequestBody TaskCreateDTO taskPostDTO) {
         Task createdTask = taskService.createTask(taskPostDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
-    }
+        if (createdTask != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(TaskMsgs.TASK_CREATED.getMessage());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(TaskMsgs.ERROR_TASK_CREATE.getMessage());
 
-    @PutMapping("/task/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskCreateDTO taskCreateDTO) {
-        Task updatedTask = taskService.updateTask(id, taskCreateDTO);
-        if (updatedTask != null) {
-            return new ResponseEntity<>(updatedTask, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    @PutMapping("/task/{id}")
+    public ResponseEntity<String> updateTask(@PathVariable Long id, @RequestBody TaskCreateDTO taskCreateDTO) {
+        try{
+        Task updatedTask = taskService.updateTask(id, taskCreateDTO);
+        if (updatedTask != null) {
+            return new ResponseEntity<>(TaskMsgs.TASK_UPDATED.getMessage(), HttpStatus.OK);
+        }  }catch (NoSuchElementException e){
+            return new ResponseEntity<>(TaskMsgs.TASK_NOT_FOUND.getMessage(),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(TaskMsgs.ERROR_TASK_UPDATE.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+    }
+
     @DeleteMapping("/task/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
+        if (taskService.getTaskById(id).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TaskMsgs.TASK_NOT_FOUND.getMessage());
+        } else {
+            taskService.deleteTask(id);
+            return ResponseEntity.status(HttpStatus.OK).body(TaskMsgs.TASK_DELETED.getMessage());
+        }
     }
 }
