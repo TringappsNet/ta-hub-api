@@ -10,7 +10,7 @@ public class RegisterDTO {
     private String username;
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^\\+(?:[0-9] ?){6,14}[0-9]$", message = "Phone number must be valid")
+
     private String phone;
 
     @NotBlank(message = "Password is required")

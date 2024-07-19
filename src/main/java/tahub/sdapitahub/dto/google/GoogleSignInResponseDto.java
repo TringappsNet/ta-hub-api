@@ -1,6 +1,7 @@
 package tahub.sdapitahub.dto.google;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -10,6 +11,7 @@ public class GoogleSignInResponseDto {
     private String idToken;
 
     @JsonProperty("access_token")
+    @NotNull
     private String accessToken;
 
     @JsonProperty("refresh_token")
@@ -38,11 +40,11 @@ public class GoogleSignInResponseDto {
         this.idToken = idToken;
     }
 
-    public String getAccessToken() {
+    public String getgAccessToken() {
         return accessToken;
     }
 
-    public void setAccessToken(String accessToken) {
+    public void setgAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 

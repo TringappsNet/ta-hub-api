@@ -17,6 +17,8 @@ public class TaUserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
+
     public List<TaUser> findAll() {
         return jdbcTemplate.query(UserQuery.FIND_ALL.getQuery(), new TaUserMapper());
     }
@@ -44,6 +46,9 @@ public class TaUserRepository {
         jdbcTemplate.update(UserQuery.CREATE.getQuery(),user.getRoleId(), user.getEmail(), user.getInviteToken());
         return user;
     }
+
+
+
 
     public TaUser findByEmail(String email) {
         List<TaUser> users = jdbcTemplate.query(UserQuery.FIND_BY_EMAIL.getQuery(), new Object[]{email}, new TaUserMapper());

@@ -11,7 +11,11 @@ public enum UserQuery {
     DELETE_BY_ID("DELETE FROM ta_users WHERE user_id = ?"),
     FIND_BY_EMAIL("SELECT * FROM ta_users WHERE email = ?"),
     FIND_BY_ACCESS_TOKEN("SELECT * FROM ta_users WHERE g_access_token = ?"),
-    FIND_BY_RESET_TOKEN("SELECT * FROM ta_users WHERE reset_token = ?");
+    FIND_BY_RESET_TOKEN("SELECT * FROM ta_users WHERE reset_token = ?"),
+    UPDATE_GOOGLE_ACCESS_TOKEN("INSERT INTO ta_users (gAccessToken , userId) " +
+            "VALUES ( ? ,?)"),
+    UPDATE_EMAIL("INSERT INTO ta_users (email  , userId) " +
+            "VALUES (? , ?)");
 
     private final String query;
 
