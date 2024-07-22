@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.dao.EmptyResultDataAccessException;
 import tahub.sdapitahub.constants.ClientMsgs;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.UserMsgs;
 import tahub.sdapitahub.dto.Client.ClientCreateDTO;
 import tahub.sdapitahub.dto.Client.ClientDTO;
 import tahub.sdapitahub.dto.Client.ClientUpdateDTO;
@@ -65,24 +66,31 @@ public class ClientController {
     }
 
     @GetMapping("client/{id}")
-    public ResponseEntity<ClientDTO> getClientById(@PathVariable("id") Long id) {
-        Optional<Client> clientOptional = clientService.getClientById(id);
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            ClientDTO dto = new ClientDTO();
-            dto.setClientId(client.getClientId());
-            dto.setClientName(client.getClientName());
-            dto.setClientSpocName(client.getClientSpocName());
-            dto.setClientSpocContact(client.getClientSpocContact());
-            dto.setClientLocation(client.getClientLocation());
-            dto.setCreatedAt(client.getCreatedAt());
-            dto.setLastUpdated(client.getLastUpdated());
-            dto.setJobTitle(client.getJobTitle());
-            return new ResponseEntity<>(dto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getClientById(@PathVariable("id") Long id) {
+        try{
+            Optional<Client> clientOptional = clientService.getClientById(id);
+            if (clientOptional.isPresent()) {
+                Client client = clientOptional.get();
+                ClientDTO dto = new ClientDTO();
+                dto.setClientId(client.getClientId());
+                dto.setClientName(client.getClientName());
+                dto.setClientSpocName(client.getClientSpocName());
+                dto.setClientSpocContact(client.getClientSpocContact());
+                dto.setClientLocation(client.getClientLocation());
+                dto.setCreatedAt(client.getCreatedAt());
+                dto.setLastUpdated(client.getLastUpdated());
+                dto.setJobTitle(client.getJobTitle());
+                return new ResponseEntity<>(dto, HttpStatus.OK);
+
+        }}
+        catch(EmptyResultDataAccessException ex){
+            return new ResponseEntity<>(ClientMsgs.CLIENT_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND);
         }
+        return null;
     }
+
+
+
 
     @PostMapping("/client")
     public ResponseEntity<String> createClient(@Valid @RequestBody ClientCreateDTO clientCreateDTO) {

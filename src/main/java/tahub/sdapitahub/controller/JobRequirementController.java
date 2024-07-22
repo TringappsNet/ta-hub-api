@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.RoleMsgs;
 import tahub.sdapitahub.dto.Job.JobApprovalDTO;
 import tahub.sdapitahub.dto.Job.JobRequirementDTO;
 import tahub.sdapitahub.dto.Job.JobRequirementUpdateDTO;
@@ -100,7 +101,7 @@ public class JobRequirementController {
         if (jobRequirement.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(jobRequirement.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Job requirement not found with ID: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(JobreqMsgs.JOB_REQ_NOT_FOUND.getMessage());
         }
     }
 

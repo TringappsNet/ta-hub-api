@@ -1,7 +1,6 @@
 package tahub.sdapitahub.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +31,17 @@ public class RoleController {
     }
 
     @GetMapping("/role/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable("id") Long id) {
-        Optional<Role> roleOptional = roleService.getRoleById(id);
-        if (roleOptional.isPresent()) {
-            return new ResponseEntity<>(roleOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getRoleById(@PathVariable("id") Long id) {
+        try {
+            Optional<Role> role = roleService.getRoleById(id);
+
+            if (role.isPresent()) {
+                return new ResponseEntity<>(role.get(), HttpStatus.OK);
+            }
+        } catch (EmptyResultDataAccessException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(RoleMsgs.ROLE_NOT_FOUND.getMessage());
         }
+        return null;
     }
 
     @PostMapping("/role")

@@ -6,6 +6,7 @@ public enum AuthMessages {
     FORGOT_PASSWORD("Password reset link sent to email successfully"),
     RESET_PASS_SUCCESS("Password reset successfully"),
     LOGOUT("Logged out successfully"),
+    LOGIN("Login successfully"),
     SERVER_ERROR("Failed to register"),
     REGISTRATION_SUCCESSFUL("Registration successful!"),
     USER_NOT_FOUND("User not found"),

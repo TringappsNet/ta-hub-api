@@ -36,14 +36,17 @@ public class CandidateController {
     }
 
     @GetMapping("/candidate/{id}")
-    public ResponseEntity<Candidate> getCandidateById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getCandidateById(@PathVariable("id") Long id) {
         Optional<Candidate> candidateOptional = candidateService.getCandidateById(id);
         if (candidateOptional.isPresent()) {
             return new ResponseEntity<>(candidateOptional.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CandidateMsgs.CANDIDATE_NOT_FOUND.getMessage());
         }
     }
+
+
+
 
     @PostMapping("/candidate")
     public ResponseEntity<String > createCandidate(@RequestBody CandidateCreateDTO candidatePostDTO) {

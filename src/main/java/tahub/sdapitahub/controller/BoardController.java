@@ -26,10 +26,23 @@ public class BoardController {
         return ResponseEntity.ok(boards);
     }
 
+//    @GetMapping("/column/{id}")
+//    public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
+//        Optional<Board> board = boardService.getBoardById(id);
+//        return board.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
+
     @GetMapping("/column/{id}")
-    public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
+    public ResponseEntity<?> getBoardById(@PathVariable Long id) {
         Optional<Board> board = boardService.getBoardById(id);
-        return board.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (board.isPresent()){
+            return board.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BoardContMsgs.BOARD_NOT_FOUND.getMessage());
+
+        }
+
     }
 
     @PostMapping("/column")
