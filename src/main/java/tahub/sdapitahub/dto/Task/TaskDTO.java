@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Min;
 public class TaskDTO {
 
 
+    private int jobId;
 
     @NotBlank(message = "Job title must not be blank")
     private String jobTitle;
@@ -38,7 +39,13 @@ public class TaskDTO {
 
     // Getters and Setters...
 
+    public int getJobId() {
+        return jobId;
+    }
 
+    public void  setJobId(int jobId) {
+        this.jobId = jobId;
+    }
 
     public String getJobTitle() {
         return jobTitle;

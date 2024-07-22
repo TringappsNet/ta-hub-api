@@ -14,6 +14,8 @@ import tahub.sdapitahub.Utils.TokenUtil;
 import tahub.sdapitahub.dto.authentication.ForgotPasswordDTO;
 import tahub.sdapitahub.dto.authentication.RegisterDTO;
 import tahub.sdapitahub.dto.authentication.LoginDTO;
+import tahub.sdapitahub.dto.google.GoogleSignInResponseDto;
+
 import tahub.sdapitahub.dto.authentication.InviteUserDTO;
 import tahub.sdapitahub.dto.authentication.ResetNewPasswordDTO;
 import tahub.sdapitahub.constants.AuthMessages;
@@ -71,7 +73,6 @@ public class AuthController {
 
         if (user == null || !authService.checkPasswordMatch(loginDTO.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthMessages.INVALID_CREDENTIALS.getMessage());
-
         }
 
         // Create session
@@ -96,6 +97,26 @@ public class AuthController {
 
         return ResponseEntity.status(200).body(responseData);
     }
+
+
+
+
+
+    @PostMapping("/google")
+    public ResponseEntity<?> handleGoogleSignIn(@RequestBody GoogleSignInResponseDto responseDto) {
+        try {
+            authService.saveUserDetails(responseDto);
+            return ResponseEntity.ok("Successfully saved user details");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user details: " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
 
 
 
@@ -177,6 +198,7 @@ public class AuthController {
             }
             // Invalidate session
             session.invalidate();
+
         }
 
         return ResponseEntity.status(200).body(AuthMessages.LOGOUT.getMessage());

@@ -123,7 +123,7 @@ public class JobRequirementService {
         }
     }
 
- 
+
 
     public void createTasksPositions(JobRequirementDTO jobRequirementDTO) {
         List<JobRequirement> jobRequirements = jobRequirementRepository.findByClientName(jobRequirementDTO.getClientName());

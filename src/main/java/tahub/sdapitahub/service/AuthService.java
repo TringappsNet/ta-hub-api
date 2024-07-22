@@ -3,6 +3,7 @@ package tahub.sdapitahub.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import tahub.sdapitahub.dto.google.GoogleSignInResponseDto;
 import tahub.sdapitahub.entity.TaUser;
 import tahub.sdapitahub.exception.UserAlreadyExistsException;
 import tahub.sdapitahub.exception.UserNotFoundException;
@@ -12,6 +13,8 @@ import tahub.sdapitahub.Utils.TokenUtil;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+
 
 @Service
 public class AuthService {
@@ -33,6 +36,41 @@ public class AuthService {
         userRepository.update(taUser);
         return taUser;
     }
+
+
+
+
+    public void saveUserDetails(GoogleSignInResponseDto responseDto) {
+
+        TaUser existingUser = userRepository.findByEmail(responseDto.getEmail());
+        if (existingUser != null) {
+            existingUser.setgAccessToken(responseDto.getgAccessToken());
+            existingUser.setgAccessTokenCreatedAt(LocalDateTime.now());
+            existingUser.setgTokenExpiresIn(responseDto.getExpiresIn());
+            existingUser.setIsActive(true);
+            existingUser.setLastUpdated(LocalDateTime.now());
+            userRepository.update(existingUser);
+        } else {
+            TaUser.Builder builder = new TaUser.Builder();
+            TaUser user = builder
+                    .email(responseDto.getEmail())
+                    .username(responseDto.getUsername())
+                    .roleId(14L)
+                    .isActive(true)
+                    .createdAt(LocalDateTime.now())
+                    .lastUpdated(LocalDateTime.now())
+                    .build();
+
+            // Set access token, token expiry
+            user.setgAccessToken(responseDto.getgAccessToken());
+            user.setgAccessTokenCreatedAt(LocalDateTime.now());
+            user.setgTokenExpiresIn(responseDto.getExpiresIn());
+            user.setLastUpdated(LocalDateTime.now());
+            user.setIsActive(true);
+            userRepository.save(user);
+        }
+    }
+
 
     public void forgetPassword(String email) {
         TaUser user = userRepository.findByEmail(email);
