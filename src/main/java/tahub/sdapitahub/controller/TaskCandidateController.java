@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.JobreqMsgs;
 import tahub.sdapitahub.dto.TaskCandidates.TaskCandidateDTO;
+import tahub.sdapitahub.entity.JobRequirement;
 import tahub.sdapitahub.entity.TaskCandidate;
 import tahub.sdapitahub.entity.TaskCandidateHistory;
 import tahub.sdapitahub.service.TaskCandidateHistoryService;
@@ -34,10 +36,19 @@ public class TaskCandidateController {
     }
 
     @GetMapping("/task-candidate/{id}")
-    public ResponseEntity<TaskCandidate> getTaskCandidateById(@PathVariable Long id) {
+    public ResponseEntity<?> getTaskCandidateById(@PathVariable Long id) {
         Optional<TaskCandidate> taskCandidate = taskCandidateService.getTaskCandidateById(id);
-        return taskCandidate.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (taskCandidate.isPresent()){
+            return taskCandidate.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TaskCandidateMsgs.TASK_CANDIDATE_NOT_FOUND.getMessage());
+
+        }
+
     }
+
+
 
     @GetMapping("/task/{taskId}/candidates")
     public ResponseEntity<List<TaskCandidate>> getCandidatesByTaskId(@PathVariable Long taskId) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tahub.sdapitahub.constants.TaskCandidateMsgs;
 import tahub.sdapitahub.dto.Task.TaskCreateDTO;
 import tahub.sdapitahub.entity.Task;
 import tahub.sdapitahub.service.TaskService;
@@ -36,9 +37,13 @@ public class TaskController {
     }
 
     @GetMapping("/task/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+    public ResponseEntity<?> getTaskById(@PathVariable Long id) {
         Optional<Task> task = taskService.getTaskById(id);
-        return task.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        if (task.isPresent()) {
+            return task.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TaskMsgs.TASK_NOT_FOUND.getMessage());
+        }
     }
 
     @PostMapping("/task")

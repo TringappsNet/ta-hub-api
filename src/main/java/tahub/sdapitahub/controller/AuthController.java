@@ -80,12 +80,12 @@ public class AuthController {
         session.setAttribute("loggedInUser", user);
         session.setMaxInactiveInterval(24 * 60 * 60);
 
-        // Update user's current session ID
+
         user.setCurrentSessionId(session.getId());
         user.setLastLoginTime(LocalDateTime.now());
         taUserRepository.update(user);
 
-        // Return only email and password
+
         Map<String, Object> responseData = new HashMap<>();
 
         responseData.put("user", user);
@@ -95,7 +95,7 @@ public class AuthController {
         responseData.put("sessionMaxInactiveInterval", session.getMaxInactiveInterval());
         responseData.put("message", "Login successfully");
 
-        return ResponseEntity.status(200).body(responseData);
+        return ResponseEntity.status(HttpStatus.OK).body(AuthMessages.LOGIN.getMessage());
     }
 
 
