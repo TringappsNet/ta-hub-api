@@ -6,10 +6,11 @@ public enum JobreqMsgs {
     JOB_REQ_UPDATED("Job requirement updated successfully"),
     JOB_REQ_NOT_FOUND("Job requirement ID not found"),
     JOB_APPROVAL("Job approval request sent!"),
-    JOB_APPROVAL_UNAUTH("Pls enter mail id"),
+    JOB_REQ_ERR("An error occurred during job approval"),
     APPROVE_REQ("Job requirement approved successfully!"),
     APPROVE_REQ_ERR("Error occurred while approving job requirement."),
     JOB_REQ_DELETE("Job ID Deleted successfully");
+
 
 
 

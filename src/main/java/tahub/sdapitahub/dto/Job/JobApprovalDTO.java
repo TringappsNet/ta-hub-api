@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JobApprovalDTO {
@@ -22,7 +23,7 @@ public class JobApprovalDTO {
 
 
     @Valid
-    private List<JobApprovalTaskDTO> position;
+    private List<JobApprovalTaskDTO> position = new ArrayList<>();
 
     // Getters and Setters
     public LocalDate getRequirementStartDate() {
